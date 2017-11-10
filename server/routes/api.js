@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const qiniusdk = require('../controllers/qiniusdk')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.post('/postSecret', qiniusdk.postSecret)
+
+router.get('/uploadToken', qiniusdk.uploadToken);
+router.get('/getImages', qiniusdk.getImages);
 
 module.exports = router;

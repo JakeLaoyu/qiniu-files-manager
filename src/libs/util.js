@@ -5,19 +5,20 @@ let util = {
 
 };
 util.title = function(title) {
-    title = title ? title + ' - Home' : 'iView project';
-    window.document.title = title;
+  title = title ? title + ' - Home' : '七牛图床管理';
+  window.document.title = title;
 };
 
 const ajaxUrl = env === 'development' ?
-    'http://127.0.0.1:8888' :
-    env === 'production' ?
-    'https://www.url.com' :
-    'https://debug.url.com';
+  'http://127.0.0.1:2017' :
+  env === 'production' ?
+  'https://www.url.com' :
+  'https://debug.url.com';
 
-util.ajax = axios.create({
-    baseURL: ajaxUrl,
-    timeout: 30000
+util.axios = axios.create({
+  baseURL: ajaxUrl,
+  timeout: 30000,
+  responseType: 'json'
 });
 
 export default util;
