@@ -62,7 +62,6 @@
 }
 
 .item-image {
-    cursor: pointer;
     text-align: center;
     overflow: hidden;
     height: 200px;
@@ -84,6 +83,7 @@
         width: 99%;
         display: inline-block;
         vertical-align: middle;
+        cursor: pointer;
         img {
             width: 50%;
             margin-bottom: 10%;
@@ -107,21 +107,23 @@
             <Option v-for="item in bucketList" :value="item" :key="item">{{ item }}</Option>
         </Select>
         <Breadcrumb>
-            <BreadcrumbItem href="#">Home</BreadcrumbItem>
-            <BreadcrumbItem href="#">Projects</BreadcrumbItem>
-            <BreadcrumbItem>iView</BreadcrumbItem>
+            <BreadcrumbItem href="#">{{ bucketName }}</BreadcrumbItem>
+            <!-- <BreadcrumbItem href="#">Projects</BreadcrumbItem>
+            <BreadcrumbItem>iView</BreadcrumbItem> -->
         </Breadcrumb>
     </div>
     <div class="layout-content">
         <div class="layout-content-main">
             <Row :gutter="20">
-                <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
-                <img v-if="item.key.split('/').length==1" :src=" domain + item.key" alt="">
+                <Col span="4" class-name="item-image" v-for="item in prefixs" :key="item">
+                    <div class="folder" @click="clickPrefix(item)">
+                        <img src="./assets/folder.png" alt="">
+                        <div class="folder-name">{{ item }}</div>
+                    </div>
+                </Col>
 
-                <div v-else class="folder">
-                    <img src="./assets/folder.png" alt="">
-                    <div class="folder-name">{{ item.key.split('/')[1] }}</div>
-                </div>
+                <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
+                    <img :src=" domain + item.key" alt="">
                 </Col>
             </Row>
         </div>
@@ -158,11 +160,14 @@ export default {
             ],
             bucketName: '',
             imageList: [],
-            foders: [],
+            prefixs: [],
             domain: 'http://blogimg.jakeyu.top/'
         }
     },
     methods: {
+        clickPrefix(prefix) {
+            alert(prefix)
+        },
         saveAkSk() {
             if(this.AccessKey && this.SecretKey && this.bucket){
                 this.modal_loading = true;
@@ -202,6 +207,8 @@ export default {
                     if (data.code==1) {
                         this.modal_loading = false;
                         this.imageList = data.images
+                        this.prefixs = data.prefixs
+                        console.log(this.imageList)
                     }else if(data.code ==3){
                         if (localStorage.accessKey && localStorage.secretKey) {
                             this.postSecret()
