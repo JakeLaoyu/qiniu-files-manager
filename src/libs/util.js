@@ -10,7 +10,7 @@ util.title = function(title) {
 };
 
 const ajaxUrl = env === 'development' ?
-  'http://127.0.0.1:2017' :
+  'http://dev.jakeyu.top:8080' :
   env === 'production' ?
   'https://www.url.com' :
   'https://debug.url.com';

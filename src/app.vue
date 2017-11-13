@@ -189,8 +189,7 @@ export default {
                     secretKey: localStorage.secretKey
                 })
                 .then(res => {
-                    console.log(res)
-                    if (res.data.code) {
+                    if (res.data.code==1) {
                         this.getList()
                     }
                 })
@@ -200,9 +199,15 @@ export default {
                 .get("/api/getImages?bucket=" + localStorage.bucket + "&prefix=&domain=" + window.domain)
                 .then(res => {
                     var data = res.data
-                    if (data.code) {
+                    if (data.code==1) {
                         this.modal_loading = false;
                         this.imageList = data.images
+                    }else if(data.code ==3){
+                        if (localStorage.accessKey && localStorage.secretKey) {
+                            this.postSecret()
+                        }else{
+                            this.inputAkSk = true
+                        }
                     }
                 })
         }
@@ -212,12 +217,8 @@ export default {
 
         window.domain = 'http://blogimg.jakeyu.top'
         this.bucketName = this.bucketList[0]
-        if (localStorage.accessKey && localStorage.secretKey) {
-            this.postSecret()
-        }else{
-            this.inputAkSk = true
-        }
 
+        this.getList()
     }
 }
 </script>
