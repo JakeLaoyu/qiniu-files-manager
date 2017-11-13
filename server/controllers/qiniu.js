@@ -3,7 +3,7 @@
  * @Date:   2017-11-13T09:36:08+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-13T14:16:31+08:00
+ * @Last modified time: 2017-11-13T23:05:31+08:00
  */
 const qiniu = require("qiniu");
 
@@ -53,11 +53,50 @@ exports.getImages = (accessKey, secretKey, bucket, prefix, cb) => {
       var nextMarker = respBody.marker;
       var commonPrefixes = respBody.commonPrefixes;
       var items = respBody.items;
+      // console.log('nextMarker: ' + nextMarker)
+      // console.log('commonPrefixes: ' + commonPrefixes)
+      var prefixTraverseResult = prefixTraverse(items)
 
-      cb(items)
+      cb(prefixTraverseResult.images, prefixTraverseResult.prefixs)
     } else {
       console.log(respInfo.statusCode);
       console.log(respBody);
     }
   });
+}
+
+
+/**
+ * 遍历前缀
+ * @param  {Array} images 七牛返回的图片数组
+ * @return {[type]}        前缀数组
+ */
+function prefixTraverse(images) {
+  var prefixs = []
+  var imagesUrl = []
+
+  images.forEach(item => {
+    var specialPrefix = false
+    if (item.key[0] == '/') {
+      specialPrefix = true
+      item.key = item.key.substr(1)
+    }
+    var itemArr = item.key.split('/')
+    if (itemArr.length > 1) {
+      if (!specialPrefix && prefixs.indexOf(itemArr[0]) < 0) {
+        prefixs.push(itemArr[0])
+      } else if (specialPrefix && prefixs.indexOf('/' + itemArr[0]) < 0) {
+        prefixs.push('/' + itemArr[0])
+      }
+    } else {
+      imagesUrl.push(item)
+    }
+  })
+
+  var data = {
+    prefixs: prefixs,
+    images: imagesUrl
+  }
+
+  return data
 }
