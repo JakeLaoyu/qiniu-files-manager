@@ -3,7 +3,7 @@
  * @Date:   2017-11-13T09:36:08+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-13T23:05:31+08:00
+ * @Last modified time: 2017-11-14T09:48:21+08:00
  */
 const qiniu = require("qiniu");
 
@@ -47,15 +47,15 @@ exports.getImages = (accessKey, secretKey, bucket, prefix, cb) => {
       throw err;
     }
     if (respInfo.statusCode == 200) {
-      console.log(respBody)
       //如果这个nextMarker不为空，那么还有未列举完毕的文件列表，下次调用listPrefix的时候，
       //指定options里面的marker为这个值
+      console.log(respBody)
       var nextMarker = respBody.marker;
       var commonPrefixes = respBody.commonPrefixes;
       var items = respBody.items;
-      // console.log('nextMarker: ' + nextMarker)
-      // console.log('commonPrefixes: ' + commonPrefixes)
-      var prefixTraverseResult = prefixTraverse(items)
+      console.log('nextMarker: ' + nextMarker)
+      console.log('commonPrefixes: ' + commonPrefixes)
+      var prefixTraverseResult = prefixTraverse(items, prefix)
 
       cb(prefixTraverseResult.images, prefixTraverseResult.prefixs)
     } else {
@@ -71,17 +71,23 @@ exports.getImages = (accessKey, secretKey, bucket, prefix, cb) => {
  * @param  {Array} images 七牛返回的图片数组
  * @return {[type]}        前缀数组
  */
-function prefixTraverse(images) {
+function prefixTraverse(images, prefix) {
   var prefixs = []
   var imagesUrl = []
 
   images.forEach(item => {
+    if (prefix) {
+      item.key = item.key.replace(prefix, '')
+    }
+
     var specialPrefix = false
     if (item.key[0] == '/') {
+      console.log('prefix第一个字符为/')
       specialPrefix = true
       item.key = item.key.substr(1)
     }
     var itemArr = item.key.split('/')
+    console.log(itemArr)
     if (itemArr.length > 1) {
       if (!specialPrefix && prefixs.indexOf(itemArr[0]) < 0) {
         prefixs.push(itemArr[0])

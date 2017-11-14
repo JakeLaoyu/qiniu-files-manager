@@ -3,7 +3,7 @@
  * @Date:   2017-11-09T15:44:59+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-13T22:19:15+08:00
+ * @Last modified time: 2017-11-14T10:24:11+08:00
  */
 
 const qiniujs = require('./qiniu')
@@ -23,7 +23,7 @@ exports.postSecret = (req, res) => {
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
   var domain = req.query.domain
-  var prefix = req.query.prefix
+  var prefix = req.query.prefix || ''
 
 
   qiniujs.getImages(req.session.accessKey, req.session.secretKey, bucket, prefix, function(images, prefixs) {
@@ -65,4 +65,13 @@ exports.checkAccessKeySecretKey = (req, res, next) => {
   }
 
   next()
+}
+
+
+exports.delSession = (req, res) => {
+  req.session.accessKey = ''
+  req.session.secretKey = ''
+  res.send({
+    code: 1
+  })
 }

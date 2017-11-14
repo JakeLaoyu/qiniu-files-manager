@@ -56,7 +56,7 @@
     &-breadcrumb {
         line-height: 32px;
     }
-    &-input-type{
+    &-input-type {
         margin-bottom: 20px;
     }
 }
@@ -64,10 +64,14 @@
 .item-image {
     text-align: center;
     overflow: hidden;
+    cursor: pointer;
     height: 200px;
     margin-bottom: 20px;
     &:hover {
         background: #DEDEDE;
+    }
+    &>img{
+        vertical-align: middle;
     }
     img {
         max-width: 100%;
@@ -107,23 +111,29 @@
             <Option v-for="item in bucketList" :value="item" :key="item">{{ item }}</Option>
         </Select>
         <Breadcrumb>
-            <BreadcrumbItem href="#">{{ bucketName }}</BreadcrumbItem>
-            <!-- <BreadcrumbItem href="#">Projects</BreadcrumbItem>
-            <BreadcrumbItem>iView</BreadcrumbItem> -->
+            <BreadcrumbItem>{{ bucketName }}</BreadcrumbItem>
+            <BreadcrumbItem v-for="item in prefixs" :key="item">{{item}}</BreadcrumbItem>
         </Breadcrumb>
     </div>
     <div class="layout-content">
         <div class="layout-content-main">
             <Row :gutter="20">
-                <Col span="4" class-name="item-image" v-for="item in prefixs" :key="item">
-                    <div class="folder" @click="clickPrefix(item)">
-                        <img src="./assets/folder.png" alt="">
-                        <div class="folder-name">{{ item }}</div>
-                    </div>
+                <Col span="4" class-name="item-image" v-if="prefixsStr">
+                <div class="folder" @click="returnDirectory">
+                    <img src="./assets/return.png" alt="">
+                    <div class="folder-name">返回上一级</div>
+                </div>
+                </Col>
+
+                <Col span="4" class-name="item-image" v-for="item in prefixsList" :key="item">
+                <div class="folder" @click="clickPrefix(item)">
+                    <img src="./assets/folder.png" alt="">
+                    <div class="folder-name">{{ item }}</div>
+                </div>
                 </Col>
 
                 <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
-                    <img :src=" domain + item.key" alt="">
+                <img :src=" domain + item.key" alt="">
                 </Col>
             </Row>
         </div>
@@ -137,6 +147,7 @@
         <Input v-model="AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
         <Input v-model="SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
         <Input v-model="bucket" placeholder="bucket" style="width: 100%"></Input>
+        <Input v-model="domain" placeholder="domain(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
 
         <div slot="footer">
             <Button type="info" size="large" long :loading="modal_loading" @click="saveAkSk">确定</Button>
@@ -149,44 +160,57 @@ import util from './libs/util'
 export default {
     data() {
         return {
-            inputAkSk:false,
-            AccessKey:'',
-            SecretKey:'',
-            bucket:'',
-            modal_loading:false,
+            inputAkSk: false,
+            AccessKey: '',
+            SecretKey: '',
+            bucket: '',
+            modal_loading: false,
             bucketList: [
-                'image',
                 'test'
             ],
             bucketName: '',
             imageList: [],
+            prefixsList: [],
             prefixs: [],
-            domain: 'http://blogimg.jakeyu.top/'
+            prefixsStr: '',
+            domain: localStorage.domain || ''
         }
     },
     methods: {
-        clickPrefix(prefix) {
-            alert(prefix)
+        returnDirectory() {
+            var currentDir = this.prefixs.pop()+'/'
+            this.prefixsStr = this.prefixsStr.replace(currentDir, '')
+            this.getList(this.prefixsStr)
         },
+        // 点击文件夹
+        clickPrefix(prefix) {
+            this.prefixs.push(prefix)
+            this.prefixsStr += prefix + '/'
+            this.getList(this.prefixsStr)
+        },
+        // 保存 modal内容
         saveAkSk() {
-            if(this.AccessKey && this.SecretKey && this.bucket){
+            if (this.AccessKey && this.SecretKey && this.bucket) {
                 this.modal_loading = true;
 
                 localStorage.accessKey = this.AccessKey
                 localStorage.secretKey = this.SecretKey
                 localStorage.bucket = this.bucket
+                localStorage.domain = this.domain
                 this.postSecret()
                 this.inputAkSk = false
-            }else{
+            } else {
                 this.$Modal.warning({
-                    content:'请填写完整'
+                    content: '请填写完整'
                 })
             }
         },
+        // 修改容器
         changeBucket() {
             localStorage.bucket = this.bucketName
             this.getList()
         },
+        // 提交秘钥
         postSecret() {
             util.axios
                 .post('/api/postSecret', {
@@ -194,35 +218,45 @@ export default {
                     secretKey: localStorage.secretKey
                 })
                 .then(res => {
-                    if (res.data.code==1) {
+                    if (res.data.code == 1) {
                         this.getList()
                     }
                 })
         },
-        getList() {
+        // 获取列表
+        getList(prefix) {
+            this.$Spin.show()
+            prefix = prefix || ''
             util.axios
-                .get("/api/getImages?bucket=" + localStorage.bucket + "&prefix=&domain=" + window.domain)
+                .get("/api/getImages?bucket=" + localStorage.bucket + "&prefix=" + prefix + "&domain=" + window.domain)
                 .then(res => {
                     var data = res.data
-                    if (data.code==1) {
+                    if (data.code == 1) {
                         this.modal_loading = false;
+
+                        if (this.prefixs.length > 0) {
+                            data.images.forEach(item => {
+                                item.key = this.prefixsStr + item.key
+                            })
+                        }
+
                         this.imageList = data.images
-                        this.prefixs = data.prefixs
+                        this.prefixsList = data.prefixs
                         console.log(this.imageList)
-                    }else if(data.code ==3){
+                    } else if (data.code == 3) {
                         if (localStorage.accessKey && localStorage.secretKey) {
                             this.postSecret()
-                        }else{
+                        } else {
                             this.inputAkSk = true
                         }
                     }
+
+                    this.$Spin.hide()
                 })
         }
     },
     created() {
         //do something after creating vue instance
-
-        window.domain = 'http://blogimg.jakeyu.top'
         this.bucketName = this.bucketList[0]
 
         this.getList()
