@@ -3,7 +3,7 @@
  * @Date:   2017-11-09T15:44:59+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-14T10:24:11+08:00
+ * @Last modified time: 2017-11-14T18:12:41+08:00
  */
 
 const qiniujs = require('./qiniu')
@@ -26,9 +26,10 @@ exports.getImages = (req, res) => {
   var prefix = req.query.prefix || ''
 
 
-  qiniujs.getImages(req.session.accessKey, req.session.secretKey, bucket, prefix, function(images, prefixs) {
+  qiniujs.getImages(req, bucket, prefix, function(statusCode, respBody, images, prefixs) {
     res.json({
-      code: 1,
+      code: statusCode == 200 ? 1 : statusCode,
+      message: statusCode == 200 ? '' : respBody.error,
       images: images,
       prefixs: prefixs
     })
@@ -74,4 +75,82 @@ exports.delSession = (req, res) => {
   res.send({
     code: 1
   })
+}
+
+// 获取文件详情
+exports.detail = (req, res) => {
+  var key = req.query.key
+  var bucket = req.query.bucket
+
+
+  qiniujs.getBucketManager(req).stat(bucket, key, function(err, respBody, respInfo) {
+    if (err) {
+      console.log(err);
+      //throw err;
+    } else {
+      if (respInfo.statusCode == 200) {
+        res.json({
+          code: 1,
+          info: respBody
+        })
+      } else {
+        console.log(respInfo.statusCode);
+        console.log(respBody.error);
+      }
+    }
+  });
+}
+
+// 删除文件
+exports.delImage = (req, res) => {
+  var key = req.body.key
+  var bucket = req.body.bucket
+
+  qiniujs.getBucketManager(req).delete(bucket, key, function(err, respBody, respInfo) {
+    if (err) {
+      console.log(err);
+      //throw err;
+    } else {
+      console.log(respInfo.statusCode);
+      console.log(respBody);
+
+      res.json({
+        code: 1,
+        info: respBody
+      })
+    }
+  });
+}
+
+
+// 移动文件
+exports.moveImage = (req, res) => {
+  var key = req.body.key
+  var newKey = req.body.newKey
+  var bucket = req.body.bucket
+
+  // 强制覆盖已有同名文件
+  var options = {
+    force: false
+  }
+
+  qiniujs.getBucketManager(req).move(bucket, key, bucket, newKey, options, function(
+    err, respBody, respInfo) {
+    if (err) {
+      console.log(err);
+      //throw err;
+    } else {
+      //200 is success
+      console.log(respInfo.statusCode);
+      if (respInfo.statusCode == 614) {
+        return res.json({
+          code: 0,
+          message: '文件名重复'
+        })
+      }
+      res.json({
+        code: 1
+      })
+    }
+  });
 }

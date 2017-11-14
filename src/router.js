@@ -1,5 +1,8 @@
+import IndexPage from './views/index.vue'
+
 const routers = [{
   path: '/',
+  component: IndexPage,
   meta: {
     title: ''
   },

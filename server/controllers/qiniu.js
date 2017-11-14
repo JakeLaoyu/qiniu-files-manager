@@ -3,7 +3,7 @@
  * @Date:   2017-11-13T09:36:08+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-14T09:48:21+08:00
+ * @Last modified time: 2017-11-14T18:11:35+08:00
  */
 const qiniu = require("qiniu");
 
@@ -27,10 +27,7 @@ exports.uploadToken = (accessKey, secretKey) => {
  * @param  {String} prefix 前缀
  * @return {[type]}        [description]
  */
-exports.getImages = (accessKey, secretKey, bucket, prefix, cb) => {
-  var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-  var config = new qiniu.conf.Config();
-  var bucketManager = new qiniu.rs.BucketManager(mac, config);
+exports.getImages = (req, bucket, prefix, cb) => {
 
   // @param options 列举操作的可选参数
   //                prefix    列举的文件前缀
@@ -41,27 +38,21 @@ exports.getImages = (accessKey, secretKey, bucket, prefix, cb) => {
     // limit: 10,
     prefix: prefix
   };
-  bucketManager.listPrefix(bucket, options, function(err, respBody, respInfo) {
+  getBucketManager(req).listPrefix(bucket, options, function(err, respBody, respInfo) {
     if (err) {
       console.log(err);
       throw err;
     }
-    if (respInfo.statusCode == 200) {
-      //如果这个nextMarker不为空，那么还有未列举完毕的文件列表，下次调用listPrefix的时候，
-      //指定options里面的marker为这个值
-      console.log(respBody)
-      var nextMarker = respBody.marker;
-      var commonPrefixes = respBody.commonPrefixes;
-      var items = respBody.items;
-      console.log('nextMarker: ' + nextMarker)
-      console.log('commonPrefixes: ' + commonPrefixes)
-      var prefixTraverseResult = prefixTraverse(items, prefix)
 
-      cb(prefixTraverseResult.images, prefixTraverseResult.prefixs)
-    } else {
-      console.log(respInfo.statusCode);
-      console.log(respBody);
+    var nextMarker = respBody.marker;
+    var commonPrefixes = respBody.commonPrefixes;
+    var items = respBody.items;
+    var prefixTraverseResult = {}
+    if (items && items.length > 0) {
+      prefixTraverseResult = prefixTraverse(items, prefix)
     }
+
+    cb(respInfo.statusCode, respBody, prefixTraverseResult.images, prefixTraverseResult.prefixs)
   });
 }
 
@@ -81,13 +72,7 @@ function prefixTraverse(images, prefix) {
     }
 
     var specialPrefix = false
-    if (item.key[0] == '/') {
-      console.log('prefix第一个字符为/')
-      specialPrefix = true
-      item.key = item.key.substr(1)
-    }
     var itemArr = item.key.split('/')
-    console.log(itemArr)
     if (itemArr.length > 1) {
       if (!specialPrefix && prefixs.indexOf(itemArr[0]) < 0) {
         prefixs.push(itemArr[0])
@@ -106,3 +91,15 @@ function prefixTraverse(images, prefix) {
 
   return data
 }
+
+
+function getBucketManager(req) {
+  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey);
+  var config = new qiniu.conf.Config();
+  //config.useHttpsDomain = true;
+  config.zone = qiniu.zone.Zone_z0;
+  return new qiniu.rs.BucketManager(mac, config);
+}
+
+
+exports.getBucketManager = getBucketManager
