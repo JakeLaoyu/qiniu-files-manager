@@ -3,15 +3,15 @@
  * @Date:   2017-11-13T09:36:08+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-14T18:11:35+08:00
+ * @Last modified time: 2017-11-15T15:12:05+08:00
  */
 const qiniu = require("qiniu");
 
 
-exports.uploadToken = (accessKey, secretKey) => {
-  var mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
+exports.uploadToken = (req, bucket) => {
+  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey)
   var options = {
-    scope: test,
+    scope: bucket,
     callbackBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
     callbackBodyType: 'application/json'
   };

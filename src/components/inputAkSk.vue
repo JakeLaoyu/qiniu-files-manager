@@ -1,5 +1,4 @@
 <template>
-  <div>
       <!-- 输入秘钥 -->
       <Modal v-model="inputAkSk" title="请输入秘钥" @on-ok="saveAkSk" :closable="false" :loading="true">
           <Input v-model="AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
@@ -11,7 +10,7 @@
               <Button type="info" size="large" long :loading="modal_loading" @click="saveAkSk">确定</Button>
           </div>
       </Modal>
-  </div>
+
 </template>
 <script>
 export default {
@@ -33,7 +32,9 @@ export default {
                 localStorage.accessKey = this.AccessKey
                 localStorage.secretKey = this.SecretKey
                 localStorage.bucket = this.bucket
-                localStorage.domain = this.domain
+
+                this.domain[this.domain.length-1]=='/'?localStorage.domain = this.domain:localStorage.domain = this.domain+'/'
+
 
                 this.$emit('on-close')
             } else {

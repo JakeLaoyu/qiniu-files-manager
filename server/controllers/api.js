@@ -3,7 +3,7 @@
  * @Date:   2017-11-09T15:44:59+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-14T18:12:41+08:00
+ * @Last modified time: 2017-11-15T15:21:05+08:00
  */
 
 const qiniujs = require('./qiniu')
@@ -40,12 +40,15 @@ exports.getImages = (req, res) => {
 
 // 获取token
 exports.uploadToken = (req, res) => {
-  var Bucket = req.query.Bucket
-  var Domain = req.query.Domain
+  var Bucket = req.query.bucket
+  var Domain = req.query.domain
+  console.log("Bucket: " + Bucket)
+
+  var token = qiniujs.uploadToken(req, Bucket)
 
   res.json({
     code: 1,
-    uploadToken: qiniujs.uploadToken()
+    uploadToken: token
   })
 }
 
@@ -141,7 +144,7 @@ exports.moveImage = (req, res) => {
       //throw err;
     } else {
       //200 is success
-      console.log(respInfo.statusCode);
+      console.log(respBody);
       if (respInfo.statusCode == 614) {
         return res.json({
           code: 0,
