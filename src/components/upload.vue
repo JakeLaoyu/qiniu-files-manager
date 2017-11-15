@@ -47,6 +47,11 @@ export default {
         },
         handleError(error, response, file) {
             this.$Message.error('上传失败')
+            this.$Notice.error({
+                title: 'error',
+                desc: response.error+': ' +file.name,
+                duration: 0
+            })
         }
     },
     created() {
