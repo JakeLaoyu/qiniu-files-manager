@@ -7,6 +7,9 @@
         <Select v-model="bucketName" style="width:150px" @on-change="changeBucket">
             <Option :value="bucketName" >{{ bucketName }}</Option>
         </Select>
+
+        <Button class="add-bucket" @click="addbucket" type="primary">添加Bucket</Button>
+
         <Breadcrumb>
             <BreadcrumbItem>{{ bucketName }}</BreadcrumbItem>
             <BreadcrumbItem v-for="item in prefixs" :key="item">{{item}}</BreadcrumbItem>
@@ -108,22 +111,27 @@
             <Button type="info" size="large" long :loading="moveLoading" @click="saveMoveTo">确定</Button>
         </div>
     </Modal>
+
+    <addbucket :isShow="addbucketModal" @closeModal="closeModal"></addbucket>
 </div>
 </template>
 <script>
 import util from '../libs/util'
 import inputAkSk from '../components/inputAkSk.vue'
 import upload from '../components/upload.vue'
+import addbucket from '../components/addbucket.vue'
 import Clipboard from 'clipboard'
 export default {
     components: {
         inputAkSk,
-        upload
+        upload,
+        addbucket
     },
     data() {
         return {
             moveTo: '',
             moveModal: false,
+            addbucketModal: false,
             showDetail: false,
             inputAkSk: false,
             delLoading: false,
@@ -139,6 +147,9 @@ export default {
         }
     },
     methods: {
+        closeModal(name){
+            this[name] = false
+        },
         uploadfinish(file) {
             this.imageList.unshift(file)
         },
@@ -313,6 +324,9 @@ export default {
 
                     this.$Loading.finish();
                 })
+        },
+        addbucket(){
+            this.addbucketModal = true
         }
     },
     created() {
@@ -476,5 +490,9 @@ export default {
     width: 320px;
     height: 200px;
 
+}
+.add-bucket{
+    float: left;
+    margin-right: 20px;
 }
 </style>

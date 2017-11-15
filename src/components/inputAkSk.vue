@@ -1,6 +1,6 @@
 <template>
       <!-- 输入秘钥 -->
-      <Modal v-model="inputAkSk" title="请输入秘钥" @on-ok="saveAkSk" :closable="false" :loading="true">
+      <Modal v-model="inputAkSk" title="请输入秘钥" @on-ok="saveAkSk" :closable="false" :loading="true" :mask-closable="false">
           <Input v-model="AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
           <Input v-model="SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
           <Input v-model="bucket" placeholder="bucket" style="width: 100%"></Input>

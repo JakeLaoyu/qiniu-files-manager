@@ -9,7 +9,7 @@ util.title = function(title) {
   window.document.title = title;
 };
 
-const ajaxUrl = env === 'dev' ?
+const ajaxUrl = env === 'development' ?
   'http://dev.jakeyu.top:8080' :
   'http://qiniu.jakeyu.top'
 
