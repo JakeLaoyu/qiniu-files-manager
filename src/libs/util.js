@@ -9,11 +9,9 @@ util.title = function(title) {
   window.document.title = title;
 };
 
-const ajaxUrl = env === 'development' ?
+const ajaxUrl = env === 'dev' ?
   'http://dev.jakeyu.top:8080' :
-  env === 'production' ?
-  'https://www.url.com' :
-  'https://debug.url.com';
+  'http://qiniu.jakeyu.top'
 
 util.axios = axios.create({
   baseURL: ajaxUrl,
