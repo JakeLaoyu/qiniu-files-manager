@@ -5,7 +5,7 @@
     </Menu>
     <div class="layout-breadcrumb">
         <Select v-model="bucketName" style="width:150px" @on-change="changeBucket">
-            <Option :value="bucketName" >{{ bucketName }}</Option>
+            <Option :value="item" v-for="item in bucketList" :key="item" >{{ item }}</Option>
         </Select>
 
         <Button class="add-bucket" @click="addbucket" type="primary">添加Bucket</Button>
@@ -112,7 +112,7 @@
         </div>
     </Modal>
 
-    <addbucket :isShow="addbucketModal" @closeModal="closeModal"></addbucket>
+    <addbucket :isShow="addbucketModal" @closeModal="closeAddBucketModal" @addbucket="saveAddBucketModal"></addbucket>
 </div>
 </template>
 <script>
@@ -138,6 +138,7 @@ export default {
             moveLoading: false,
             replaceLoading: false,
             bucketName: localStorage.bucket || '',
+            bucketList: [],
             imageList: [],
             prefixsList: [],
             prefixs: [],
@@ -147,8 +148,18 @@ export default {
         }
     },
     methods: {
-        closeModal(name){
-            this[name] = false
+        closeAddBucketModal() {
+            this.addbucketModal = false
+        },
+        saveAddBucketModal(newbucket, domain) {
+            this.bucketList.push(newbucket)
+            localStorage.bucketList = JSON.stringify(this.bucketList)
+            var domainObj = JSON.parse(localStorage.domainObj)
+            domainObj[newbucket] = domain
+            localStorage.domainObj = JSON.stringify(domainObj)
+            this.$Message.success('添加成功')
+            this.bucketName = newbucket
+            this.addbucketModal = false
         },
         uploadfinish(file) {
             this.imageList.unshift(file)
@@ -178,10 +189,8 @@ export default {
                 })
                 .then(res => {
                     this.moveLoading = false
-                    console.log(res)
                     if (res.data.code == 1) {
                         this.moveModal = false
-                        console.log(this.moveTo)
                         var moveToArr = this.moveTo.split('/')
                         if (moveToArr.length > 1) {
                             moveToArr.pop()
@@ -217,7 +226,6 @@ export default {
                     bucket: this.bucketName
                 })
                 .then(res => {
-                    console.log(res)
                     if (res.data.code == 1) {
                         this.delLoading = false
                         var indexOfStevie = this.imageList.findIndex(i => i.key === this.detailImage.key);
@@ -235,7 +243,7 @@ export default {
         },
         returnDirectory() {
             this.imageList = []
-            this.prefixsList=[]
+            this.prefixsList = []
             var currentDir = this.prefixs.pop() + '/'
             this.prefixsStr = this.prefixsStr.replace(currentDir, '')
             this.getList(this.prefixsStr)
@@ -268,14 +276,14 @@ export default {
         // 保存 modal内容
         inputAkSkFinish() {
             window.location.reload()
-            // this.bucketName = localStorage.bucket
-            // this.domain = localStorage.domain
-            // this.postSecret()
-            // this.inputAkSk = false
         },
         // 修改容器
         changeBucket() {
             localStorage.bucket = this.bucketName
+            var domainObj = JSON.parse(localStorage.domainObj)
+            this.domain = localStorage.domain = domainObj[this.bucketName]
+            this.imageList = []
+            this.prefixsList = []
             this.getList()
         },
         // 提交秘钥
@@ -296,7 +304,7 @@ export default {
             this.$Loading.start();
             prefix = prefix || ''
             util.axios
-                .get("/api/getImages?bucket=" + localStorage.bucket + "&prefix=" + prefix + "&domain=" + window.domain)
+                .get("/api/getImages?bucket=" + localStorage.bucket + "&prefix=" + prefix + "&domain=" + localStorage.domain)
                 .then(res => {
                     var data = res.data
                     if (data.code == 1) {
@@ -310,7 +318,6 @@ export default {
 
                         this.imageList = data.images
                         this.prefixsList = data.prefixs
-                        console.log(this.imageList)
                     } else if (data.code == 3) {
                         if (localStorage.accessKey && localStorage.secretKey) {
                             this.postSecret()
@@ -325,13 +332,17 @@ export default {
                     this.$Loading.finish();
                 })
         },
-        addbucket(){
+        addbucket() {
             this.addbucketModal = true
         }
     },
     created() {
         //do something after creating vue instance
         this.getList()
+        if (localStorage.bucketList) {
+            this.bucketList = JSON.parse(localStorage.bucketList)
+            this.bucketName = this.bucketList[0]
+        }
     }
 }
 </script>
@@ -419,12 +430,12 @@ export default {
         vertical-align: middle;
         height: 100%;
     }
-    &.disable{
+    &.disable {
         cursor: default;
-        &:hover{
+        &:hover {
             background: #fff;
         }
-        .folder{
+        .folder {
             cursor: default;
         }
     }
@@ -491,7 +502,7 @@ export default {
     height: 200px;
 
 }
-.add-bucket{
+.add-bucket {
     float: left;
     margin-right: 20px;
 }

@@ -1,16 +1,15 @@
 <template>
-      <!-- 输入秘钥 -->
-      <Modal v-model="inputAkSk" title="请输入秘钥" @on-ok="saveAkSk" :closable="false" :loading="true" :mask-closable="false">
-          <Input v-model="AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
-          <Input v-model="SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
-          <Input v-model="bucket" placeholder="bucket" style="width: 100%"></Input>
-          <Input v-model="domain" placeholder="domain(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
+<!-- 输入秘钥 -->
+<Modal v-model="inputAkSk" title="请输入秘钥" @on-ok="saveAkSk" :closable="false" :loading="true" :mask-closable="false">
+    <Input v-model="AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
+    <Input v-model="SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
+    <Input v-model="bucket" placeholder="Bucket" style="width: 100%"></Input>
+    <Input v-model="domain" placeholder="Domain(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
 
-          <div slot="footer">
-              <Button type="info" size="large" long :loading="modal_loading" @click="saveAkSk">确定</Button>
-          </div>
-      </Modal>
-
+    <div slot="footer">
+        <Button type="info" size="large" long :loading="modal_loading" @click="saveAkSk">确定</Button>
+    </div>
+</Modal>
 </template>
 <script>
 export default {
@@ -19,9 +18,9 @@ export default {
         return {
             AccessKey: '',
             SecretKey: '',
-            bucket:'',
-            domain:'',
-            modal_loading:false
+            bucket: '',
+            domain: '',
+            modal_loading: false
         }
     },
     methods: {
@@ -29,12 +28,21 @@ export default {
             if (this.AccessKey && this.SecretKey && this.bucket) {
                 this.modal_loading = true;
 
+                var bucketList = []
                 localStorage.accessKey = this.AccessKey
                 localStorage.secretKey = this.SecretKey
                 localStorage.bucket = this.bucket
+                bucketList.push(this.bucket)
+                console.log('bucketList: ' + bucketList)
+                console.log('JSON.stringify(bucketList): ' + JSON.stringify(bucketList))
+                localStorage.bucketList = JSON.stringify(bucketList)
+                console.log('localStorage.bucketList: ' + localStorage.bucketList)
 
-                this.domain[this.domain.length-1]=='/'?localStorage.domain = this.domain:localStorage.domain = this.domain+'/'
-
+                this.domain = this.domain[this.domain.length - 1] == '/' ? this.domain : this.domain + '/'
+                localStorage.domain = this.domain
+                var domainObj = localStorage.domainObj || {}
+                domainObj[this.bucket] = this.domain
+                localStorage.domainObj = JSON.stringify(domainObj)
 
                 this.$emit('on-close')
             } else {

@@ -1,31 +1,42 @@
 <template>
-      <!-- 输入秘钥 -->
-      <Modal v-model="ifShow" title="输入新 Bucket" :loading="true" @on-cancel="cancel">
-          <Input v-model="newbucket" placeholder="Bucket" style="width: 100%"></Input>
+<!-- 输入秘钥 -->
+<Modal v-model="ifShow" title="输入新 Bucket" :loading="true" @on-cancel="cancel">
+    <Input v-model="newbucket" placeholder="Bucket" style="width: 100%"></Input>
+    <Input v-model="domain" placeholder="Domain(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
 
-          <div slot="footer">
-              <Button type="info" size="large" long :loading="modal_loading">确定</Button>
-          </div>
-      </Modal>
-
+    <div slot="footer">
+        <Button type="info" size="large" long :loading="modal_loading" @click="ok">确定</Button>
+    </div>
+</Modal>
 </template>
 <script>
 export default {
     props: ['isShow'],
     data() {
         return {
-            newbucket:'',
-            modal_loading:false,
-            ifShow: this.isShow
+            newbucket: '',
+            modal_loading: false,
+            ifShow: this.isShow,
+            domain: ''
         }
     },
     methods: {
         cancel() {
-            this.$emit('closeModal','addbucketModal')
+            this.$emit()
+        },
+        ok() {
+            if (this.newbucket && this.domain) {
+                this.domain = this.domain[this.domain.length - 1] == '/' ? this.domain : this.domain = this.domain + '/'
+                this.$emit('addbucket', this.newbucket, this.domain)
+            } else {
+                this.$Modal.warning({
+                    content: '请填写完整'
+                })
+            }
         }
     },
     watch: {
-        isShow(val){
+        isShow(val) {
             this.ifShow = val
         }
     }
