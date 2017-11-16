@@ -12,7 +12,7 @@ util.title = function(title) {
 const ajaxUrl = env === 'development' ?
   'http://dev.jakeyu.top:8080' :
   env === 'production' ?
-  'http://qiniu.jakeyu.top' :
+  'http://qim.jakeyu.top' :
   'https://debug.url.com';
 
 util.axios = axios.create({
