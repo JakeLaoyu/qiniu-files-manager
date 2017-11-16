@@ -22,17 +22,24 @@ export default {
     },
     methods: {
         cancel() {
-            this.$emit()
+            this.$emit('closeModal')
         },
         ok() {
-            if (this.newbucket && this.domain) {
-                this.domain = this.domain[this.domain.length - 1] == '/' ? this.domain : this.domain = this.domain + '/'
-                this.$emit('addbucket', this.newbucket, this.domain)
-            } else {
-                this.$Modal.warning({
-                    content: '请填写完整'
-                })
+            if(!this.newbucket && !this.domain){
+                return this.$Message.error('请填写完整');
             }
+
+            if(JSON.parse(localStorage.bucketList).indexOf(this.newbucket)>=0){
+                return this.$Message.error('Bucket 存在');
+            }
+
+            if(this.domain.substr(0,4)!='http'){
+                return this.$Message.error('Domain 格式不正确');
+            }
+
+
+            this.domain = this.domain[this.domain.length - 1] == '/' ? this.domain : this.domain = this.domain + '/'
+            this.$emit('addbucket', this.newbucket, this.domain)
         }
     },
     watch: {

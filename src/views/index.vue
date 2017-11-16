@@ -1,8 +1,5 @@
 <template>
 <div class="layout">
-    <Menu mode="horizontal" theme="light" active-name="1">
-        <div class="layout-logo">七牛图床管理</div>
-    </Menu>
     <div class="layout-breadcrumb">
         <Select v-model="bucketName" style="width:150px" @on-change="changeBucket">
             <Option :value="item" v-for="item in bucketList" :key="item" >{{ item }}</Option>
@@ -43,7 +40,7 @@
 
                     <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
                     <div class="image-wrap" @click="clickImage(item)">
-                        <img :src=" domain + item.key" alt="">
+                        <img :src=" domain + item.key" alt="" @error="imgloadError">
                     </div>
                     </Col>
                 </Row>
@@ -148,6 +145,9 @@ export default {
         }
     },
     methods: {
+        imgloadError() {
+            this.$Message.warning('图片加载出错，请检查Domain是否正确');
+        },
         closeAddBucketModal() {
             this.addbucketModal = false
         },
@@ -251,7 +251,7 @@ export default {
         // 获取文件详情
         getDetail(key) {
             util.axios
-                .get('/api/detail?key=' + key + '&bucket=' + this.bucketName)
+                .get('/api/detail?key=' + key + '&bucket=' + localStorage.bucket)
                 .then(res => {
                     var data = res.data
                     if (data.code == 1) {
@@ -341,7 +341,6 @@ export default {
         this.getList()
         if (localStorage.bucketList) {
             this.bucketList = JSON.parse(localStorage.bucketList)
-            this.bucketName = this.bucketList[0]
         }
     }
 }
@@ -351,14 +350,6 @@ export default {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
     border-bottom: 0;
-}
-.layout-logo {
-    padding: 0 10px;
-    border-radius: 3px;
-    float: left;
-    /*position: relative;
-        top: 15px;
-        left: 20px;*/
 }
 .layout-nav {
     width: 420px;
