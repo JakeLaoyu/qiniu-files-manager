@@ -25,7 +25,7 @@ export default {
             this.$emit('closeModal')
         },
         ok() {
-            if(!this.newbucket && !this.domain){
+            if(!this.newbucket || !this.domain){
                 return this.$Message.error('请填写完整');
             }
 

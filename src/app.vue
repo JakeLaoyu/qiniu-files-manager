@@ -1,19 +1,21 @@
 <template>
-  <div id="app" class="layout">
-      <Menu mode="horizontal" theme="light" active-name="1">
-          <div class="layout-logo">七牛图床管理</div>
-      </Menu>
+<div id="app" class="layout">
+    <Menu mode="horizontal" theme="light" active-name="1">
+        <div class="layout-logo">七牛图床管理</div>
+    </Menu>
 
-      <router-view></router-view>
-  </div>
+    <keep-alive>
+        <router-view></router-view>
+    </keep-alive>
+</div>
 </template>
 <script>
 export default {
-  data() {
-      return {
+    data() {
+        return {
 
-      }
-  }
+        }
+    }
 }
 </script>
 <style lang="less" scoped>

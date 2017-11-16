@@ -16,7 +16,7 @@
         <div class="layout-content-main">
             <Row :gutter="20">
                 <Col span="16" push="8">
-                <Row :gutter="20">
+                <Row :gutter="20" v-if="qiniuRight">
                     <Col span="4" class-name="item-image" v-if="prefixsStr">
                     <div class="folder" @click="returnDirectory">
                         <img src="../assets/return.png" alt="">
@@ -40,10 +40,12 @@
 
                     <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
                     <div class="image-wrap" @click="clickImage(item)">
-                        <img :src=" domain + item.key" alt="" @error="imgloadError">
+                        <img :src=" domain + item.key" alt="" @error="imgloadError(e)">
                     </div>
                     </Col>
                 </Row>
+
+                <div class="qiniu-error" v-else>{{errorText}}</div>
                 </Col>
 
 
@@ -127,6 +129,8 @@ export default {
     data() {
         return {
             moveTo: '',
+            qiniuRight: true,
+            errorText: '',
             moveModal: false,
             addbucketModal: false,
             showDetail: false,
@@ -145,7 +149,8 @@ export default {
         }
     },
     methods: {
-        imgloadError() {
+        imgloadError(e) {
+            console.log(e)
             this.$Message.warning('图片加载出错，请检查Domain是否正确');
         },
         closeAddBucketModal() {
@@ -242,8 +247,6 @@ export default {
             this.getDetail(image.key)
         },
         returnDirectory() {
-            this.imageList = []
-            this.prefixsList = []
             var currentDir = this.prefixs.pop() + '/'
             this.prefixsStr = this.prefixsStr.replace(currentDir, '')
             this.getList(this.prefixsStr)
@@ -267,8 +270,6 @@ export default {
         },
         // 点击文件夹
         clickPrefix(prefix) {
-            this.prefixsList = []
-            this.imageList = []
             this.prefixs.push(prefix)
             this.prefixsStr += prefix + '/'
             this.getList(this.prefixsStr)
@@ -279,11 +280,11 @@ export default {
         },
         // 修改容器
         changeBucket() {
+            this.showDetail = false
+            this.detailImage = {}
             localStorage.bucket = this.bucketName
             var domainObj = JSON.parse(localStorage.domainObj)
             this.domain = localStorage.domain = domainObj[this.bucketName]
-            this.imageList = []
-            this.prefixsList = []
             this.getList()
         },
         // 提交秘钥
@@ -301,6 +302,7 @@ export default {
         },
         // 获取列表
         getList(prefix) {
+            this.initData()
             this.$Loading.start();
             prefix = prefix || ''
             util.axios
@@ -326,7 +328,8 @@ export default {
                         }
                     } else if (data.code) {
                         this.$Message.error(data.message);
-                        this.inputAkSk = true
+                        this.qiniuRight = false
+                        this.errorText = data.message
                     }
 
                     this.$Loading.finish();
@@ -334,6 +337,11 @@ export default {
         },
         addbucket() {
             this.addbucketModal = true
+        },
+        initData() {
+            this.qiniuRight = true
+            this.prefixsList = []
+            this.imageList = []
         }
     },
     created() {
@@ -369,7 +377,7 @@ export default {
     min-height: calc(~"100vh - 90px");
     overflow: hidden;
     border-radius: 4px;
-    max-width: 1200px;
+    width: 1200px;
     margin: 15px auto 0;
 }
 .layout-content-main {
@@ -496,5 +504,13 @@ export default {
 .add-bucket {
     float: left;
     margin-right: 20px;
+}
+.qiniu-error {
+    height: 110px;
+    line-height: 110px;
+    color: #ed3f14;
+    text-align: center;
+    background: #fff;
+    font-size: 18px;
 }
 </style>
