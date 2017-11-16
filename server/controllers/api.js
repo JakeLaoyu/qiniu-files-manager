@@ -3,7 +3,7 @@
  * @Date:   2017-11-09T15:44:59+08:00
  * @Email:  yucj@dxy.cn
  * @Last modified by:   Jake
- * @Last modified time: 2017-11-15T15:21:05+08:00
+ * @Last modified time: 2017-11-16T10:27:19+08:00
  */
 
 const qiniujs = require('./qiniu')
@@ -25,6 +25,13 @@ exports.getImages = (req, res) => {
   var domain = req.query.domain
   var prefix = req.query.prefix || ''
 
+  console.log('getImages')
+  console.log('bucket: ' + bucket)
+  console.log('prefix: ' + prefix)
+  console.log('req.session.accessKey: ' + req.session.accessKey)
+  console.log('req.session.secretKey: ' + req.session.secretKey)
+
+
 
   qiniujs.getImages(req, bucket, prefix, function(statusCode, respBody, images, prefixs) {
     res.json({
@@ -42,6 +49,7 @@ exports.getImages = (req, res) => {
 exports.uploadToken = (req, res) => {
   var Bucket = req.query.bucket
   var Domain = req.query.domain
+  console.log('uploadToken')
   console.log("Bucket: " + Bucket)
 
   var token = qiniujs.uploadToken(req, Bucket)
