@@ -5,7 +5,7 @@ let util = {
 
 };
 util.title = function(title) {
-  title = title ? title + ' - Home' : '七牛图床管理';
+  title = title ? title + ' - Home' : '七牛文件管理';
   window.document.title = title;
 };
 

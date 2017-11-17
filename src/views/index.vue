@@ -1,5 +1,5 @@
 <template>
-<div class="layout">
+<div>
     <div class="layout-breadcrumb">
         <Select v-model="bucketName" style="width:150px" @on-change="changeBucket">
             <Option :value="item" v-for="item in bucketList" :key="item" >{{ item }}</Option>
@@ -354,11 +354,7 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.layout {
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    border-bottom: 0;
-}
+
 .layout-nav {
     width: 420px;
     margin: 0 auto;
