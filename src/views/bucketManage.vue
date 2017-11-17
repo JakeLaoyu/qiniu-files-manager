@@ -11,7 +11,7 @@
             {{item}}
             </MenuItem>
 
-            <Button type="primary" @click="addbucketModal=true">添加仓库</Button>
+            <Button type="primary" @click="addbucketModal=true">添加Bucket</Button>
         </div>
     </Menu>
     <div class="layout-content">
@@ -60,13 +60,13 @@ export default {
             addbucketModal: false,
             delConfirm: false,
             activeMenu: 'aksk',
-            AccessKey: localStorage.accessKey,
-            SecretKey: localStorage.secretKey,
-            bucketList: JSON.parse(localStorage.bucketList),
-            domainObj: JSON.parse(localStorage.domainObj),
+            AccessKey: localStorage.accessKey||'',
+            SecretKey: localStorage.secretKey||'',
+            bucketList: JSON.parse(localStorage.bucketList||'[]'),
+            domainObj: JSON.parse(localStorage.domainObj||'{}'),
             input:{
-                input1Value:localStorage.accessKey,
-                input2Value:localStorage.secretKey,
+                input1Value:localStorage.accessKey||'',
+                input2Value:localStorage.secretKey||'',
                 input1Lbale:'AccessKey',
                 input2Lbale:'SecretKey'
             }
@@ -110,7 +110,36 @@ export default {
             this.delConfirm = false
         },
         submit() {
-            alert(this.activeMenu)
+            if(!this.input.input1Value||!this.input.input2Value){
+                return this.$Message.error('请填写完整');
+            }
+
+            var bucket = this.activeMenu
+            var domain = this.input.input2Value[this.input.input2Value.length-1] !='/'?this.input.input2Value+'/':this.input.input2Value
+
+            if(domain.substr(0,4)!='http'){
+                return this.$Message.error('Domain 格式不正确');
+            }
+
+            if(this.input.input1Value !=this.activeMenu&& this.bucketList.indexOf(this.input.input1Value)>=0){
+                return this.$Message.error('Bucket 存在');
+            }
+
+            if(this.activeMenu=='aksk'){
+                localStorage.accessKey = this.input.input1Value
+                localStorage.secretKey = this.input.input2Value
+            }else{
+                localStorage.bucket = bucket
+                this.bucketList.splice(this.bucketList.indexOf(bucket),1,this.input.input1Value)
+                localStorage.bucketList = JSON.stringify(this.bucketList)
+
+                delete this.domainObj[bucket]
+                localStorage.domain = domain
+                this.domainObj[this.input.input1Value] = domain
+                localStorage.domainObj = JSON.stringify(this.domainObj)
+            }
+
+            this.$Message.success('保存成功');
         },
         changeMenu(name) {
             console.log(name)

@@ -327,7 +327,9 @@ export default {
                             this.inputAkSk = true
                         }
                     } else if (data.code) {
-                        this.$Message.error(data.message);
+                        if(data.code ==401){
+                            this.postSecret()
+                        }
                         this.qiniuRight = false
                         this.errorText = data.message
                     }
