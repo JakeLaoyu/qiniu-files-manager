@@ -15,7 +15,7 @@
     <div class="layout-content">
         <div class="layout-content-main">
             <Row :gutter="20">
-                <Col span="16" push="8">
+                <Col span="16" push="8" ref="contentmain">
                 <Row :gutter="20" v-if="qiniuRight">
                     <Col span="4" class-name="item-image" v-if="prefixsStr">
                     <div class="folder" @click="returnDirectory">
@@ -44,7 +44,6 @@
                     </div>
                     </Col>
                 </Row>
-
                 <div class="qiniu-error" v-else>{{errorText}}</div>
                 </Col>
 
@@ -53,7 +52,7 @@
                 <upload :prefix="prefixsStr" @uploadfinish="uploadfinish"></upload>
 
                 <transition name="fade">
-                    <div class="detail" v-if="showDetail">
+                    <div class="detail" v-if="showDetail" ref="detail" :style="detailDomFixed">
                         <div class="demo-spin-container" v-if="!detailImage.key">
                             <Spin size="large" fix></Spin>
                         </div>
@@ -145,7 +144,8 @@ export default {
             prefixs: [],
             prefixsStr: '',
             domain: localStorage.domain || '',
-            detailImage: {}
+            detailImage: {},
+            detailDomFixed:{}
         }
     },
     methods: {
@@ -344,6 +344,18 @@ export default {
             this.qiniuRight = true
             this.prefixsList = []
             this.imageList = []
+        },
+        handleScroll() {
+            if(this.$refs.detail && this.$refs.contentmain.$vnode){
+                var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
+                var detailDom = this.$refs.detail
+                var clientRect = detailDom.getBoundingClientRect()
+                if(window.scrollY>=218){
+                    detailDom.style="position:fixed;top:0;left:"+(contentMainDomClientRect.x-10-clientRect.width)+'px;width:'+clientRect.width+'px'
+                }else{
+                    detailDom.style=''
+                }
+            }
         }
     },
     created() {
@@ -352,163 +364,167 @@ export default {
         if (localStorage.bucketList) {
             this.bucketList = JSON.parse(localStorage.bucketList)
         }
+    },
+    mounted () {
+      window.addEventListener('scroll', this.handleScroll)
+      window.addEventListener('resize', this.handleScroll)
     }
 }
 </script>
 <style scoped lang="less">
 
-.layout-nav {
-    width: 420px;
-    margin: 0 auto;
-}
-.layout-assistant {
-    width: 300px;
-    margin: 0 auto;
-    height: inherit;
-}
-.layout-breadcrumb {
-    padding: 10px 15px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.layout-content {
-    min-height: calc(~"100vh - 90px");
-    overflow: hidden;
-    border-radius: 4px;
-    width: 1200px;
-    margin: 15px auto 0;
-}
-.layout-content-main {
-    padding: 10px;
-}
-.layout-copy {
-    text-align: center;
-    padding: 10px 0 20px;
-    color: #9ea7b4;
-}
+    .layout-nav {
+        width: 420px;
+        margin: 0 auto;
+    }
+    .layout-assistant {
+        width: 300px;
+        margin: 0 auto;
+        height: inherit;
+    }
+    .layout-breadcrumb {
+        padding: 10px 15px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .layout-content {
+        min-height: calc(~"100vh - 90px");
+        overflow: hidden;
+        border-radius: 4px;
+        width: 1200px;
+        margin: 15px auto 0;
+    }
+    .layout-content-main {
+        padding: 10px;
+    }
+    .layout-copy {
+        text-align: center;
+        padding: 10px 0 20px;
+        color: #9ea7b4;
+    }
 
-.ivu {
-    &-menu {
-        &-horizontal {
-            height: 30px;
-            line-height: 30px;
+    .ivu {
+        &-menu {
+            &-horizontal {
+                height: 30px;
+                line-height: 30px;
+            }
+        }
+        &-select {
+            float: left;
+            margin-right: 20px;
+        }
+        &-breadcrumb {
+            line-height: 32px;
+        }
+        &-input-type {
+            margin-bottom: 20px;
         }
     }
-    &-select {
+
+    .item-image {
+        text-align: center;
+        overflow: hidden;
+        cursor: pointer;
+        height: 200px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background: #fff;
+        &:hover {
+            background: #DEDEDE;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        &:after {
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+        }
+        &.disable {
+            cursor: default;
+            &:hover {
+                background: #fff;
+            }
+            .folder {
+                cursor: default;
+            }
+        }
+
+        .folder {
+            width: 99%;
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            img {
+                width: 50%;
+                margin-bottom: 10%;
+            }
+            &-name {
+                font-size: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+    .image-wrap {
+        width: 100%;
+        height: 100%;
+        & > img {
+            vertical-align: middle;
+        }
+        &:after {
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+        }
+    }
+    .detail {
+        background: #fff;
+        font-size: 14px;
+        color: #666;
+        padding: 10px;
+        box-sizing: border-box;
+        position: relative;
+        & > div {
+            word-break: break-all;
+            margin-bottom: 10px;
+            span {
+                color: #333;
+            }
+        }
+        &__img {
+            img {
+                width: 100%;
+            }
+        }
+        &__name {
+            font-size: 18px;
+            color: red;
+        }
+        &__operating {
+            text-align: center;
+        }
+    }
+    .demo-spin-container {
+        width: 320px;
+        height: 200px;
+
+    }
+    .add-bucket {
         float: left;
         margin-right: 20px;
     }
-    &-breadcrumb {
-        line-height: 32px;
-    }
-    &-input-type {
-        margin-bottom: 20px;
-    }
-}
-
-.item-image {
-    text-align: center;
-    overflow: hidden;
-    cursor: pointer;
-    height: 200px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    background: #fff;
-    &:hover {
-        background: #DEDEDE;
-    }
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
-    &:after {
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        height: 100%;
-    }
-    &.disable {
-        cursor: default;
-        &:hover {
-            background: #fff;
-        }
-        .folder {
-            cursor: default;
-        }
-    }
-
-    .folder {
-        width: 99%;
-        display: inline-block;
-        vertical-align: middle;
-        cursor: pointer;
-        img {
-            width: 50%;
-            margin-bottom: 10%;
-        }
-        &-name {
-            font-size: 16px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    }
-}
-.image-wrap {
-    width: 100%;
-    height: 100%;
-    & > img {
-        vertical-align: middle;
-    }
-    &:after {
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        height: 100%;
-    }
-}
-.detail {
-    background: #fff;
-    font-size: 14px;
-    color: #666;
-    padding: 10px;
-    box-sizing: border-box;
-    position: relative;
-    & > div {
-        word-break: break-all;
-        margin-bottom: 10px;
-        span {
-            color: #333;
-        }
-    }
-    &__img {
-        img {
-            width: 100%;
-        }
-    }
-    &__name {
-        font-size: 18px;
-        color: red;
-    }
-    &__operating {
+    .qiniu-error {
+        height: 110px;
+        line-height: 110px;
+        color: #ed3f14;
         text-align: center;
+        background: #fff;
+        font-size: 18px;
     }
-}
-.demo-spin-container {
-    width: 320px;
-    height: 200px;
-
-}
-.add-bucket {
-    float: left;
-    margin-right: 20px;
-}
-.qiniu-error {
-    height: 110px;
-    line-height: 110px;
-    color: #ed3f14;
-    text-align: center;
-    background: #fff;
-    font-size: 18px;
-}
 </style>
