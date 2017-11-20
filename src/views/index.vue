@@ -40,16 +40,7 @@
 
                     <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
                     <div class="image-wrap" @click="clickImage(item)">
-                        <!-- <img :src=" domain + item.key" alt="" @error="imgloadError(item)" v-if="item.mimeType=='image/jpeg'">
-                        <img v-else src="../assets/file-text-o.png" alt=""> -->
-
-                        <vue-lazy-load-img
-                            mode="diy"
-                            :time="300"
-                            :done="true"
-                            :position="{ top: 0, right: 0, bottom: 0, left: 0 }"
-                            :diy="{ backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }"
-                            @error="imgloadError">
+                        <vue-lazy-load-img mode="diy" :time="300" :done="true" :position="{ top: 0, right: 0, bottom: 0, left: 0 }" :diy="{ backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }" @error="imgloadError">
                             <img src="../assets/File-Loading.png" :data-src="domain + item.key" alt="">
                         </vue-lazy-load-img>
                     </div>
@@ -161,7 +152,8 @@ export default {
     },
     methods: {
         imgloadError(event) {
-            event.src=`data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAALCklEQVR4Xu2da2wcVxXH/2dmZxwr
+            event.src =
+                `data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAALCklEQVR4Xu2da2wcVxXH/2dmZxwr
                 JUoDSUzs3SZNnF2X8hCPCqoQVFEkGiCxSqqgIj6A0kpQVBCthKioyusD0CoSVLxBfGirSE2jEAiP
                 VkFVaVQKiCIIqr1xmsfuxlUhTdMmTuuZnTnobrypE7w7Z7yz63nc/ej9z7nnnv9v7ty5vjNLmOfn
                 8EqscPusUQI2gnE1A0NE9MZ5hkvsYQz+2UjFvTWpHaCwiVeH0D9l2PeA+XYQ9Yc9Po16Bj9j1d3R
@@ -417,16 +409,34 @@ export default {
             this.prefixsList = []
             this.imageList = []
         },
+        // 去抖函数
+        debounce(fn, delay) {
+            // 持久化一个定时器 timer
+            let timer = null;
+            // 闭包函数可以访问 timer
+            return function() {
+                // 通过 'this' 和 'arguments'
+                // 获得函数的作用域和参数
+                let context = this;
+                let args = arguments;
+                // 如果事件被触发，清除 timer 并重新开始计时
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    fn.apply(context, args);
+                }, delay);
+            }
+        },
         handleScroll() {
             var documentHeight = document.documentElement.clientHeight
+            var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
             if (this.$refs.detail && this.$refs.contentmain.$vnode) {
-                var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
                 var detailDom = this.$refs.detail
                 var clientRect = detailDom.getBoundingClientRect()
-                if (window.scrollY >= 218) {
+                if (window.scrollY >= 218&&!detailDom.style.position) {
+                    console.log('csstext')
                     var csstext = "position:fixed;top:0;left:" + (contentMainDomClientRect.x - 10 - clientRect.width) + 'px;width:' + clientRect.width + 'px;'
                     detailDom.style = clientRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
-                } else {
+                } else if(window.scrollY < 218&&detailDom.style.position){
                     detailDom.style = ''
                 }
             }
@@ -440,8 +450,8 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('scroll', this.handleScroll)
-        window.addEventListener('resize', this.handleScroll)
+        window.addEventListener('scroll', this.debounce(this.handleScroll,100))
+        window.addEventListener('resize', this.debounce(this.handleScroll,100))
     }
 }
 </script>
