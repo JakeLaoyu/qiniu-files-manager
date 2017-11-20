@@ -61,7 +61,7 @@
 
                         <div v-else>
                             <div class="detail__img">
-                                <img :src="detailImage.url" alt="">
+                                <img :src="detailImage.url" alt="" @load="handleScroll">
                             </div>
                             <div class="detail__name">{{ detailImage.name }}</div>
                             <div class="detail__url"><span>url:</span> {{ detailImage.url }}</div>
@@ -432,11 +432,10 @@ export default {
             if (this.$refs.detail && this.$refs.contentmain.$vnode) {
                 var detailDom = this.$refs.detail
                 var clientRect = detailDom.getBoundingClientRect()
-                if (window.scrollY >= 218&&!detailDom.style.position) {
-                    console.log('csstext')
+                if (window.scrollY >= 218) {
                     var csstext = "position:fixed;top:0;left:" + (contentMainDomClientRect.x - 10 - clientRect.width) + 'px;width:' + clientRect.width + 'px;'
                     detailDom.style = clientRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
-                } else if(window.scrollY < 218&&detailDom.style.position){
+                } else {
                     detailDom.style = ''
                 }
             }
@@ -450,8 +449,8 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('scroll', this.debounce(this.handleScroll,100))
-        window.addEventListener('resize', this.debounce(this.handleScroll,100))
+        window.addEventListener('scroll', this.debounce(this.handleScroll, 100))
+        window.addEventListener('resize', this.debounce(this.handleScroll, 100))
     }
 }
 </script>
