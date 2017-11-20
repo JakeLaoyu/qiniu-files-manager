@@ -41,7 +41,7 @@
                     <Col span="4" class-name="item-image" v-for="item in imageList" :key="item.key">
                     <div class="image-wrap" @click="clickImage(item)">
                         <vue-lazy-load-img mode="diy" :time="300" :done="true" :position="{ top: 0, right: 0, bottom: 0, left: 0 }" :diy="{ backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center' }" @error="imgloadError">
-                            <img src="../assets/File-Loading.png" :data-src="domain + item.key" alt="">
+                            <img src="../assets/File-Loading.png" :data-src="domain + item.key+'?imageView2/1/w/113/h/113'" alt="">
                         </vue-lazy-load-img>
                     </div>
                     </Col>
