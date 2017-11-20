@@ -223,23 +223,39 @@ export default {
             this.moveTo = this.detailImage.key
         },
         // 删除单个文件
+        confirm (filename,cb) {
+
+            },
         delImage() {
             this.delLoading = true
-            util.axios
-                .post('/api/delImage', {
-                    key: this.detailImage.key,
-                    bucket: this.bucketName
-                })
-                .then(res => {
-                    if (res.data.code == 1) {
-                        this.delLoading = false
-                        var indexOfStevie = this.imageList.findIndex(i => i.key === this.detailImage.key);
-                        this.imageList.splice(indexOfStevie, 1)
-                        this.showDetail = false
-                        this.detailImage = {}
-                        this.$Message.success('删除成功');
-                    }
-                })
+            var filename = this.detailImage.key
+
+            this.$Modal.confirm({
+                title: '确认删除',
+                content: '是否删除: '+'<span style="color:red;">'+filename+'</span>',
+                loading: true,
+                onOk: () => {
+                    util.axios
+                    .post('/api/delImage', {
+                        key: this.detailImage.key,
+                        bucket: this.bucketName
+                    })
+                    .then(res => {
+                        if (res.data.code == 1) {
+                            this.delLoading = false
+                            var indexOfStevie = this.imageList.findIndex(i => i.key === this.detailImage.key);
+                            this.imageList.splice(indexOfStevie, 1)
+                            this.showDetail = false
+                            this.detailImage = {}
+                            this.$Message.success('删除成功');
+                            this.$Modal.remove();
+                        }
+                    })
+                },
+                onCancel: () => {
+                    this.delLoading = false
+                }
+            });
         },
         clickImage(image) {
             this.showDetail = true
@@ -346,12 +362,14 @@ export default {
             this.imageList = []
         },
         handleScroll() {
+            var documentHeight = document.documentElement.clientHeight
             if(this.$refs.detail && this.$refs.contentmain.$vnode){
                 var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
                 var detailDom = this.$refs.detail
                 var clientRect = detailDom.getBoundingClientRect()
                 if(window.scrollY>=218){
-                    detailDom.style="position:fixed;top:0;left:"+(contentMainDomClientRect.x-10-clientRect.width)+'px;width:'+clientRect.width+'px'
+                    var csstext = "position:fixed;top:0;left:"+(contentMainDomClientRect.x-10-clientRect.width)+'px;width:'+clientRect.width+'px;'
+                    detailDom.style=clientRect.height>=documentHeight?csstext+'height:'+documentHeight+'px;overflow:scroll;':csstext
                 }else{
                     detailDom.style=''
                 }
