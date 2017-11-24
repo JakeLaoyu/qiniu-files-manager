@@ -61,7 +61,7 @@
 
                         <div v-else>
                             <div class="detail__img">
-                                <img :src="detailImage.url" alt="" @load="handleScroll">
+                                <img :src="detailImage.url" alt="" @load="imageload">
                             </div>
                             <div class="detail__name">{{ detailImage.name }}</div>
                             <div class="detail__url"><span>url:</span> {{ detailImage.url }}</div>
@@ -331,6 +331,9 @@ export default {
                         this.$Message.error(data.message);
                     }
                 })
+        },
+        imageload() {
+            this.handleScroll()
         },
         // 点击文件夹
         clickPrefix(prefix) {
