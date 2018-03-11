@@ -15,5 +15,5 @@ const routers = [{
     title: ''
   },
   component: (resolve) => require(['./views/bucketManage.vue'], resolve)
-}];
-export default routers;
+}]
+export default routers

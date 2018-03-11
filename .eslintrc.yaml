@@ -1,0 +1,112 @@
+root: true
+
+parserOptions:
+    ecmaVersion: 8
+    sourceType: module
+    ecmaFeatures:
+        experimentalObjectRestSpread: true
+
+env:
+    browser: true
+    node: true
+
+globals:
+    Promise: true
+    WeixinJSBridge: true
+    $: true
+    isIE8: true
+    isMobile: true
+
+extends: eslint:recommended
+
+plugins:
+    - html
+
+rules:
+    # 强制使用一致的缩进
+    indent:
+        - error
+        - 2
+        -
+            SwitchCase: 1
+
+    # 强制使用一致的反勾号、双引号或单引号
+    quotes:
+        - error
+        - single
+
+    # require or disallow semicolons instead of ASI
+    semi:
+        - error
+        - never
+    no-console: 0
+
+    # 强制在 function的左括号之前使用一致的空格
+    space-before-function-paren:
+        - error
+        - always
+
+    # 强制数组方括号中使用一致的空格
+    array-bracket-spacing:
+        - error
+        - always
+        -
+            singleValue: false
+            objectsInArrays: false
+            arraysInArrays: false
+
+    # 要求操作符周围有空格
+    space-infix-ops:
+        - error
+        -
+            int32Hint: true
+
+    # 强制在大括号中使用一致的空格
+    object-curly-spacing:
+        - error
+        - never
+
+    # 禁止调用 require 时使用 new 操作符
+    no-new-require:
+        - error
+        #  强制在单行代码块中使用一致的空格
+    block-spacing:
+        - error
+        - always
+
+    # 强制在代码块中使用一致的大括号风格
+    brace-style:
+        - error
+        - 1tbs
+        -
+            allowSingleLine: true
+
+    # 强制在逗号前后使用一致的空格
+    comma-spacing:
+        - error
+
+    #  强制在计算的属性的方括号中使用一致的空格
+    computed-property-spacing:
+        - error
+        - always
+
+    # 强制在块之前使用一致的空格
+    space-before-blocks:
+        - error
+        - always
+
+    # 要求箭头函数的箭头之前或之后有空格
+    arrow-spacing:
+        - error
+        -
+            before: true
+            after: true
+
+
+    # 禁止未使用过的变量
+    no-unused-vars:
+        - warn
+        -
+            vars: all
+            args: after-used
+            ignoreRestSiblings: false

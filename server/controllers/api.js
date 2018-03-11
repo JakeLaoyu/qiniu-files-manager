@@ -33,7 +33,7 @@ exports.getImages = (req, res) => {
 
 
 
-  qiniujs.getImages(req, bucket, prefix, function(statusCode, respBody, images, prefixs) {
+  qiniujs.getImages(req, bucket, prefix, function (statusCode, respBody, images, prefixs) {
     res.json({
       code: statusCode == 200 ? 1 : statusCode,
       message: statusCode == 200 ? '' : respBody.error,
@@ -50,7 +50,7 @@ exports.uploadToken = (req, res) => {
   var Bucket = req.query.bucket
   var Domain = req.query.domain
   console.log('uploadToken')
-  console.log("Bucket: " + Bucket)
+  console.log('Bucket: ' + Bucket)
 
   var token = qiniujs.uploadToken(req, Bucket)
 
@@ -94,9 +94,9 @@ exports.detail = (req, res) => {
   var bucket = req.query.bucket
 
 
-  qiniujs.getBucketManager(req).stat(bucket, key, function(err, respBody, respInfo) {
+  qiniujs.getBucketManager(req).stat(bucket, key, function (err, respBody, respInfo) {
     if (err) {
-      console.log(err);
+      console.log(err)
       //throw err;
     } else {
       if (respInfo.statusCode == 200) {
@@ -105,11 +105,11 @@ exports.detail = (req, res) => {
           info: respBody
         })
       } else {
-        console.log(respInfo.statusCode);
-        console.log(respBody.error);
+        console.log(respInfo.statusCode)
+        console.log(respBody.error)
       }
     }
-  });
+  })
 }
 
 // 删除文件
@@ -117,20 +117,20 @@ exports.delImage = (req, res) => {
   var key = req.body.key
   var bucket = req.body.bucket
 
-  qiniujs.getBucketManager(req).delete(bucket, key, function(err, respBody, respInfo) {
+  qiniujs.getBucketManager(req).delete(bucket, key, function (err, respBody, respInfo) {
     if (err) {
-      console.log(err);
+      console.log(err)
       //throw err;
     } else {
-      console.log(respInfo.statusCode);
-      console.log(respBody);
+      console.log(respInfo.statusCode)
+      console.log(respBody)
 
       res.json({
         code: 1,
         info: respBody
       })
     }
-  });
+  })
 }
 
 
@@ -145,14 +145,14 @@ exports.moveImage = (req, res) => {
     force: false
   }
 
-  qiniujs.getBucketManager(req).move(bucket, key, bucket, newKey, options, function(
+  qiniujs.getBucketManager(req).move(bucket, key, bucket, newKey, options, function (
     err, respBody, respInfo) {
     if (err) {
-      console.log(err);
+      console.log(err)
       //throw err;
     } else {
       //200 is success
-      console.log(respBody);
+      console.log(respBody)
       if (respInfo.statusCode == 614) {
         return res.json({
           code: 0,
@@ -163,5 +163,5 @@ exports.moveImage = (req, res) => {
         code: 1
       })
     }
-  });
+  })
 }
