@@ -5,7 +5,7 @@
  * @Last modified by:   Jake
  * @Last modified time: 2017-11-15T15:12:05+08:00
  */
-const qiniu = require("qiniu");
+const qiniu = require('qiniu')
 
 
 exports.uploadToken = (req, bucket) => {
@@ -14,9 +14,9 @@ exports.uploadToken = (req, bucket) => {
     scope: bucket,
     callbackBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
     callbackBodyType: 'application/json'
-  };
-  var putPolicy = new qiniu.rs.PutPolicy(options);
-  var uploadToken = putPolicy.uploadToken(mac);
+  }
+  var putPolicy = new qiniu.rs.PutPolicy(options)
+  var uploadToken = putPolicy.uploadToken(mac)
   return uploadToken
 }
 
@@ -37,23 +37,23 @@ exports.getImages = (req, bucket, prefix, cb) => {
   var options = {
     // limit: 10,
     prefix: prefix
-  };
-  getBucketManager(req).listPrefix(bucket, options, function(err, respBody, respInfo) {
+  }
+  getBucketManager(req).listPrefix(bucket, options, function (err, respBody, respInfo) {
     if (err) {
-      console.log(err);
-      throw err;
+      console.log(err)
+      throw err
     }
 
-    var nextMarker = respBody.marker;
-    var commonPrefixes = respBody.commonPrefixes;
-    var items = respBody.items;
+    var nextMarker = respBody.marker
+    var commonPrefixes = respBody.commonPrefixes
+    var items = respBody.items
     var prefixTraverseResult = {}
     if (items && items.length > 0) {
       prefixTraverseResult = prefixTraverse(items, prefix)
     }
 
     cb(respInfo.statusCode, respBody, prefixTraverseResult.images, prefixTraverseResult.prefixs)
-  });
+  })
 }
 
 
@@ -62,7 +62,7 @@ exports.getImages = (req, bucket, prefix, cb) => {
  * @param  {Array} images 七牛返回的图片数组
  * @return {[type]}        前缀数组
  */
-function prefixTraverse(images, prefix) {
+function prefixTraverse (images, prefix) {
   var prefixs = []
   var imagesUrl = []
 
@@ -74,10 +74,10 @@ function prefixTraverse(images, prefix) {
     var specialPrefix = false
     var itemArr = item.key.split('/')
     if (itemArr.length > 1) {
-      if (!specialPrefix && prefixs.indexOf(itemArr[0]) < 0) {
-        prefixs.push(itemArr[0])
-      } else if (specialPrefix && prefixs.indexOf('/' + itemArr[0]) < 0) {
-        prefixs.push('/' + itemArr[0])
+      if (!specialPrefix && prefixs.indexOf(itemArr[ 0 ]) < 0) {
+        prefixs.push(itemArr[ 0 ])
+      } else if (specialPrefix && prefixs.indexOf('/' + itemArr[ 0 ]) < 0) {
+        prefixs.push('/' + itemArr[ 0 ])
       }
     } else {
       imagesUrl.push(item)
@@ -93,12 +93,12 @@ function prefixTraverse(images, prefix) {
 }
 
 
-function getBucketManager(req) {
-  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey);
-  var config = new qiniu.conf.Config();
+function getBucketManager (req) {
+  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey)
+  var config = new qiniu.conf.Config()
   //config.useHttpsDomain = true;
-  config.zone = qiniu.zone.Zone_z0;
-  return new qiniu.rs.BucketManager(mac, config);
+  config.zone = qiniu.zone.Zone_z0
+  return new qiniu.rs.BucketManager(mac, config)
 }
 
 
