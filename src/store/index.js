@@ -54,8 +54,8 @@ const store = new Vuex.Store({
         [ payload.hash ]: payload
       }
     },
-    setBucket ({buckets}, payload) {
-      buckets.push(payload)
+    setBuckets (state, payload) {
+      state.buckets.push(payload)
     },
     setCurrentBucket (state, payload) {
       state.currentBucket = {
@@ -83,8 +83,8 @@ const store = new Vuex.Store({
      * @param  {String}  secretKey sk
      * @return {undefined}           [description]
      */
-    async postSecrte ({commit}, {accessKey, secretKey}) {
-      await ajax.post('/api/postSecret', {
+    postSecrte ({commit}, {accessKey, secretKey}) {
+      return ajax.post('/api/postSecret', {
         accessKey: accessKey,
         secretKey: secretKey
       })
@@ -98,6 +98,7 @@ const store = new Vuex.Store({
      * @return {undefined}              [description]
      */
     async getList ( {commit}, {bucket, domain, prefix = ''}) {
+      commit('emptyImageList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
       commit('setState', {
         imageList: images,

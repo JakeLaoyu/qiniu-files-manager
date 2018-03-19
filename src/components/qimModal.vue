@@ -66,9 +66,9 @@ export default {
                 }
 
                 var check = this.buckets.find(item => {
-                    return item.AccessKey == this.bucket.AccessKey
-                    && item.SecretKey == this.bucket.SecretKey
-                    && item.bucket == this.bucket.bucket
+                    // return item.AccessKey == this.bucket.AccessKey
+                    // && item.SecretKey == this.bucket.SecretKey
+                    return item.bucket === this.bucket.bucket
                 })
 
                 if(check !== undefined){

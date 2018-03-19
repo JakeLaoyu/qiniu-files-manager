@@ -1,6 +1,8 @@
 <template>
 <div class="layout">
-    <Top @addBucket="showModal=true"></Top>
+    <Top
+        @getList="getImagesList"
+    ></Top>
 
     <div class="layout-content">
         <div class="layout-content-main">
@@ -48,15 +50,6 @@
         </div>
     </div>
 
-    <qimModal
-        :isShow="showModal"
-        title="添加Bucket"
-        @ok="addBucket"
-        type="addBucket"
-        :loading="modalLoading"
-        @closeModal="closeModal"
-    >
-    </qimModal>
 </div>
 </template>
 <script>
@@ -75,8 +68,6 @@ export default {
     },
     data() {
         return {
-            showModal: false,
-            modalLoading: false,
             prefixsStr:'',
             clickImageHash:''
         }
@@ -104,35 +95,20 @@ export default {
             'getImageDetail'
         ]),
         ...mapMutations([
-            'setBucket',
-            'setCurrentBucket',
             'unshift',
             'pushOpenPrefixs',
-            'popOpenPrefixs',
-            'emptyImageList'
+            'popOpenPrefixs'
         ]),
         clickPrefix(folder){
-            this.emptyImageList()
             this.pushOpenPrefixs(folder)
             this.getImagesList()
         },
         returnDirectory(){
-            this.emptyImageList()
             this.popOpenPrefixs()
             this.getImagesList()
         },
         uploadfinish(file){
             this.unshift(file)
-        },
-        addBucket(payload){
-            this.modalLoading = true
-            this.setBucket(payload)
-            this.setCurrentBucket(payload)
-            this.modalLoading = false
-            this.showModal = false
-        },
-        closeModal(){
-            this.showModal = false
         },
         clickImage(image){
             this.clickImageHash = image.hash
@@ -185,8 +161,8 @@ export default {
         window.addEventListener('resize', this.debounce(this.handleScroll, 100))
         this.getImagesList()
     },
-    created() {
-        this.postSecrte({
+    async created() {
+        await this.postSecrte({
             accessKey: this.currentBucket.AccessKey,
             secretKey: this.currentBucket.SecretKey
         })

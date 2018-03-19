@@ -1,12 +1,21 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router.js'
+import Router from 'vue-router'
+import routerConfig from './router.js'
 import store from './store'
-import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import UiComponents from '@components'
 
 Vue.config.productionTip = false
+
+Vue.use(Router)
+
+// 路由配置
+const router = new Router({
+  mode: 'history',
+  routes: routerConfig,
+})
+
 
 import {
   Menu,
@@ -20,7 +29,11 @@ import {
   Upload,
   Icon,
   Spin,
-  ButtonGroup
+  ButtonGroup,
+  Breadcrumb,
+  BreadcrumbItem,
+  Select,
+  Option
 } from 'iview'
 
 Vue.component('Menu', Menu)
@@ -33,6 +46,10 @@ Vue.component('Upload', Upload)
 Vue.component('Icon', Icon)
 Vue.component('Spin', Spin)
 Vue.component('ButtonGroup', ButtonGroup)
+Vue.component('Breadcrumb', Breadcrumb)
+Vue.component('BreadcrumbItem', BreadcrumbItem)
+Vue.component('Select', Select)
+Vue.component('Option', Option)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal
