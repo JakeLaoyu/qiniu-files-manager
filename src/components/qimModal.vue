@@ -39,10 +39,10 @@ export default {
     data() {
         return {
             bucket: {
-                AccessKey: 'uemsvJY-J6fk6tKl_gQqI2xukueSuqS4lg2LQ6tt',
-                SecretKey: 'bxiLG_xOWdhn915bDrJ90bbT_o4MF79xPPtnqLRf',
-                bucket: 'test',
-                domain: 'http://qiniutest.jakeyu.top/'
+                AccessKey: '',
+                SecretKey: '',
+                bucket: '',
+                domain: ''
             },
             moveTo:''
         }
