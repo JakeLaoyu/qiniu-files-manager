@@ -1,24 +1,30 @@
 import axios from 'axios'
-import env from '../config/env'
+import Vue from 'vue'
+import iView from 'iview'
 
-let util = {
+export const baseURL = process.env.NODE_ENV == 'development' ? '//dev.jakeyu.top:8080' : location.origin
 
-}
-util.title = function (title) {
-  title = title ? title + ' - Home' : '七牛文件管理'
-  window.document.title = title
-}
-
-const ajaxUrl = env === 'development' ?
-  'http://dev.jakeyu.top:8080' :
-  env === 'production' ?
-  'http://qim.jakeyu.top' :
-  'https://debug.url.com'
-
-util.axios = axios.create({
-  baseURL: ajaxUrl,
+export const ajax = axios.create({
+  baseURL: baseURL,
   timeout: 30000,
   responseType: 'json'
 })
 
-export default util
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  return iView.LoadingBar.start()
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
+
+ajax.interceptors.response.use(({data = {}, request}) => {
+  iView.LoadingBar.finish()
+  if (data.code !== 1) {
+    Vue.prototype.$Message.error(data.message)
+    // return Promise.reject(new Error(data.message))
+  }
+  return data
+}, error =>
+  Promise.reject(error)
+)

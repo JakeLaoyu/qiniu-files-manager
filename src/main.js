@@ -1,60 +1,67 @@
-import Vue from 'vue';
-import iView from 'iview';
-import VueRouter from 'vue-router';
-import Routers from './router';
-import Vuex from 'vuex';
-import Util from './libs/util';
-import App from './app.vue';
-import VueLazyLoadImg from 'vue-lazy-load-img'
-import 'iview/dist/styles/iview.css';
+import Vue from 'vue'
+import App from './App'
+import Router from 'vue-router'
+import routerConfig from './router.js'
+import store from './store'
+import 'iview/dist/styles/iview.css'
+import UiComponents from '@components'
 
+Vue.config.productionTip = false
 
-Vue.use(VueRouter);
-Vue.use(Vuex);
-
-Vue.use(iView);
-Vue.use(VueLazyLoadImg)
-
-
+Vue.use(Router)
 
 // 路由配置
-const RouterConfig = {
+const router = new Router({
   mode: 'history',
-  routes: Routers
-};
-const router = new VueRouter(RouterConfig);
-
-router.beforeEach((to, from, next) => {
-  iView.LoadingBar.start();
-  Util.title(to.meta.title);
-  next();
-});
-
-router.afterEach(() => {
-  iView.LoadingBar.finish();
-  window.scrollTo(0, 0);
-});
+  routes: routerConfig,
+})
 
 
-const store = new Vuex.Store({
-  state: {
+import {
+  Menu,
+  Button,
+  Row,
+  Col,
+  Modal,
+  Input,
+  Message,
+  Notice,
+  Upload,
+  Icon,
+  Spin,
+  ButtonGroup,
+  Breadcrumb,
+  BreadcrumbItem,
+  Select,
+  Option
+} from 'iview'
 
-  },
-  getters: {
+Vue.component('Menu', Menu)
+Vue.component('Button', Button)
+Vue.component('Modal', Modal)
+Vue.component('Row', Row)
+Vue.component('Col', Col)
+Vue.component('Input', Input)
+Vue.component('Upload', Upload)
+Vue.component('Icon', Icon)
+Vue.component('Spin', Spin)
+Vue.component('ButtonGroup', ButtonGroup)
+Vue.component('Breadcrumb', Breadcrumb)
+Vue.component('BreadcrumbItem', BreadcrumbItem)
+Vue.component('Select', Select)
+Vue.component('Option', Option)
+Vue.prototype.$Message = Message
+Vue.prototype.$Notice = Notice
+Vue.prototype.$Modal = Modal
 
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-});
-
+Object.keys(UiComponents).forEach((key) => {
+  Vue.component(key, UiComponents[ key ])
+})
 
 new Vue({
   el: '#app',
-  router: router,
-  store: store,
-  render: h => h(App)
-});
+  router,
+  store,
+  components: {App},
+  template: '<App/>'
+})

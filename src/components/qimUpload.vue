@@ -13,7 +13,13 @@ action="http://upload.qiniu.com/">
 </Upload>
 </template>
 <script>
-import util from '../libs/util'
+import {
+    ajax
+} from '@util'
+
+import {
+    mapState
+} from 'vuex'
 
 export default {
     props: {
@@ -30,9 +36,18 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState([
+            'currentBucket'
+        ]),
+        uploadPrefix(){
+            return this.prefix
+        }
+    },
     methods: {
         beforeUpload(file) {
-            this.form.key = this.prefix + file.name
+            this.form.key = this.uploadPrefix + file.name
+            this.form.prefix = this.uploadPrefix
         },
         handleProgress(event, file, fileList) {
             // this.loaded = (event.loaded / 1000000).toFixed(2)
@@ -54,16 +69,12 @@ export default {
             })
         }
     },
-    created() {
-        //do something after creating vue instance
+    async mounted() {
         // 获取token
-        util.axios
-            .get('/api/uploadToken?bucket='+localStorage.bucket)
-            .then(res => {
-                if(res.data.code ==1){
-                    this.form.token=res.data.uploadToken
-                }
-            })
+        const {code,uploadToken} = await ajax.get(`/api/uploadToken?bucket=${this.currentBucket.bucket}`)
+        if(code == 1){
+            this.form.token = uploadToken
+        }
     }
 }
 </script>

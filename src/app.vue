@@ -8,28 +8,24 @@
     </Menu>
 
 
-    <transition name="slide">
-        <router-view></router-view>
-     </transition>
+    <keep-alive>
+        <router-view/>
+    </keep-alive>
 </div>
-
 </template>
+
 <script>
 export default {
-    data() {
-        return {
-
-        }
-    }
+    name: 'App'
 }
 </script>
+
 <style lang="less" scoped>
 .layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
     border-bottom: 0;
 }
-
 .layout-logo {
     padding: 0 10px;
     border-radius: 3px;
@@ -38,12 +34,10 @@ export default {
         top: 15px;
         left: 20px;*/
 }
-
 .routerlink{
     float: right;
     margin-right: 20px;
 }
-
 .ivu {
     &-menu {
         &-horizontal {
@@ -51,5 +45,11 @@ export default {
             line-height: 30px;
         }
     }
+}
+</style>
+
+<style>
+body{
+    font-size: 14px;
 }
 </style>

@@ -1,15 +1,6 @@
-# 七牛图形化管理 web 端
+## qiniu-images-manager
 
-# 技术栈
+重构中
 
-vue、nodejs、expressjs、七牛SDK
-
-# 文件目录
-
-* src： vue文件目录
-* server： node、expressjs文件目录
-
-# todo
-
-* 批量操作
-* 接入 vuex
+## License
+MIT © [JakeLaoyu](https://github.com/JakeLaoyu)

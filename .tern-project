@@ -9,15 +9,6 @@
   ],
   "plugins": {
     "doc_comment": true,
-    "node": {
-      "dontLoad": "",
-      "load": "",
-      "modules": ""
-    },
-    "modules": {
-      "dontLoad": "",
-      "load": "",
-      "modules": ""
-    }
+    "es_modules": {}
   }
 }
