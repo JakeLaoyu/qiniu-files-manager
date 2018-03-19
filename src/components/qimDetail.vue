@@ -1,12 +1,12 @@
 <template>
-<div class="detail" v-if="detailImage" ref="detail">
+<div class="detail" v-if="detailImage">
     <div class="demo-spin-container" v-if="!detailImage.key">
         <Spin size="large" fix></Spin>
     </div>
 
     <div v-else>
         <div class="detail__img">
-            <img :src="imageUrl">
+            <img :src="imageUrl" @load="$emit('imageload')">
         </div>
         <div class="detail__name">{{ detailImage.key.split('/')[detailImage.key.split('/').length - 1] }}</div>
         <div class="detail__url"><span>url:</span> {{ imageUrl }}</div>

@@ -26,6 +26,8 @@
                     <QimDetail
                         :detailImage="imageDetail"
                         @deleteImage="clickImageHash=''"
+                        @imageload="handleScroll"
+                        ref="detail"
                     >
                     </QimDetail>
                 </Col>
@@ -109,9 +111,42 @@ export default {
                 bucket: this.currentBucket.bucket,
                 image: image
             })
+        },
+        // 去抖函数
+        debounce(fn, delay) {
+            // 持久化一个定时器 timer
+            let timer = null;
+            // 闭包函数可以访问 timer
+            return function() {
+                // 通过 'this' 和 'arguments'
+                // 获得函数的作用域和参数
+                let context = this;
+                let args = arguments;
+                // 如果事件被触发，清除 timer 并重新开始计时
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    fn.apply(context, args);
+                }, delay);
+            }
+        },
+        handleScroll() {
+            var documentHeight = document.documentElement.clientHeight
+            var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
+            if (document.querySelector('.detail') && this.$refs.contentmain.$vnode) {
+                var detailDom = document.querySelector('.detail')
+                var clientRect = detailDom.getBoundingClientRect()
+                if (window.scrollY >= 218) {
+                    var csstext = "position:fixed;top:0;left:" + (contentMainDomClientRect.x - 10 - clientRect.width) + 'px;width:' + clientRect.width + 'px;'
+                    detailDom.style = clientRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
+                } else {
+                    detailDom.style = ''
+                }
+            }
         }
     },
     mounted() {
+        window.addEventListener('scroll', this.debounce(this.handleScroll, 100))
+        window.addEventListener('resize', this.debounce(this.handleScroll, 100))
         this.getList({
             accessKey: this.currentBucket.AccessKey,
             secretKey: this.currentBucket.SecretKey,
