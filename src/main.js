@@ -1,15 +1,47 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './router.js'
+import store from './store'
+import iView from 'iview'
+import 'iview/dist/styles/iview.css'
+import UiComponents from '@components'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
+import {
+  Menu,
+  Button,
+  Row,
+  Col,
+  Modal,
+  Input,
+  Message,
+  Notice,
+  Upload,
+  Icon,
+  Spin
+} from 'iview'
+
+Vue.component('Menu', Menu)
+Vue.component('Button', Button)
+Vue.component('Modal', Modal)
+Vue.component('Row', Row)
+Vue.component('Col', Col)
+Vue.component('Input', Input)
+Vue.component('Upload', Upload)
+Vue.component('Icon', Icon)
+Vue.component('Spin', Spin)
+Vue.prototype.$Message = Message
+Vue.prototype.$Notice = Notice
+
+Object.keys(UiComponents).forEach((key) => {
+  Vue.component(key, UiComponents[ key ])
+})
+
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  store,
+  components: {App},
   template: '<App/>'
 })

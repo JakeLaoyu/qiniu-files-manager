@@ -110,3 +110,10 @@ rules:
             vars: all
             args: after-used
             ignoreRestSiblings: false
+
+    # 强制在 switch 的冒号左右有空格
+    switch-colon-spacing:
+        - error
+        -
+            after: true
+            before: false
