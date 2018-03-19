@@ -1,6 +1,6 @@
 <template>
-<div class="detail" v-if="detailImage">
-    <div class="demo-spin-container" v-if="!detailImage.key">
+<div class="detail">
+    <div class="demo-spin-container" v-if="!detailImage || !detailImage.key">
         <Spin size="large" fix></Spin>
     </div>
 
@@ -69,10 +69,11 @@ export default {
     },
     computed: {
         ...mapState([
-            'currentBucket'
+            'currentBucket',
+            'openPrefixs'
         ]),
         imageUrl(){
-            return this.currentBucket.domain + this.detailImage.key
+            return this.currentBucket.domain + this.openPrefixs.join('/') + '/' + this.detailImage.key
         }
     },
     methods: {
@@ -149,6 +150,7 @@ export default {
     padding: 10px;
     box-sizing: border-box;
     position: relative;
+    min-height: 100px;
     & > div {
         word-break: break-all;
         margin-bottom: 10px;

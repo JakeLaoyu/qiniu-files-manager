@@ -38,13 +38,14 @@
                         @uploadfinish="uploadfinish"
                     ></QimUpload>
 
-                    <QimDetail
-                        :detailImage="imageDetail"
-                        @deleteImage="clickImageHash=''"
-                        @imageload="handleScroll"
-                        ref="detail"
-                    >
-                    </QimDetail>
+                    <transition name="fade">
+                        <QimDetail
+                            :detailImage="imageDetail"
+                            v-if="clickImageHash"
+                            @deleteImage="clickImageHash=''"
+                            @imageload="handleScroll"
+                        />
+                    </transition>
                 </Col>
             </Row>
         </div>
@@ -97,7 +98,7 @@ export default {
         ...mapMutations([
             'unshift',
             'pushOpenPrefixs',
-            'popOpenPrefixs'
+            'popOpenPrefixs',
         ]),
         clickPrefix(folder){
             this.pushOpenPrefixs(folder)
