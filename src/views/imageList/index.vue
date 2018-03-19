@@ -10,6 +10,7 @@
                         v-for="item in imageList"
                         :key="item.key"
                         :item="item"
+                        type="image"
                         :domain="currentBucket.domain"
                         @clickImage="clickImage"
                     ></QimImageItem>
@@ -24,6 +25,7 @@
 
                     <QimDetail
                         :detailImage="imageDetail"
+                        @deleteImage="clickImageHash=''"
                     >
                     </QimDetail>
                 </Col>

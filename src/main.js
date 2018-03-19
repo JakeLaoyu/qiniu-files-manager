@@ -19,7 +19,8 @@ import {
   Notice,
   Upload,
   Icon,
-  Spin
+  Spin,
+  ButtonGroup
 } from 'iview'
 
 Vue.component('Menu', Menu)
@@ -31,8 +32,10 @@ Vue.component('Input', Input)
 Vue.component('Upload', Upload)
 Vue.component('Icon', Icon)
 Vue.component('Spin', Spin)
+Vue.component('ButtonGroup', ButtonGroup)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
+Vue.prototype.$Modal = Modal
 
 Object.keys(UiComponents).forEach((key) => {
   Vue.component(key, UiComponents[ key ])

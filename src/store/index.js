@@ -31,6 +31,10 @@ const store = new Vuex.Store({
     getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
   },
   mutations:{
+    deleteImage (state, payload) {
+      var indexOfStevie = state.imageList.findIndex(i => i.key === payload)
+      state.imageList.splice(indexOfStevie, 1)
+    },
     unshift (state, payload) {
       state.imageList.unshift(payload)
     },
