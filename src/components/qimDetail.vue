@@ -30,6 +30,16 @@
             </div>
         </div>
     </div>
+
+    <QimModal
+        :isShow="showModal"
+        title="移动或重命名"
+        @ok="saveMove"
+        :image="detailImage"
+        type="move"
+        :loading="modalLoading"
+        @closeModal="closeModal"
+    />
 </div>
 </template>
 <script>
@@ -52,7 +62,9 @@ export default {
     },
     data() {
         return {
-            delLoading: false
+            delLoading: false,
+            showModal: false,
+            modalLoading: false
         }
     },
     computed: {
@@ -67,6 +79,9 @@ export default {
         ...mapMutations([
             'deleteImage'
         ]),
+        closeModal(){
+            this.showModal = false
+        },
         delImage(){
             this.delLoading = true
             var filename = this.detailImage.key
@@ -92,7 +107,28 @@ export default {
                 }
             })
         },
-        moveImage(){},
+        moveImage(){
+            this.showModal = true
+        },
+        async saveMove(moveTo){
+            this.modalLoading = true
+            if (moveTo == this.detailImage.key) {
+                this.modalLoading = false
+                this.showModal = false
+                return
+            }
+
+            const {code} = ajax.post('/api/moveImage',{
+                bucket: this.currentBucket.bucket,
+                key: this.detailImage.key,
+                newKey: moveTo
+            })
+
+            this.modalLoading = false
+            this.showModal = false
+
+            location.reload()
+        },
         copyLink() {
             let clipboard = new Clipboard('#copyBtn', {
                 text: () => this.imageUrl

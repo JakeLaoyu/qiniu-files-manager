@@ -4,7 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -30,6 +30,7 @@ module.exports = {
       '@views': resolve('src/views'),
       '@components': resolve('src/components'),
       '@util': resolve('src/libs/util.js'),
+      '@assets': resolve('src/assets'),
     }
   },
   module: {

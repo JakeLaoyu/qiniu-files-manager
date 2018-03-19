@@ -7,6 +7,19 @@
             <Row :gutter="20">
                 <Col span="16" push="8" ref="contentmain">
                     <QimImageItem
+                        v-if="openPrefixs.length"
+                        type="return"
+                        @returnDirectory="returnDirectory"
+                    />
+
+                    <QimImageItem
+                        v-for="folder in prefixs"
+                        type="folder"
+                        :item="folder"
+                        @clickPrefix="clickPrefix"
+                    />
+
+                    <QimImageItem
                         v-for="item in imageList"
                         :key="item.key"
                         :item="item"
@@ -39,6 +52,7 @@
         :isShow="showModal"
         title="添加Bucket"
         @ok="addBucket"
+        type="addBucket"
         :loading="modalLoading"
         @closeModal="closeModal"
     >
@@ -72,7 +86,9 @@ export default {
             'buckets',
             'currentBucket',
             'imageList',
-            'imageDetail'
+            'imageDetail',
+            'prefixs',
+            'openPrefixs'
         ]),
         ...mapGetters([
             'getDetail'
@@ -90,8 +106,21 @@ export default {
         ...mapMutations([
             'setBucket',
             'setCurrentBucket',
-            'unshift'
+            'unshift',
+            'pushOpenPrefixs',
+            'popOpenPrefixs',
+            'emptyImageList'
         ]),
+        clickPrefix(folder){
+            this.emptyImageList()
+            this.pushOpenPrefixs(folder)
+            this.getImagesList()
+        },
+        returnDirectory(){
+            this.emptyImageList()
+            this.popOpenPrefixs()
+            this.getImagesList()
+        },
         uploadfinish(file){
             this.unshift(file)
         },
@@ -110,6 +139,13 @@ export default {
             this.getImageDetail({
                 bucket: this.currentBucket.bucket,
                 image: image
+            })
+        },
+        getImagesList(){
+            this.getList({
+                bucket: this.currentBucket.bucket,
+                domain: this.currentBucket.domain,
+                prefix: this.openPrefixs.length ? this.openPrefixs.join('/')+'/' : ''
             })
         },
         // 去抖函数
@@ -147,12 +183,7 @@ export default {
     mounted() {
         window.addEventListener('scroll', this.debounce(this.handleScroll, 100))
         window.addEventListener('resize', this.debounce(this.handleScroll, 100))
-        this.getList({
-            accessKey: this.currentBucket.AccessKey,
-            secretKey: this.currentBucket.SecretKey,
-            bucket: this.currentBucket.bucket,
-            domain: this.currentBucket.domain
-        })
+        this.getImagesList()
     },
     created() {
         this.postSecrte({

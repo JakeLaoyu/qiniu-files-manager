@@ -25,12 +25,22 @@ const store = new Vuex.Store({
     currentBucket: {},
     imageList: [],
     prefixs: [],
+    openPrefixs:[],
     imageDetail: {}
   },
   getters:{
     getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
   },
   mutations:{
+    emptyImageList (state) {
+      state.imageList = []
+    },
+    popOpenPrefixs (state) {
+      state.openPrefixs.pop()
+    },
+    pushOpenPrefixs (state, payload) {
+      state.openPrefixs.push(payload)
+    },
     deleteImage (state, payload) {
       var indexOfStevie = state.imageList.findIndex(i => i.key === payload)
       state.imageList.splice(indexOfStevie, 1)
