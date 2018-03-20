@@ -36,7 +36,6 @@
 
                 <Col span="8" pull="16" class-name="left-part">
                     <QimUpload
-                        :prefix="prefixsStr"
                         @uploadfinish="uploadfinish"
                     ></QimUpload>
 
@@ -71,7 +70,6 @@ export default {
     },
     data() {
         return {
-            prefixsStr:'',
             clickImageHash:''
         }
     },

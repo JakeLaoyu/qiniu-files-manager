@@ -44,7 +44,6 @@ export default {
     methods: {
         ...mapMutations([
             'setBuckets',
-            'setCurrentBucket',
             'setCurrentBucket'
         ]),
         changeBucket(){

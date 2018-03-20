@@ -3,6 +3,8 @@
 :on-progress="handleProgress"
 :on-success="handleSuccess"
 :on-error="handleError"
+:format="['jpg','jpeg','png']"
+:on-format-error="handleFormatError"
 :before-upload="beforeUpload"
 :data='form'
 action="http://upload.qiniu.com/">
@@ -22,32 +24,29 @@ import {
 } from 'vuex'
 
 export default {
-    props: {
-        prefix: {
-            type: String,
-            default: ''
-        }
-    },
     data() {
         return {
             form: {
-                token: '',
-                prefix: this.prefix
+                token: ''
             }
         }
     },
     computed: {
         ...mapState([
-            'currentBucket'
-        ]),
-        uploadPrefix(){
-            return this.prefix
-        }
+            'currentBucket',
+            'openPrefixs'
+        ])
     },
     methods: {
+        handleFormatError(file){
+            this.$Notice.warning({
+                title: '请上传图片',
+                desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+            });
+        },
         beforeUpload(file) {
-            this.form.key = this.uploadPrefix + file.name
-            this.form.prefix = this.uploadPrefix
+            this.form.key = this.openPrefixs.join('/') + '/' + file.name
+            this.form.prefix = this.openPrefixs.join('/') + '/'
         },
         handleProgress(event, file, fileList) {
             // this.loaded = (event.loaded / 1000000).toFixed(2)
@@ -56,6 +55,8 @@ export default {
             // console.log((event.loaded / event.total * 100).toFixed(2))
         },
         handleSuccess(response, file, fileList) {
+            response.mimeType = 'image'
+            response.key = response.key.split('/').pop()
             this.$emit('uploadfinish',response)
             fileList.splice(fileList.indexOf(file), 1);
             this.$Message.success('上传成功')
