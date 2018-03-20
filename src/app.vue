@@ -31,9 +31,6 @@ export default {
     padding: 0 10px;
     border-radius: 3px;
     float: left;
-    /*position: relative;
-        top: 15px;
-        left: 20px;*/
 }
 .routerlink{
     float: right;
