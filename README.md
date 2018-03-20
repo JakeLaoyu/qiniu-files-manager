@@ -1,6 +1,7 @@
 ## 七牛图床管理
 
 前端: vue、vuex、axios、iview、vue-router
+
 服务端: expressjs、七牛SDK
 
 [DEMO](http://qim.jakeyu.top)
