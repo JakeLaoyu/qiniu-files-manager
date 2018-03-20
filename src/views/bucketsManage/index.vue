@@ -111,7 +111,7 @@ export default {
 }
 .ivu-menu {
     text-align: center;
-    .ivu-menu-item{
+    &-item{
         display: inline-block;
         float: none!important;
         user-select: none;
