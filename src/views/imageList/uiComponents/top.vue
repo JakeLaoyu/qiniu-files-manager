@@ -37,7 +37,8 @@ export default {
         ...mapState([
             'openPrefixs',
             'buckets',
-            'currentBucket'
+            'currentBucket',
+            'buckets'
         ])
     },
     methods: {
@@ -47,9 +48,10 @@ export default {
             'setCurrentBucket'
         ]),
         changeBucket(){
-            var bucket = this.buckets.find(item=>{
-                return item.bucket === this.bucketName
-            })
+            var bucket = this.bucketName ?
+                        this.buckets.find(item=>{
+                            return item.bucket === this.bucketName
+                        }) : this.buckets[0]
             this.setCurrentBucket(bucket)
 
             this.$emit('getList')
@@ -61,13 +63,21 @@ export default {
             this.modalLoading = false
             this.showModal = false
 
-            // location.reload()
+            this.$emit('getList')
         },
         closeModal(){
             this.showModal = false
         }
     },
+    watch: {
+        currentBucket(val,oldVal){
+            this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
+        }
+    },
     mounted(){
+        if(this.buckets.length === 0){
+            this.showModal = true
+        }
         this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
     }
 }

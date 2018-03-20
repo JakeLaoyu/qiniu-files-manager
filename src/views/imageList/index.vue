@@ -15,7 +15,8 @@
                     />
 
                     <QimImageItem
-                        v-for="folder in prefixs"
+                        v-for="(folder,index) in prefixs"
+                        :key="index"
                         type="folder"
                         :item="folder"
                         @clickPrefix="clickPrefix"

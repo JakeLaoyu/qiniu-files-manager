@@ -16,6 +16,13 @@ const router = new Router({
   routes: routerConfig,
 })
 
+router.beforeEach((to, from, next) => {
+  if(to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
+})
+
 
 import {
   Menu,
@@ -33,7 +40,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Select,
-  Option
+  Option,
+  Layout,
+  MenuItem
 } from 'iview'
 
 Vue.component('Menu', Menu)
@@ -50,6 +59,8 @@ Vue.component('Breadcrumb', Breadcrumb)
 Vue.component('BreadcrumbItem', BreadcrumbItem)
 Vue.component('Select', Select)
 Vue.component('Option', Option)
+Vue.component('Layout', Layout)
+Vue.component('MenuItem', MenuItem)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal

@@ -32,6 +32,24 @@ const store = new Vuex.Store({
     getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
   },
   mutations:{
+    changeBucket (state, newBucket) {
+      var index = state.buckets.findIndex(item => item.bucket === newBucket.bucket)
+
+      if(state.currentBucket.bucket === state.buckets[ index ].bucket) {
+        state.currentBucket = newBucket
+      }
+
+      state.buckets.splice(index, 1, newBucket)
+    },
+    delBucket (state, delBucket) {
+      var index = state.buckets.findIndex(item => item.bucket === delBucket.bucket)
+      state.buckets.splice(index, 1)
+      if(state.currentBucket.bucket === delBucket.bucket) {
+        state.openPrefixs = []
+        state.imageList = []
+        state.imageDetail = {}
+      }
+    },
     emptyImageList (state) {
       state.imageList = []
     },
@@ -58,6 +76,8 @@ const store = new Vuex.Store({
       state.buckets.push(payload)
     },
     setCurrentBucket (state, payload) {
+      state.imageList = []
+      state.openPrefixs = []
       state.currentBucket = {
         ...payload
       }
