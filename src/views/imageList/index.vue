@@ -26,6 +26,7 @@
                         v-for="item in imageList"
                         :key="item.key"
                         :item="item"
+                        v-if="item.mimeType.indexOf('image')!=-1"
                         type="image"
                         :domain="currentBucket.domain"
                         @clickImage="clickImage"
@@ -102,10 +103,12 @@ export default {
             'popOpenPrefixs',
         ]),
         clickPrefix(folder){
+            this.clickImageHash = ''
             this.pushOpenPrefixs(folder)
             this.getImagesList()
         },
         returnDirectory(){
+            this.clickImageHash = ''
             this.popOpenPrefixs()
             this.getImagesList()
         },
@@ -176,7 +179,7 @@ export default {
         overflow: hidden;
         border-radius: 4px;
         width: 1200px;
-        margin: 15px auto 0;
+        margin: 0 auto 0;
     }
     &-content-main {
         padding: 10px;

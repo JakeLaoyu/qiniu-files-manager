@@ -87,6 +87,11 @@ export default {
     width: 1200px;
     margin: 0 auto;
     padding: 10px 15px 0;
+    &:after{
+        content: '';
+        display: block;
+        clear: both;
+    }
 }
 
 .ivu {

@@ -54,9 +54,11 @@ const store = new Vuex.Store({
       state.imageList = []
     },
     popOpenPrefixs (state) {
+      state.imageDetail = {}
       state.openPrefixs.pop()
     },
     pushOpenPrefixs (state, payload) {
+      state.imageDetail = {}
       state.openPrefixs.push(payload)
     },
     deleteImage (state, payload) {
