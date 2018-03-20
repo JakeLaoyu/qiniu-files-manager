@@ -69,11 +69,13 @@ export default {
         ]),
         submit(){
             this.changeBucket(this.bucket)
+            this.$Message.success('提交成功')
         },
         del(){
             this.delBucket(this.bucket)
             this.delModal = false
             this.bucket = {}
+            this.$Message.success('删除成功')
         },
         changeMenu(name){
             this.bucket = this.buckets[name-1]
@@ -109,9 +111,9 @@ export default {
 }
 .ivu-menu {
     text-align: center;
-    &-item{
+    .ivu-menu-item{
         display: inline-block;
-        float: none;
+        float: none!important;
         user-select: none;
     }
 }
