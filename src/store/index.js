@@ -21,12 +21,12 @@ const store = new Vuex.Store({
     }
   })],
   state:{
-    buckets: [],
-    currentBucket: {},
-    imageList: [],
-    prefixs: [],
-    openPrefixs:[],
-    imageDetail: {}
+    buckets: [],  //buckets 列表
+    currentBucket: {},  //当前bucket
+    imageList: [],  //图片列表
+    prefixs: [],  //当前访问路径的前缀
+    openPrefixs:[], //已经打开的 prefix
+    imageDetail: {} //图片详情
   },
   getters:{
     getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
@@ -90,6 +90,13 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    /**
+     * 获取图片详情
+     * @param  {[type]}  commit [description]
+     * @param  {String}  bucket 图片所在仓库
+     * @param  {String}  image  图片的key
+     * @return {undefined}        [description]
+     */
     async getImageDetail ({commit}, {bucket, image}) {
       const {info} = ajax.get(`/api/detail?key=${image.key}&bucket=${bucket}`)
 

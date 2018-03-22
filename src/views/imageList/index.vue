@@ -7,7 +7,7 @@
     <div class="layout-content">
         <div class="layout-content-main">
             <Row :gutter="20">
-                <Col span="16" push="8" ref="contentmain">
+                <Col span="16" push="8" class-name="contentmain">
                     <QimImageItem
                         v-if="openPrefixs.length"
                         type="return"
@@ -63,6 +63,10 @@ import {
     mapActions,
     mapMutations
 } from 'vuex'
+
+import {
+    debounce
+} from '@util'
 
 export default {
     components: {
@@ -127,27 +131,17 @@ export default {
                 prefix: this.openPrefixs.length ? this.openPrefixs.join('/')+'/' : ''
             })
         },
-        // 去抖函数
-        debounce(fn, delay) {
-            let timer = null;
-            return function() {
-                let context = this;
-                let args = arguments;
-                clearTimeout(timer);
-                timer = setTimeout(function() {
-                    fn.apply(context, args);
-                }, delay);
-            }
-        },
+
         handleScroll() {
             var documentHeight = document.documentElement.clientHeight
-            var contentMainDomClientRect = this.$refs.contentmain.$vnode.elm.getBoundingClientRect()
-            if (document.querySelector('.detail') && this.$refs.contentmain.$vnode) {
-                var detailDom = document.querySelector('.detail')
-                var clientRect = detailDom.getBoundingClientRect()
+            var contentMain = document.querySelector('.contentmain')
+            var detailDom = document.querySelector('.detail')
+            if (detailDom && contentMain) {
+                var contentMainDomClientRect = contentMain.getBoundingClientRect()
+                var detailDomRect = detailDom.getBoundingClientRect()
                 if (window.scrollY >= 218) {
-                    var csstext = "position:fixed;top:0;left:" + (contentMainDomClientRect.x - 10 - clientRect.width) + 'px;width:' + clientRect.width + 'px;'
-                    detailDom.style = clientRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
+                    var csstext = `top:${window.scrollY-206}px;left:0;width:${detailDomRect.width}px`
+                    detailDom.style = detailDomRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
                 } else {
                     detailDom.style = ''
                 }
@@ -155,8 +149,8 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('scroll', this.debounce(this.handleScroll, 100))
-        window.addEventListener('resize', this.debounce(this.handleScroll, 100))
+        window.addEventListener('scroll', debounce(this.handleScroll, 100))
+        window.addEventListener('resize', debounce(this.handleScroll, 100))
         this.getImagesList()
     },
     async created() {

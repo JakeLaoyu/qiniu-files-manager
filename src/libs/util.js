@@ -10,6 +10,18 @@ export const ajax = axios.create({
   responseType: 'json'
 })
 
+export const debounce = (fn, delay) => {
+  let timer = null
+  return function () {
+    let context = this
+    let args = arguments
+    clearTimeout(timer)
+    timer = setTimeout(function () {
+      fn.apply(context, args)
+    }, delay)
+  }
+}
+
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
   return iView.LoadingBar.start()

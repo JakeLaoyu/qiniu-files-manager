@@ -151,6 +151,8 @@ export default {
     box-sizing: border-box;
     position: relative;
     min-height: 100px;
+    transition: top .5s;
+    top: 0;
     & > div {
         word-break: break-all;
         margin-bottom: 10px;
