@@ -1,7 +1,12 @@
 <template>
 <Col span="4" class-name="item" v-if="type=='image'">
-    <div class="item__image" @click="$emit('clickImage',item)">
-        <img :src="`${domain}${openPrefixs.join('/')+'/'}${item.key}?imageView2/1/w/113/h/113`" alt="">
+    <div
+        class="item__image"
+        :class={active:choosed}
+        @click="$emit('clickImage',item)"
+    >
+        <img :src="`${imageUrl}?imageView2/1/w/113/h/113`" alt="">
+        <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
 </Col>
 <Col span="4" class-name="item" v-else-if="type=='folder'">
@@ -36,6 +41,10 @@ export default {
         },
         domain:{
             type: String
+        },
+        choosed:{
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -47,7 +56,14 @@ export default {
     computed: {
         ...mapState([
             'openPrefixs'
-        ])
+        ]),
+        imageUrl(){
+            if(this.openPrefixs.length){
+                return this.domain + this.openPrefixs.join('/') + '/' + this.item.key
+            }else{
+                return this.domain + this.item.key
+            }
+        }
     }
 }
 </script>
@@ -103,8 +119,20 @@ export default {
         width: 100%;
         height: 100%;
         font-size: 0;
+        position: relative;
         & > img {
             vertical-align: middle;
+        }
+        &.active{
+            .ivu-icon{
+                display: block;
+            }
+        }
+        .ivu-icon{
+            display: none;
+            position: absolute;
+            right: 5%;
+            bottom: 5%;
         }
     }
 }

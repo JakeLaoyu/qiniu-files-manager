@@ -10,6 +10,13 @@
            <BreadcrumbItem v-for="item in openPrefixs" :key="item">{{item}}</BreadcrumbItem>
        </Breadcrumb>
 
+        <!-- div.multiple -->
+
+        <div class="switch">
+            <div class="switch__label">多选：</div>
+            <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
+        </div>
+
        <QimModal
            :isShow="showModal"
            title="添加Bucket"
@@ -30,7 +37,8 @@ export default {
         return {
             showModal: false,
             modalLoading:false,
-            bucketName: ''
+            bucketName: '',
+            multipleSwitch: false
         }
     },
     computed: {
@@ -44,7 +52,8 @@ export default {
     methods: {
         ...mapMutations([
             'setBuckets',
-            'setCurrentBucket'
+            'setCurrentBucket',
+            'emptyMultipleSwitchFile'
         ]),
         changeBucket(){
             var bucket = this.bucketName ?
@@ -52,7 +61,7 @@ export default {
                             return item.bucket === this.bucketName
                         }) : this.buckets[0]
             this.setCurrentBucket(bucket)
-
+            this.emptyMultipleSwitchFile()
             this.$emit('getList')
         },
         addBucket(payload){
@@ -61,7 +70,7 @@ export default {
             this.setCurrentBucket(payload)
             this.modalLoading = false
             this.showModal = false
-
+            this.emptyMultipleSwitchFile()
             this.$emit('getList')
         },
         closeModal(){
@@ -100,6 +109,13 @@ export default {
     }
     &-breadcrumb {
         line-height: 32px;
+    }
+}
+
+.switch{
+    float: right;
+    &__label{
+        display: inline-block;
     }
 }
 .add-bucket {

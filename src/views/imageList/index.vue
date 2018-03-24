@@ -2,6 +2,7 @@
 <div class="layout">
     <Top
         @getList="getImagesList"
+        @switchChange="switchChange"
     ></Top>
 
     <div class="layout-content">
@@ -28,6 +29,7 @@
                         :item="item"
                         v-if="item.mimeType.indexOf('image')!=-1"
                         type="image"
+                        :choosed="multipleSwitchFile.includes(`${urlPrefix}${item.key}`)"
                         :domain="currentBucket.domain"
                         @clickImage="clickImage"
                     />
@@ -74,7 +76,8 @@ export default {
     },
     data() {
         return {
-            clickImageHash:''
+            clickImageHash:'',
+            MultipleSwitch: false
         }
     },
     computed: {
@@ -84,13 +87,17 @@ export default {
             'imageList',
             'imageDetail',
             'prefixs',
-            'openPrefixs'
+            'openPrefixs',
+            'multipleSwitchFile'
         ]),
         ...mapGetters([
             'getDetail'
         ]),
         imageDetail(){
             return this.getDetail(this.clickImageHash)
+        },
+        urlPrefix(){
+            return this.openPrefixs.length ? `${this.openPrefixs.join('/')}/` : ``
         }
     },
     methods: {
@@ -103,7 +110,15 @@ export default {
             'unshift',
             'pushOpenPrefixs',
             'popOpenPrefixs',
+            'changeMultipleSwitchFile',
+            'emptyMultipleSwitchFile'
         ]),
+        switchChange(val){
+            this.MultipleSwitch = val
+            if(!this.MultipleSwitch){
+                this.emptyMultipleSwitchFile()
+            }
+        },
         clickPrefix(folder){
             this.clickImageHash = ''
             this.pushOpenPrefixs(folder)
@@ -119,6 +134,9 @@ export default {
         },
         clickImage(image){
             this.clickImageHash = image.hash
+            if(this.MultipleSwitch){
+                this.changeMultipleSwitchFile(`${this.urlPrefix}${image.key}`)
+            }
             this.getImageDetail({
                 bucket: this.currentBucket.bucket,
                 image: image
@@ -151,6 +169,7 @@ export default {
     mounted() {
         window.addEventListener('scroll', debounce(this.handleScroll, 100))
         window.addEventListener('resize', debounce(this.handleScroll, 100))
+        this.emptyMultipleSwitchFile()
         this.getImagesList()
     },
     async created() {

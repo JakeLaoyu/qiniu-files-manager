@@ -73,7 +73,11 @@ export default {
             'openPrefixs'
         ]),
         imageUrl(){
-            return this.currentBucket.domain + this.openPrefixs.join('/') + '/' + this.detailImage.key
+            if(this.openPrefixs.length){
+                return this.currentBucket.domain + this.openPrefixs.join('/') + '/' + this.detailImage.key
+            }else{
+                return this.currentBucket.domain + this.detailImage.key
+            }
         }
     },
     methods: {

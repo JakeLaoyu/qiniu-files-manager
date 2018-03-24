@@ -42,7 +42,8 @@ import {
   Select,
   Option,
   Layout,
-  MenuItem
+  MenuItem,
+  Switch,
 } from 'iview'
 
 Vue.component('Menu', Menu)
@@ -61,6 +62,7 @@ Vue.component('Select', Select)
 Vue.component('Option', Option)
 Vue.component('Layout', Layout)
 Vue.component('MenuItem', MenuItem)
+Vue.component('i-switch', Switch)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal

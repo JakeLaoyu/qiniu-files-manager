@@ -26,12 +26,24 @@ const store = new Vuex.Store({
     imageList: [],  //图片列表
     prefixs: [],  //当前访问路径的前缀
     openPrefixs:[], //已经打开的 prefix
-    imageDetail: {} //图片详情
+    imageDetail: {}, //图片详情
+    multipleSwitchFile: []   //多选选中文件
   },
   getters:{
     getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
   },
   mutations:{
+    emptyMultipleSwitchFile (state) {
+      state.multipleSwitchFile = []
+    },
+    changeMultipleSwitchFile (state, payload) {
+      var index = state.multipleSwitchFile.indexOf(payload)
+      if(index >= 0) {
+        state.multipleSwitchFile.splice(index, 1)
+      }else{
+        state.multipleSwitchFile.push(payload)
+      }
+    },
     changeBucket (state, newBucket) {
       var index = state.buckets.findIndex(item => item.bucket === newBucket.bucket)
 
