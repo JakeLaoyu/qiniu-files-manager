@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     multipleSwitchFile: []   //多选选中文件
   },
   getters:{
-    getDetail:({imageDetail}) => (hash) => imageDetail[ hash ],
+    getDetail:({imageDetail}) => (key) => imageDetail[ key ],
   },
   mutations:{
     emptyMultipleSwitchFile (state) {
@@ -83,7 +83,7 @@ const store = new Vuex.Store({
     setImageDetail (state, payload) {
       state.imageDetail = {
         ...state.imageDetail,
-        [ payload.hash ]: payload
+        [ payload.key ]: payload
       }
     },
     setBuckets (state, payload) {
@@ -141,6 +141,9 @@ const store = new Vuex.Store({
     async getList ( {commit}, {bucket, domain, prefix = ''}) {
       commit('emptyImageList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
+      images.forEach(item => {
+        item.key = prefix + item.key
+      })
       commit('setState', {
         imageList: images,
         prefixs: prefixs

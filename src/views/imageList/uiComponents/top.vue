@@ -13,6 +13,12 @@
         <!-- div.multiple -->
 
         <div class="switch">
+            <!-- <ButtonGroup v-if="multipleSwitch">
+                <Button>批量移动或重命名</Button>
+                <Button>批量复制</Button>
+                <Button type="error">批量删除</Button>
+            </ButtonGroup> -->
+
             <div class="switch__label">多选：</div>
             <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
         </div>
@@ -114,8 +120,11 @@ export default {
 
 .switch{
     float: right;
+    height: 32px;
+    line-height: 32px;
     &__label{
         display: inline-block;
+        margin-left: 20px;
     }
 }
 .add-bucket {

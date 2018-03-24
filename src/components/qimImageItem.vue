@@ -5,7 +5,7 @@
         :class={active:choosed}
         @click="$emit('clickImage',item)"
     >
-        <img :src="`${imageUrl}?imageView2/1/w/113/h/113`" alt="">
+        <img :src="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
         <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
 </Col>
@@ -56,14 +56,7 @@ export default {
     computed: {
         ...mapState([
             'openPrefixs'
-        ]),
-        imageUrl(){
-            if(this.openPrefixs.length){
-                return this.domain + this.openPrefixs.join('/') + '/' + this.item.key
-            }else{
-                return this.domain + this.item.key
-            }
-        }
+        ])
     }
 }
 </script>

@@ -29,7 +29,7 @@
                         :item="item"
                         v-if="item.mimeType.indexOf('image')!=-1"
                         type="image"
-                        :choosed="multipleSwitchFile.includes(`${urlPrefix}${item.key}`)"
+                        :choosed="multipleSwitchFile.includes(item.key)"
                         :domain="currentBucket.domain"
                         @clickImage="clickImage"
                     />
@@ -44,8 +44,8 @@
                     <transition name="fade">
                         <QimDetail
                             :detailImage="imageDetail"
-                            v-if="clickImageHash"
-                            @deleteImage="clickImageHash=''"
+                            v-if="clickImageKey"
+                            @deleteImage="clickImageKey=''"
                             @imageload="handleScroll"
                         />
                     </transition>
@@ -76,7 +76,7 @@ export default {
     },
     data() {
         return {
-            clickImageHash:'',
+            clickImageKey:'',
             MultipleSwitch: false
         }
     },
@@ -94,10 +94,7 @@ export default {
             'getDetail'
         ]),
         imageDetail(){
-            return this.getDetail(this.clickImageHash)
-        },
-        urlPrefix(){
-            return this.openPrefixs.length ? `${this.openPrefixs.join('/')}/` : ``
+            return this.getDetail(this.clickImageKey)
         }
     },
     methods: {
@@ -120,12 +117,12 @@ export default {
             }
         },
         clickPrefix(folder){
-            this.clickImageHash = ''
+            this.clickImageKey = ''
             this.pushOpenPrefixs(folder)
             this.getImagesList()
         },
         returnDirectory(){
-            this.clickImageHash = ''
+            this.clickImageKey = ''
             this.popOpenPrefixs()
             this.getImagesList()
         },
@@ -133,9 +130,9 @@ export default {
             this.unshift(file)
         },
         clickImage(image){
-            this.clickImageHash = image.hash
+            this.clickImageKey = image.key
             if(this.MultipleSwitch){
-                this.changeMultipleSwitchFile(`${this.urlPrefix}${image.key}`)
+                this.changeMultipleSwitchFile(image.key)
             }
             this.getImageDetail({
                 bucket: this.currentBucket.bucket,
