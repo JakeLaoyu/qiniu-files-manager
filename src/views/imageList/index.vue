@@ -3,6 +3,7 @@
     <Top
         @getList="getImagesList"
         @switchChange="switchChange"
+        @deleteImage="clickImageKey=''"
     ></Top>
 
     <div class="layout-content">

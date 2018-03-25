@@ -7,6 +7,7 @@
  */
 
 const qiniujs = require('./qiniu')
+const qiniu = require('qiniu')
 
 // 保存 ak sk
 exports.postSecret = (req, res) => {
@@ -116,21 +117,41 @@ exports.detail = (req, res) => {
 exports.delImage = (req, res) => {
   var key = req.body.key
   var bucket = req.body.bucket
+  var deleteOperations = []
 
-  qiniujs.getBucketManager(req).delete(bucket, key, function (err, respBody, respInfo) {
-    if (err) {
-      console.log(err)
-      //throw err;
-    } else {
-      console.log(respInfo.statusCode)
-      console.log(respBody)
+  if(key instanceof Array) {
+    key.forEach(item => {
+      deleteOperations.push(qiniu.rs.deleteOp(bucket, item))
+    })
+    qiniujs.getBucketManager(req).batch(deleteOperations, function (err, respBody, respInfo) {
+      if (err) {
+        console.log(err)
+        //throw err;
+      } else {
+        console.log(respInfo.statusCode)
+        console.log(respBody)
+        res.json({
+          code: 1,
+          info: respBody
+        })
+      }
+    })
+  }else{
+    qiniujs.getBucketManager(req).delete(bucket, key, function (err, respBody, respInfo) {
+      if (err) {
+        console.log(err)
+        //throw err;
+      } else {
+        console.log(respInfo.statusCode)
+        console.log(respBody)
 
-      res.json({
-        code: 1,
-        info: respBody
-      })
-    }
-  })
+        res.json({
+          code: 1,
+          info: respBody
+        })
+      }
+    })
+  }
 }
 
 
