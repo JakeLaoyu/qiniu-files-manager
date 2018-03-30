@@ -32,7 +32,7 @@ gulp dev
 
 - [x] 接入VUEX
 - [x] 组件重构
-- [ ] 批量管理
+- [x] 批量删除
 
 ## License
 MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
