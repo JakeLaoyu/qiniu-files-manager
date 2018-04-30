@@ -25,7 +25,7 @@ npm run dev
 ```sh
 cd server
 npm i
-gulp dev
+npm run dev
 ```
 
 ## TODO

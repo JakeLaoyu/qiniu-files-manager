@@ -7,7 +7,6 @@
  */
 const qiniu = require('qiniu')
 
-
 exports.uploadToken = (req, bucket) => {
   var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey)
   var options = {

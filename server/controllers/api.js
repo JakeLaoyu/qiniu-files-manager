@@ -19,7 +19,6 @@ exports.postSecret = (req, res) => {
   })
 }
 
-
 // 获取图片
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
