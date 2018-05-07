@@ -5,6 +5,7 @@
         </Select>
 
         <Button class="add-bucket" type="primary" @click="showModal=true">添加Bucket</Button>
+        <Button class="add-bucket" type="primary" >添加文件夹</Button>
 
         <Breadcrumb>
            <BreadcrumbItem v-for="item in openPrefixs" :key="item">{{item}}</BreadcrumbItem>

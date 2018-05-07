@@ -48,6 +48,7 @@
                             v-if="clickImageKey"
                             @deleteImage="clickImageKey=''"
                             @imageload="handleScroll"
+                            @handleMove="handleMove"
                         />
                     </transition>
                 </Col>
@@ -111,6 +112,10 @@ export default {
             'changeMultipleSwitchFile',
             'emptyMultipleSwitchFile'
         ]),
+        handleMove() {
+            this.emptyMultipleSwitchFile()
+            this.getImagesList()
+        },
         switchChange(val){
             this.MultipleSwitch = val
             if(!this.MultipleSwitch){

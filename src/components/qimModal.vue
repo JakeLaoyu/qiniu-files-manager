@@ -44,7 +44,7 @@ export default {
                 bucket: '',
                 domain: ''
             },
-            moveTo:''
+            moveTo: ''
         }
     },
     computed: {
@@ -56,6 +56,11 @@ export default {
         },
         valid(){
             return Object.keys(this.bucket).every(item => this.bucket[item])
+        }
+    },
+    watch: {
+        image(val) {
+            this.moveTo = val.key
         }
     },
     methods: {
@@ -83,6 +88,11 @@ export default {
                 }
                 this.$emit('ok',this.moveTo)
             }
+        }
+    },
+    mounted() {
+        if(this.image && this.image.key) {
+            this.moveTo = this.image.key
         }
     }
 }

@@ -119,7 +119,7 @@ export default {
                 return
             }
 
-            const {code} = ajax.post('/api/moveImage',{
+            const {code} = await ajax.post('/api/moveImage',{
                 bucket: this.currentBucket.bucket,
                 key: this.detailImage.key,
                 newKey: moveTo
@@ -128,7 +128,7 @@ export default {
             this.modalLoading = false
             this.showModal = false
 
-            location.reload()
+            this.$emit('handleMove')
         },
         copyLink() {
             let clipboard = new Clipboard('#copyBtn', {
