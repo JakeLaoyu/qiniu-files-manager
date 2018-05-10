@@ -128,7 +128,12 @@ export default {
             this.getImagesList()
         },
         uploadfinish(file){
-            this.unshift(file)
+            console.log('file')
+            console.log(file)
+            this.unshift({
+                ...file,
+                key:  `${this.openPrefixs.length ? this.openPrefixs.join('/')+'/' : ''}${file.key}`
+            })
         },
         clickImage(image){
             this.clickImageKey = image.key
