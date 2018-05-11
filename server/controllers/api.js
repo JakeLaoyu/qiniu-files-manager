@@ -37,8 +37,8 @@ exports.getImages = (req, res) => {
     res.json({
       code: statusCode == 200 ? 1 : statusCode,
       message: statusCode == 200 ? '' : respBody.error,
-      images: images,
-      prefixs: prefixs
+      images: images || [],
+      prefixs: prefixs || []
     })
   })
 
