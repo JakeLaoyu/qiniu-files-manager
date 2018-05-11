@@ -32,7 +32,7 @@ npm run dev
 
 - [x] 接入VUEX
 - [x] 组件重构
-- [x] 批量删除
+- [x] 批量删除
 - [ ] 新建文件夹
 
 ## License
