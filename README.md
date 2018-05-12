@@ -1,39 +1,21 @@
-## 七牛图床管理
+# test
 
-前端: vue、vuex、axios、iview、vue-router
+> A Vue.js project
 
-服务端: expressjs、七牛SDK
+## Build Setup
 
-[DEMO](http://qim.jakeyu.top)
+``` bash
+# install dependencies
+npm install
 
-## 使用
-
-```sh
-git clone https://github.com/FeddyTeam/qiniu-images-manager.git
-cd qiniu-images-manager
-```
-
-### 前端
-
-```sh
-npm i
+# serve with hot reload at localhost:8080
 npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
-### 服务端
-
-```sh
-cd server
-npm i
-npm run dev
-```
-
-## TODO
-
-- [x] 接入VUEX
-- [x] 组件重构
-- [x] 批量删除
-- [ ] 新建文件夹
-
-## License
-MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

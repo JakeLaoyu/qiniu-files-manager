@@ -6,24 +6,6 @@ import store from './store'
 import 'iview/dist/styles/iview.css'
 import UiComponents from '@components'
 
-Vue.config.productionTip = false
-
-Vue.use(Router)
-
-// 路由配置
-const router = new Router({
-  mode: 'history',
-  routes: routerConfig,
-})
-
-router.beforeEach((to, from, next) => {
-  if(to.meta.title) {
-    document.title = to.meta.title
-  }
-  next()
-})
-
-
 import {
   Menu,
   Button,
@@ -43,8 +25,25 @@ import {
   Option,
   Layout,
   MenuItem,
-  Switch,
+  Switch
 } from 'iview'
+
+Vue.config.productionTip = false
+
+Vue.use(Router)
+
+// 路由配置
+const router = new Router({
+  mode: 'history',
+  routes: routerConfig
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
+})
 
 Vue.component('Menu', Menu)
 Vue.component('Button', Button)
@@ -71,6 +70,7 @@ Object.keys(UiComponents).forEach((key) => {
   Vue.component(key, UiComponents[ key ])
 })
 
+/* eslint-disable */
 new Vue({
   el: '#app',
   router,

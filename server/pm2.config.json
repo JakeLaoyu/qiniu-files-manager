@@ -1,8 +1,0 @@
-{
-    "name": "七牛管理",
-    "script": "app.js",
-    "error_file": "../logs/err.log",
-    "out_file": "../logs/out.log",
-    "merge_logs": true,
-    "log_date_format": "YYYY-MM-DD HH:mm Z"
-}

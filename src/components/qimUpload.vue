@@ -24,7 +24,7 @@ import {
 } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       form: {
         token: ''
@@ -38,49 +38,49 @@ export default {
     ])
   },
   watch: {
-    currentBucket() {
+    currentBucket () {
       this.getUploadToken()
     }
   },
   methods: {
-    handleFormatError(file) {
+    handleFormatError (file) {
       this.$Notice.warning({
         title: '请上传图片',
         desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
-      });
+      })
     },
-    beforeUpload(file) {
+    beforeUpload (file) {
       this.form.key = `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${file.name}`
       this.form.prefix = this.openPrefixs.join('/') + '/'
     },
-    handleProgress(event, file, fileList) {
+    handleProgress (event, file, fileList) {
       // this.loaded = (event.loaded / 1000000).toFixed(2)
       // this.fileSize = (event.total / 1000000).toFixed(2)
       // this.percent = (event.loaded / event.total * 100).toFixed(2)
       // console.log((event.loaded / event.total * 100).toFixed(2))
     },
-    handleSuccess(response, file, fileList) {
+    handleSuccess (response, file, fileList) {
       response.mimeType = 'image'
       response.key = response.key.split('/').pop()
       this.$emit('uploadfinish', response)
-      fileList.splice(fileList.indexOf(file), 1);
+      fileList.splice(fileList.indexOf(file), 1)
       this.$Message.success('上传成功')
     },
-    handleError(error, response, file) {
+    handleError (errorInfo, response, file) {
       this.$Message.error('上传失败')
       this.$Notice.error({
-        title: 'error',
+        title: 'errorInfo',
         desc: response.error + ': ' + file.name,
         duration: 0
       })
     },
-    async getUploadToken() {
+    async getUploadToken () {
       // 获取token
       const {
         code,
         uploadToken
       } = await ajax.get(`/api/uploadToken?bucket=${this.currentBucket.bucket}`)
-      if (code == 1) {
+      if (code === 1) {
         this.form.token = uploadToken
       }
     }

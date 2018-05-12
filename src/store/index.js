@@ -20,24 +20,24 @@ const store = new Vuex.Store({
       return reducerState
     }
   })],
-  state:{
-    buckets: [],  //buckets 列表
-    currentBucket: {},  //当前bucket
-    imageList: [],  //图片列表
-    prefixs: [],  //当前访问路径的前缀
-    openPrefixs:[], //已经打开的 prefix
-    imageDetail: {}, //图片详情
-    multipleSwitchFile: []   //多选选中文件
+  state: {
+    buckets: [], // buckets 列表
+    currentBucket: {}, // 当前bucket
+    imageList: [], // 图片列表
+    prefixs: [], // 当前访问路径的前缀
+    openPrefixs: [], // 已经打开的 prefix
+    imageDetail: {}, // 图片详情
+    multipleSwitchFile: [] // 多选选中文件
   },
-  getters:{
-    getDetail:({imageDetail}) => (key) => imageDetail[ key ],
+  getters: {
+    getDetail: ({imageDetail}) => (key) => imageDetail[ key ]
   },
-  mutations:{
+  mutations: {
     chooseAllMultipleSwitchFile (state, payload) {
       state.imageList.forEach(item => {
-        if(payload && !state.multipleSwitchFile.includes(item.key)) {
+        if (payload && !state.multipleSwitchFile.includes(item.key)) {
           state.multipleSwitchFile.push(item.key)
-        }else if(!payload && state.multipleSwitchFile.includes(item.key)) {
+        } else if (!payload && state.multipleSwitchFile.includes(item.key)) {
           state.multipleSwitchFile.splice(state.multipleSwitchFile.indexOf(item.key), 1)
         }
       })
@@ -47,16 +47,16 @@ const store = new Vuex.Store({
     },
     changeMultipleSwitchFile (state, payload) {
       var index = state.multipleSwitchFile.indexOf(payload)
-      if(index >= 0) {
+      if (index >= 0) {
         state.multipleSwitchFile.splice(index, 1)
-      }else{
+      } else {
         state.multipleSwitchFile.push(payload)
       }
     },
     changeBucket (state, newBucket) {
       var index = state.buckets.findIndex(item => item.bucket === newBucket.bucket)
 
-      if(state.currentBucket.bucket === state.buckets[ index ].bucket) {
+      if (state.currentBucket.bucket === state.buckets[ index ].bucket) {
         state.currentBucket = newBucket
       }
 
@@ -65,7 +65,7 @@ const store = new Vuex.Store({
     delBucket (state, delBucket) {
       var index = state.buckets.findIndex(item => item.bucket === delBucket.bucket)
       state.buckets.splice(index, 1)
-      if(state.currentBucket.bucket === delBucket.bucket) {
+      if (state.currentBucket.bucket === delBucket.bucket) {
         state.openPrefixs = []
         state.imageList = []
         state.imageDetail = {}
@@ -147,7 +147,7 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ( {commit}, {bucket, domain, prefix = ''}) {
+    async getList ({commit}, {bucket, domain, prefix = ''}) {
       commit('emptyImageList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
       images.forEach(item => {

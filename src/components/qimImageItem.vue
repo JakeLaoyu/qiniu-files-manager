@@ -1,27 +1,35 @@
 <template>
-<Col span="4" class-name="item" v-if="type=='image'">
-<div class="item__image" :class={active:choosed} @click="$emit('clickImage',item)">
-  <img :src="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
-  <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
+<div v-if="type=='image'">
+  <Col span="4" class-name="item">
+    <div class="item__image" :class={active:choosed} @click="$emit('clickImage',item)">
+      <img :src="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+      <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
+    </div>
+  </Col>
 </div>
-</Col>
-<Col span="4" class-name="item" v-else-if="type=='folder'">
-<div class="item__folder" @click="$emit('clickPrefix',item)">
-  <img :src="folderImg" alt="">
-  <div class="folder-name">{{ item }}</div>
+<div v-else-if="type=='folder'">
+  <Col span="4" class-name="item" >
+    <div class="item__folder" @click="$emit('clickPrefix',item)">
+      <img :src="folderImg" alt="">
+      <div class="folder-name">{{ item }}</div>
+    </div>
+  </Col>
 </div>
-</Col>
-<Col span="4" class-name="item" v-else-if="type=='return'">
-<div class="item__folder" @click="$emit('returnDirectory')">
-  <img :src="returnImg" alt="">
-  <div class="folder-name">返回上一级</div>
+<div v-else-if="type=='return'">
+  <Col span="4" class-name="item" >
+    <div class="item__folder" @click="$emit('returnDirectory')">
+      <img :src="returnImg" alt="">
+      <div class="folder-name">返回上一级</div>
+    </div>
+  </Col>
 </div>
-</Col>
-<Col span="4" class-name="item" v-else-if="type=='empty'">
-<div class="item__folder">
-  <div class="folder-name">无文件</div>
+<div v-else-if="type=='empty'">
+  <Col span="4" class-name="item" >
+    <div class="item__folder">
+      <div class="folder-name">无文件</div>
+    </div>
+  </Col>
 </div>
-</Col>
 </template>
 <script>
 import folderImg from '@assets/folder.png'
@@ -47,7 +55,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       folderImg,
       returnImg

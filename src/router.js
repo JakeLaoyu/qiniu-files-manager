@@ -6,14 +6,14 @@ export default [
     path: '/',
     name: '图片管理',
     component: IndexPage,
-    meta:{
+    meta: {
       title: 'qim-图片管理'
     }
   }, {
     path: '/buckets',
     name: 'Bucket管理',
     component: BucketsManage,
-    meta:{
+    meta: {
       keepAlive: true,
       title: 'qim-Bucket管理'
     }

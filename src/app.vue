@@ -7,7 +7,6 @@
         <router-link class="routerlink" to="/">File</router-link>
     </Menu>
 
-
     <keep-alive>
         <router-view v-if="$route.meta.keepAlive"/>
     </keep-alive>
@@ -17,37 +16,37 @@
 
 <script>
 export default {
-    name: 'App'
+  name: 'App'
 }
 </script>
 
 <style lang="less" scoped>
 .layout {
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    border-bottom: 0;
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  border-bottom: 0;
 }
 .layout-logo {
-    padding: 0 10px;
-    border-radius: 3px;
-    float: left;
+  padding: 0 10px;
+  border-radius: 3px;
+  float: left;
 }
 .routerlink{
-    float: right;
-    margin-right: 20px;
+  float: right;
+  margin-right: 20px;
 }
 .ivu {
-    &-menu {
-        &-horizontal {
-            height: 30px;
-            line-height: 30px;
-        }
+  &-menu {
+    &-horizontal {
+      height: 30px;
+      line-height: 30px;
     }
+  }
 }
 </style>
 
 <style>
 body{
-    font-size: 14px;
+  font-size: 14px;
 }
 </style>

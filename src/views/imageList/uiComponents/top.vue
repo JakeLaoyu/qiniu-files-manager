@@ -5,6 +5,7 @@
   </Select>
 
   <Button class="add-bucket" type="primary" @click="showModal=true">添加Bucket</Button>
+  <Button class="add-bucket" type="warning">新建文件夹</Button>
 
   <Breadcrumb>
     <BreadcrumbItem v-for="item in openPrefixs" :key="item">{{item}}</BreadcrumbItem>
@@ -42,7 +43,7 @@ import {
 } from '@util'
 
 export default {
-  data() {
+  data () {
     return {
       showModal: false,
       modalLoading: false,
@@ -70,10 +71,10 @@ export default {
       'changeMultipleSwitchFile',
       'chooseAllMultipleSwitchFile'
     ]),
-    chooseAll() {
+    chooseAll () {
       this.chooseAllMultipleSwitchFile(this.chooseAllSwitch)
     },
-    del() {
+    del () {
       this.$Modal.confirm({
         title: '确认删除',
         content: '是否删除多个文件',
@@ -83,9 +84,7 @@ export default {
             key: this.multipleSwitchFile,
             bucket: this.currentBucket.bucket
           }
-          const {
-            code
-          } = await ajax.post('/api/delImage', data)
+          await ajax.post('/api/delImage', data)
           this.multipleSwitchFile.forEach(item => {
             this.deleteImage(item)
           })
@@ -99,16 +98,16 @@ export default {
         }
       })
     },
-    changeBucket() {
-      var bucket = this.bucketName ?
-        this.buckets.find(item => {
+    changeBucket () {
+      var bucket = this.bucketName
+        ? this.buckets.find(item => {
           return item.bucket === this.bucketName
         }) : this.buckets[0]
       this.setCurrentBucket(bucket)
       this.emptyMultipleSwitchFile()
       this.$emit('getList')
     },
-    addBucket(payload) {
+    addBucket (payload) {
       this.modalLoading = true
       this.setBuckets(payload)
       this.setCurrentBucket(payload)
@@ -117,16 +116,16 @@ export default {
       this.emptyMultipleSwitchFile()
       this.$emit('getList')
     },
-    closeModal() {
+    closeModal () {
       this.showModal = false
     }
   },
   watch: {
-    currentBucket(val, oldVal) {
+    currentBucket (val, oldVal) {
       this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
     }
   },
-  mounted() {
+  mounted () {
     if (this.buckets.length === 0) {
       this.showModal = true
     }
@@ -147,26 +146,27 @@ export default {
 }
 
 .ivu {
-    &-select {
-        float: left;
-        margin-right: 20px;
-    }
-    &-breadcrumb {
-        line-height: 32px;
-    }
+  &-select {
+    float: left;
+    margin-right: 20px;
+  }
+  &-breadcrumb {
+    float: left;
+    line-height: 32px;
+  }
 }
 
 .switch {
-    float: right;
-    height: 32px;
-    line-height: 32px;
-    &__label {
-        display: inline-block;
-        margin-left: 20px;
-    }
+  float: right;
+  height: 32px;
+  line-height: 32px;
+  &__label {
+    display: inline-block;
+    margin-left: 20px;
+  }
 }
 .add-bucket {
-    float: left;
-    margin-right: 20px;
+  float: left;
+  margin-right: 20px;
 }
 </style>

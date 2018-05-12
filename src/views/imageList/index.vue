@@ -31,7 +31,7 @@
             />
 
           <QimImageItem
-            v-for="(item,index) in imageList"
+            v-for="item in imageList"
             :key="item.key"
             :item="item"
             v-if="item.mimeType.indexOf('image')!=-1"
@@ -41,7 +41,6 @@
             @clickImage="clickImage"
             />
         </Col>
-
 
         <Col span="8" pull="16" class-name="left-part">
           <QimUpload
@@ -82,7 +81,7 @@ export default {
   components: {
     Top
   },
-  data() {
+  data () {
     return {
       clickImageKey: '',
       MultipleSwitch: false
@@ -101,7 +100,7 @@ export default {
     ...mapGetters([
       'getDetail'
     ]),
-    imageDetail() {
+    imageDetail () {
       return this.getDetail(this.clickImageKey)
     }
   },
@@ -118,29 +117,29 @@ export default {
       'changeMultipleSwitchFile',
       'emptyMultipleSwitchFile'
     ]),
-    switchChange(val) {
+    switchChange (val) {
       this.MultipleSwitch = val
       if (!this.MultipleSwitch) {
         this.emptyMultipleSwitchFile()
       }
     },
-    clickPrefix(folder) {
+    clickPrefix (folder) {
       this.clickImageKey = ''
       this.pushOpenPrefixs(folder)
       this.getImagesList()
     },
-    returnDirectory() {
+    returnDirectory () {
       this.clickImageKey = ''
       this.popOpenPrefixs()
       this.getImagesList()
     },
-    uploadfinish(file) {
+    uploadfinish (file) {
       this.unshift({
         ...file,
-        key: `${this.openPrefixs.length ? this.openPrefixs.join('/')+'/' : ''}${file.key}`
+        key: `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${file.key}`
       })
     },
-    clickImage(image) {
+    clickImage (image) {
       this.clickImageKey = image.key
       if (this.MultipleSwitch) {
         this.changeMultipleSwitchFile(image.key)
@@ -150,7 +149,7 @@ export default {
         image: image
       })
     },
-    getImagesList() {
+    getImagesList () {
       this.getList({
         bucket: this.currentBucket.bucket,
         domain: this.currentBucket.domain,
@@ -158,15 +157,15 @@ export default {
       })
     },
 
-    handleScroll() {
+    handleScroll () {
       var documentHeight = document.documentElement.clientHeight
       var contentMain = document.querySelector('.contentmain')
       var detailDom = document.querySelector('.detail')
       if (detailDom && contentMain) {
-        var contentMainDomClientRect = contentMain.getBoundingClientRect()
+        // var contentMainDomClientRect = contentMain.getBoundingClientRect()
         var detailDomRect = detailDom.getBoundingClientRect()
         if (window.scrollY >= 218) {
-          var csstext = `top:${window.scrollY-206}px;left:0;width:${detailDomRect.width}px`
+          var csstext = `top:${window.scrollY - 206}px;left:0;width:${detailDomRect.width}px`
           detailDom.style = detailDomRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
         } else {
           detailDom.style = ''
@@ -174,13 +173,13 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     window.addEventListener('scroll', debounce(this.handleScroll, 100))
     window.addEventListener('resize', debounce(this.handleScroll, 100))
     this.emptyMultipleSwitchFile()
     this.getImagesList()
   },
-  async created() {
+  async created () {
     await this.postSecrte({
       accessKey: this.currentBucket.AccessKey,
       secretKey: this.currentBucket.SecretKey

@@ -31,7 +31,7 @@ export default {
     loading: Boolean,
     image: Object
   },
-  data() {
+  data () {
     return {
       bucket: {
         AccessKey: '',
@@ -46,20 +46,20 @@ export default {
     ...mapState([
       'buckets'
     ]),
-    showModal() {
+    showModal () {
       return this.isShow
     },
-    valid() {
+    valid () {
       return Object.keys(this.bucket).every(item => this.bucket[item])
     }
   },
   watch: {
-    image(val) {
+    image (val) {
       this.moveTo = val.key
     }
   },
   methods: {
-    ok() {
+    ok () {
       if (this.type === 'addBucket') {
         if (!this.valid) {
           return this.$Message.error(`请填写完整`)

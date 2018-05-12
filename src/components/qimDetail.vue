@@ -11,9 +11,7 @@
     <div class="detail__info">
       <div class="detail__name">{{ detailImage.key.split('/')[detailImage.key.split('/').length - 1] }}</div>
       <div class="detail__url"><span>url:</span> {{ imageUrl }}</div>
-      <template v-for="detailKey in Object.keys(detailImage)">
-        <div :class="`detail__${detailKey}`"><span>{{detailKey}}:</span> {{ detailImage[detailKey] }}</div>
-      </template>
+      <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detailImage)" :key="detailKey"><span>{{detailKey}}:</span> {{ detailImage[detailKey] }}</div>
 
       <div class="detail__operating">
         <ButtonGroup>
@@ -55,7 +53,7 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       delLoading: false,
       showModal: false,
@@ -67,7 +65,7 @@ export default {
       'currentBucket',
       'openPrefixs'
     ]),
-    imageUrl() {
+    imageUrl () {
       return this.currentBucket.domain + this.detailImage.key
     }
   },
@@ -75,10 +73,10 @@ export default {
     ...mapMutations([
       'deleteImage'
     ]),
-    closeModal() {
+    closeModal () {
       this.showModal = false
     },
-    delImage() {
+    delImage () {
       this.delLoading = true
       var filename = this.detailImage.key
 
@@ -91,9 +89,7 @@ export default {
             key: this.detailImage.key,
             bucket: this.currentBucket.bucket
           }
-          const {
-            code
-          } = await ajax.post('/api/delImage', data)
+          await ajax.post('/api/delImage', data)
           this.delLoading = false
           this.deleteImage(this.detailImage.key)
           this.$Message.success('删除成功')
@@ -105,20 +101,18 @@ export default {
         }
       })
     },
-    moveImage() {
+    moveImage () {
       this.showModal = true
     },
-    async saveMove(moveTo) {
+    async saveMove (moveTo) {
       this.modalLoading = true
-      if (moveTo == this.detailImage.key) {
+      if (moveTo === this.detailImage.key) {
         this.modalLoading = false
         this.showModal = false
         return
       }
 
-      const {
-        code
-      } = ajax.post('/api/moveImage', {
+      ajax.post('/api/moveImage', {
         bucket: this.currentBucket.bucket,
         key: this.detailImage.key,
         newKey: moveTo
@@ -130,12 +124,12 @@ export default {
       location.reload()
     }
   },
-  mounted() {
+  mounted () {
     let clipboard = new Clipboard('#copyBtn', {
       text: () => this.imageUrl
     })
     clipboard.on('success', e => {
-      this.$Message.success('复制成功 ' + this.imageUrl);
+      this.$Message.success('复制成功 ' + this.imageUrl)
     })
   }
 }

@@ -4,8 +4,8 @@
     <Header :style="{position: 'fixed', width: '100%'}">
       <Menu mode="horizontal" theme="light" active-name="1" @on-select="changeMenu">
         <MenuItem v-for="(item, index) in buckets" :key="index" :name="index+1">
-        <Icon type="briefcase"></Icon>
-        {{ item.bucket }}
+          <Icon type="briefcase"></Icon>
+          {{ item.bucket }}
         </MenuItem>
       </Menu>
     </Header>
@@ -46,7 +46,7 @@ import {
 } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       bucket: {},
       delModal: false
@@ -62,17 +62,17 @@ export default {
       'delBucket',
       'changeBucket'
     ]),
-    submit() {
+    submit () {
       this.changeBucket(this.bucket)
       this.$Message.success('提交成功')
     },
-    del() {
+    del () {
       this.delBucket(this.bucket)
       this.delModal = false
       this.bucket = {}
       this.$Message.success('删除成功')
     },
-    changeMenu(name) {
+    changeMenu (name) {
       this.bucket = this.buckets[name - 1]
     }
   }
