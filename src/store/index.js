@@ -147,7 +147,7 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ({commit}, {bucket, domain, prefix = ''}) {
+    async getList ({commit}, {bucket, domain, prefix = '', cb}) {
       commit('emptyImageList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
       images.forEach(item => {
@@ -157,6 +157,9 @@ const store = new Vuex.Store({
         imageList: images,
         prefixs: prefixs
       })
+      if (cb) {
+        cb()
+      }
     }
   }
 })

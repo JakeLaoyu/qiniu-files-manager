@@ -4,11 +4,13 @@
     @getList="getImagesList"
     @switchChange="switchChange"
     @deleteImage="clickImageKey=''"
+    @inputNewPrefix="inputNewPrefix"
     >
   </Top>
 
   <div class="layout-content">
     <div class="layout-content-main">
+      <Spin fix size="large" v-if="loading"></Spin>
       <Row :gutter="20">
         <Col span="16" push="8" class-name="contentmain">
           <QimImageItem
@@ -45,6 +47,7 @@
         <Col span="8" pull="16" class-name="left-part">
           <QimUpload
             @uploadfinish="uploadfinish"
+            :newPrefix="newPrefix"
             >
           </QimUpload>
 
@@ -84,7 +87,9 @@ export default {
   data () {
     return {
       clickImageKey: '',
-      MultipleSwitch: false
+      MultipleSwitch: false,
+      newPrefix: '',
+      loading: false
     }
   },
   computed: {
@@ -115,8 +120,12 @@ export default {
       'pushOpenPrefixs',
       'popOpenPrefixs',
       'changeMultipleSwitchFile',
-      'emptyMultipleSwitchFile'
+      'emptyMultipleSwitchFile',
+      'setState'
     ]),
+    inputNewPrefix (newPrefix) {
+      this.newPrefix = newPrefix
+    },
     switchChange (val) {
       this.MultipleSwitch = val
       if (!this.MultipleSwitch) {
@@ -133,11 +142,18 @@ export default {
       this.popOpenPrefixs()
       this.getImagesList()
     },
-    uploadfinish (file) {
-      this.unshift({
-        ...file,
-        key: `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${file.key}`
-      })
+    uploadfinish (payload) {
+      if (payload.newPrefix.indexOf('/') >= 0) {
+        this.setState({
+          imageList: this.imageList,
+          prefixs: this.prefixs.includes(payload.newPrefix.split('/')[0]) ? this.prefixs : [payload.newPrefix.split('/')[0], ...this.prefixs]
+        })
+      } else {
+        this.unshift({
+          ...payload.file,
+          key: `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${payload.file.key}`
+        })
+      }
     },
     clickImage (image) {
       this.clickImageKey = image.key
@@ -150,10 +166,15 @@ export default {
       })
     },
     getImagesList () {
+      const self = this
+      this.loading = true
       this.getList({
         bucket: this.currentBucket.bucket,
         domain: this.currentBucket.domain,
-        prefix: this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''
+        prefix: this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : '',
+        cb () {
+          self.loading = false
+        }
       })
     },
 
@@ -189,18 +210,21 @@ export default {
 </script>
 <style lang="less" scoped>
 .layout {
+  width: 1200px;
+  margin: 0 auto;
+  border: none;
+  &-content {
+    min-height: calc(~"100vh - 90px");
+    overflow: hidden;
+    border-radius: 4px;
     width: 1200px;
     margin: 0 auto;
-    border: none;
-    &-content {
-        min-height: calc(~"100vh - 90px");
-        overflow: hidden;
-        border-radius: 4px;
-        width: 1200px;
-        margin: 0 auto;
-    }
-    &-content-main {
-        padding: 10px;
-    }
+  }
+  &-content-main {
+    padding: 10px;
+  }
+}
+.ivu-spin-fix {
+  position: fixed;
 }
 </style>

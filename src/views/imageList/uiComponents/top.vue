@@ -5,12 +5,24 @@
   </Select>
 
   <Button class="add-bucket" type="primary" @click="showModal=true">添加Bucket</Button>
-  <Button class="add-bucket" type="warning">新建文件夹</Button>
 
   <Breadcrumb>
     <BreadcrumbItem v-for="item in openPrefixs" :key="item">{{item}}</BreadcrumbItem>
   </Breadcrumb>
 
+  <span v-if="openPrefixs.length > 0">
+    <span class="ivu-breadcrumb-item-separator">/</span>
+  </span>
+
+  <Tooltip slot="append" content="例如: image/jpg/" placement="right">
+    <Input
+      v-model="newPrefix"
+      placeholder="添加前缀"
+      style="width: 200px"
+      @on-change="$emit('inputNewPrefix', newPrefix)"
+      >
+    </Input>
+  </Tooltip>
   <!-- div.multiple -->
 
   <div class="switch">
@@ -21,9 +33,9 @@
     </ButtonGroup>
 
     <template v-if="multipleSwitch">
-                <div class="switch__label">全选</div>
-                <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
-            </template>
+      <div class="switch__label">全选</div>
+      <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
+    </template>
 
     <div class="switch__label">多选：</div>
     <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
@@ -49,7 +61,8 @@ export default {
       modalLoading: false,
       bucketName: '',
       multipleSwitch: false,
-      chooseAllSwitch: false
+      chooseAllSwitch: false,
+      newPrefix: ''
     }
   },
   computed: {
@@ -123,6 +136,10 @@ export default {
   watch: {
     currentBucket (val, oldVal) {
       this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
+    },
+    openPrefixs () {
+      this.newPrefix = ''
+      this.$emit('inputNewPrefix', this.newPrefix)
     }
   },
   mounted () {

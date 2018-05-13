@@ -1,5 +1,7 @@
 <template>
-  <Upload multiple type="drag"
+  <Upload
+    multiple
+    type="drag"
     :on-progress="handleProgress"
     :on-success="handleSuccess"
     :on-error="handleError"
@@ -10,7 +12,7 @@
     action="http://upload.qiniu.com/">
     <div style="padding: 20px 0">
       <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-      <p>上传文件到此目录(支持拖拽上传)</p>
+      <p>上传文件到 <span style="color: #f90;">{{ openPrefixs.join('/') + '/' + newPrefix }}</span> (支持拖拽上传)</p>
     </div>
   </Upload>
 </template>
@@ -24,6 +26,7 @@ import {
 } from 'vuex'
 
 export default {
+  props: ['newPrefix'],
   data () {
     return {
       form: {
@@ -50,8 +53,7 @@ export default {
       })
     },
     beforeUpload (file) {
-      this.form.key = `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${file.name}`
-      this.form.prefix = this.openPrefixs.join('/') + '/'
+      this.form.key = `${this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : ''}${file.name}`
     },
     handleProgress (event, file, fileList) {
       // this.loaded = (event.loaded / 1000000).toFixed(2)
@@ -62,9 +64,12 @@ export default {
     handleSuccess (response, file, fileList) {
       response.mimeType = 'image'
       response.key = response.key.split('/').pop()
-      this.$emit('uploadfinish', response)
       fileList.splice(fileList.indexOf(file), 1)
       this.$Message.success('上传成功')
+      this.$emit('uploadfinish', {
+        file: response,
+        newPrefix: this.newPrefix || ''
+      })
     },
     handleError (errorInfo, response, file) {
       this.$Message.error('上传失败')

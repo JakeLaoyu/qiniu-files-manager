@@ -25,7 +25,8 @@ import {
   Option,
   Layout,
   MenuItem,
-  Switch
+  Switch,
+  Tooltip
 } from 'iview'
 
 Vue.config.productionTip = false
@@ -61,6 +62,7 @@ Vue.component('Select', Select)
 Vue.component('Option', Option)
 Vue.component('Layout', Layout)
 Vue.component('MenuItem', MenuItem)
+Vue.component('Tooltip', Tooltip)
 Vue.component('i-switch', Switch)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
