@@ -9,16 +9,16 @@
 ## 预览
 
 ### 图片列表
-![]('https://github.com/JakeLaoyu/qiniu-images-manager/raw/master/src/assets/preview/Jietu20180513-165048@2x.jpg')
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165048@2x.jpg)
 
 ### 添加Bucket
-![]('https://github.com/JakeLaoyu/qiniu-images-manager/raw/master/src/assets/preview/Jietu20180513-165422@2x.jpg')
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165422@2x.jpg)
 
 ### 批量管理
-![]('https://github.com/JakeLaoyu/qiniu-images-manager/raw/master/src/assets/preview/Jietu20180513-165658.jpg')
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165658.jpg)
 
 ### Bucket管理
-![]('https://github.com/JakeLaoyu/qiniu-images-manager/raw/master/src/assets/preview/Jietu20180513-165519.jpg')
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165519.jpg)
 
 ## 使用
 
