@@ -1,12 +1,9 @@
 <template>
 <div class="detail">
-  <div class="demo-spin-container" v-if="!detailImage || !detailImage.key">
-    <Spin size="large" fix></Spin>
-  </div>
-
-  <div v-else>
+  <div class="detail__wrap" :style="detailStyle">
     <div class="detail__img">
-      <img :src="imageUrl" @load="$emit('imageload')">
+      <Spin size="large" fix v-if="imgLoading"></Spin>
+      <img :src="imageUrl" @load="imgLoad">
     </div>
     <div class="detail__info">
       <div class="detail__name">{{ detailImage.key.split('/')[detailImage.key.split('/').length - 1] }}</div>
@@ -51,13 +48,17 @@ export default {
   props: {
     detailImage: {
       type: Object
+    },
+    detailStyle: {
+      type: Object
     }
   },
   data () {
     return {
       delLoading: false,
       showModal: false,
-      modalLoading: false
+      modalLoading: false,
+      imgLoading: true
     }
   },
   computed: {
@@ -69,10 +70,19 @@ export default {
       return this.currentBucket.domain + this.detailImage.key
     }
   },
+  watch: {
+    detailImage () {
+      this.imgLoading = true
+    }
+  },
   methods: {
     ...mapMutations([
       'deleteImage'
     ]),
+    imgLoad () {
+      this.imgLoading = false
+      this.$emit('imageload')
+    },
     closeModal () {
       this.showModal = false
     },
@@ -136,35 +146,38 @@ export default {
 </script>
 <style lang="less" scoped>
 .detail {
-    background: #fff;
-    font-size: 14px;
-    color: #666;
-    padding: 10px;
-    box-sizing: border-box;
-    position: relative;
-    min-height: 100px;
-    transition: top 0.5s;
-    top: 0;
-    max-height: calc(100vh - 210px);
+  background: #fff;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+  padding: 10px;
+  box-sizing: border-box;
+  min-height: 100px;
+  transition: top 0.5s;
+  top: 0;
+  &__wrap{
     overflow-y: scroll;
-    & > div {
-        word-break: break-all;
-        margin-bottom: 10px;
-        span {
-            color: #333;
-        }
+  }
+  & > div {
+    word-break: break-all;
+    margin-bottom: 10px;
+    span {
+      color: #333;
     }
-    &__img {
-        img {
-            width: 100%;
-        }
+  }
+  &__img {
+    min-height: 100px;
+    position: relative;
+    img {
+      width: 100%;
     }
-    &__name {
-        font-size: 18px;
-        color: red;
-    }
-    &__operating {
-        text-align: center;
-    }
+  }
+  &__name {
+    font-size: 18px;
+    color: red;
+  }
+  &__operating {
+    text-align: center;
+  }
 }
 </style>

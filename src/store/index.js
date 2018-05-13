@@ -71,6 +71,9 @@ const store = new Vuex.Store({
         state.imageDetail = {}
       }
     },
+    emptyOpenPrefixs (state) {
+      state.openPrefixs = []
+    },
     emptyImageList (state) {
       state.imageList = []
     },

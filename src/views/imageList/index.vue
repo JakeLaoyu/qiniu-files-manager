@@ -54,6 +54,7 @@
           <transition name="fade">
             <QimDetail
               :detailImage="imageDetail"
+              :detailStyle="detailStyle"
               v-if="clickImageKey"
               @deleteImage="clickImageKey=''"
               @imageload="handleScroll"
@@ -89,7 +90,10 @@ export default {
       clickImageKey: '',
       MultipleSwitch: false,
       newPrefix: '',
-      loading: false
+      loading: false,
+      detailStyle: {
+        maxHeight: 'calc(100vh - 240px)'
+      }
     }
   },
   computed: {
@@ -109,6 +113,14 @@ export default {
       return this.getDetail(this.clickImageKey)
     }
   },
+  watch: {
+    newPrefix () {
+      this.setDetailDomHeight()
+    },
+    openPrefixs () {
+      this.setDetailDomHeight()
+    }
+  },
   methods: {
     ...mapActions([
       'getList',
@@ -121,8 +133,15 @@ export default {
       'popOpenPrefixs',
       'changeMultipleSwitchFile',
       'emptyMultipleSwitchFile',
-      'setState'
+      'setState',
+      'emptyOpenPrefixs'
     ]),
+    setDetailDomHeight () {
+      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
+      this.detailStyle = {
+        maxHeight: `calc(100vh - ${uploadDomRect.top + uploadDomRect.height + 30}px)`
+      }
+    },
     inputNewPrefix (newPrefix) {
       this.newPrefix = newPrefix
     },
@@ -177,11 +196,14 @@ export default {
         }
       })
     },
-
     handleScroll () {
       var documentHeight = document.documentElement.clientHeight
       var contentMain = document.querySelector('.contentmain')
       var detailDom = document.querySelector('.detail')
+      var detailWrap = document.querySelector('.detail__wrap')
+      if (detailWrap) {
+        detailWrap.scrollTop = detailWrap.scrollHeight
+      }
       if (detailDom && contentMain) {
         // var contentMainDomClientRect = contentMain.getBoundingClientRect()
         var detailDomRect = detailDom.getBoundingClientRect()
@@ -197,6 +219,7 @@ export default {
   mounted () {
     window.addEventListener('scroll', debounce(this.handleScroll, 100))
     window.addEventListener('resize', debounce(this.handleScroll, 100))
+    this.emptyOpenPrefixs()
     this.emptyMultipleSwitchFile()
     this.getImagesList()
   },
