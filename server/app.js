@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var lessMiddleware = require('less-middleware')
 var session = require('express-session')
-var mongoStore = require('connect-mongo')(session)
+var MongoStore = require('connect-mongo')(session)
 
 var router = require('./routes/router')
 
@@ -13,7 +13,6 @@ var port = process.env.PORT || '2017'
 var dbUrl = 'mongodb://localhost/qiniumanager'
 
 var app = express()
-
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -27,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -46,15 +45,13 @@ app.use(session({
   saveUninitialized: true,
   secret: '0A6194FD0E695254A939A25C3D868D2C',
   // session持久化，存在到mongodb中
-  store: new mongoStore({
+  store: new MongoStore({
     url: dbUrl,
     collection: 'sessions'
   })
 }))
 
-
 app.use('/api', router)
-
 
 app.listen(port)
 console.log('listen port: ' + port)

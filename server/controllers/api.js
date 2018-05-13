@@ -22,7 +22,7 @@ exports.postSecret = (req, res) => {
 // 获取图片
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
-  var domain = req.query.domain
+  // var domain = req.query.domain
   var prefix = req.query.prefix || ''
 
   console.log('getImages')
@@ -31,24 +31,20 @@ exports.getImages = (req, res) => {
   console.log('req.session.accessKey: ' + req.session.accessKey)
   console.log('req.session.secretKey: ' + req.session.secretKey)
 
-
-
   qiniujs.getImages(req, bucket, prefix, function (statusCode, respBody, images, prefixs) {
     res.json({
-      code: statusCode == 200 ? 1 : statusCode,
-      message: statusCode == 200 ? '' : respBody.error,
+      code: statusCode === 200 ? 1 : statusCode,
+      message: statusCode === 200 ? '' : respBody.error,
       images: images || [],
       prefixs: prefixs || []
     })
   })
-
 }
-
 
 // 获取token
 exports.uploadToken = (req, res) => {
   var Bucket = req.query.bucket
-  var Domain = req.query.domain
+  // var Domain = req.query.domain
   console.log('uploadToken')
   console.log('Bucket: ' + Bucket)
 
@@ -59,7 +55,6 @@ exports.uploadToken = (req, res) => {
     uploadToken: token
   })
 }
-
 
 /**
  * 检查session中是否有ak sk
@@ -79,7 +74,6 @@ exports.checkAccessKeySecretKey = (req, res, next) => {
   next()
 }
 
-
 exports.delSession = (req, res) => {
   req.session.accessKey = ''
   req.session.secretKey = ''
@@ -93,13 +87,12 @@ exports.detail = (req, res) => {
   var key = req.query.key
   var bucket = req.query.bucket
 
-
   qiniujs.getBucketManager(req).stat(bucket, key, function (err, respBody, respInfo) {
     if (err) {
       console.log(err)
-      //throw err;
+      // throw err;
     } else {
-      if (respInfo.statusCode == 200) {
+      if (respInfo.statusCode === 200) {
         res.json({
           code: 1,
           info: respBody
@@ -118,14 +111,14 @@ exports.delImage = (req, res) => {
   var bucket = req.body.bucket
   var deleteOperations = []
 
-  if(key instanceof Array) {
+  if (key instanceof Array) {
     key.forEach(item => {
       deleteOperations.push(qiniu.rs.deleteOp(bucket, item))
     })
     qiniujs.getBucketManager(req).batch(deleteOperations, function (err, respBody, respInfo) {
       if (err) {
         console.log(err)
-        //throw err;
+        // throw err;
       } else {
         console.log(respInfo.statusCode)
         console.log(respBody)
@@ -135,11 +128,11 @@ exports.delImage = (req, res) => {
         })
       }
     })
-  }else{
+  } else {
     qiniujs.getBucketManager(req).delete(bucket, key, function (err, respBody, respInfo) {
       if (err) {
         console.log(err)
-        //throw err;
+        // throw err;
       } else {
         console.log(respInfo.statusCode)
         console.log(respBody)
@@ -152,7 +145,6 @@ exports.delImage = (req, res) => {
     })
   }
 }
-
 
 // 移动文件
 exports.moveImage = (req, res) => {
@@ -169,11 +161,11 @@ exports.moveImage = (req, res) => {
     err, respBody, respInfo) {
     if (err) {
       console.log(err)
-      //throw err;
+      // throw err;
     } else {
-      //200 is success
+      // 200 is success
       console.log(respBody)
-      if (respInfo.statusCode == 614) {
+      if (respInfo.statusCode === 614) {
         return res.json({
           code: 0,
           message: '文件名重复'

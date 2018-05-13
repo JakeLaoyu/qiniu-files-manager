@@ -12,7 +12,6 @@ router.get('/detail', api.detail)
 router.post('/delImage', api.delImage)
 router.post('/moveImage', api.moveImage)
 
-
 router.get('/delSession', api.delSession)
 
 module.exports = router
