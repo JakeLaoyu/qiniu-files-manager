@@ -20,7 +20,7 @@
 ### Bucket管理
 ![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165519.jpg)
 
-## 使用
+## 开发
 
 ```sh
 git clone https://github.com/FeddyTeam/qiniu-images-manager.git
@@ -37,9 +37,24 @@ npm run dev
 ### 服务端
 
 ```sh
-cd server
+cd server/
 npm i
 npm run dev
+```
+
+## 使用
+
+### 前端
+
+```sh
+npm run build
+```
+
+### 服务端
+
+```sh
+cd server/
+pm2 start pm2.config.json
 ```
 
 ## TODO
