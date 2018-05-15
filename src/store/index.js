@@ -153,6 +153,7 @@ const store = new Vuex.Store({
     async getList ({commit}, {bucket, domain, prefix = '', cb}) {
       commit('emptyImageList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
+      if (!images) return
       images.forEach(item => {
         item.key = prefix + item.key
       })

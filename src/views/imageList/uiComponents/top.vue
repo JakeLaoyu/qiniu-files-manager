@@ -47,7 +47,8 @@
 <script>
 import {
   mapState,
-  mapMutations
+  mapMutations,
+  mapActions
 } from 'vuex'
 
 import {
@@ -76,6 +77,9 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'postSecrte'
+    ]),
     ...mapMutations([
       'setBuckets',
       'setCurrentBucket',
@@ -120,13 +124,17 @@ export default {
       this.emptyMultipleSwitchFile()
       this.$emit('getList')
     },
-    addBucket (payload) {
+    async addBucket (payload) {
       this.modalLoading = true
       this.setBuckets(payload)
       this.setCurrentBucket(payload)
       this.modalLoading = false
       this.showModal = false
       this.emptyMultipleSwitchFile()
+      await this.postSecrte({
+        accessKey: this.currentBucket.AccessKey,
+        secretKey: this.currentBucket.SecretKey
+      })
       this.$emit('getList')
     },
     closeModal () {

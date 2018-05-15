@@ -75,7 +75,9 @@ export default {
           return this.$Message.error(`Bucket 存在`)
         }
 
-        this.$emit('ok', this.bucket)
+        this.$emit('ok', {
+          ...this.bucket
+        })
       } else if (this.type === 'move') {
         if (!this.moveTo) {
           this.$Message.error('请填写新的名称')

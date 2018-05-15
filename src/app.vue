@@ -1,7 +1,8 @@
 <template>
 <div id="app" class="layout">
     <Menu mode="horizontal" theme="light" active-name="1">
-        <div class="layout-logo">七牛文件管理</div>
+        <router-link class="layout-logo" to="/">七牛文件管理</router-link>
+        <a class="layout-logo" href="https://github.com/JakeLaoyu/qiniu-images-manager" target="_blank">GitHub</a>
 
         <router-link class="routerlink" to="/buckets">Bucket</router-link>
         <router-link class="routerlink" to="/">File</router-link>
