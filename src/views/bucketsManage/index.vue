@@ -2,7 +2,7 @@
 <div class="layout">
   <Layout>
     <Header :style="{position: 'fixed', width: '100%'}">
-      <Menu mode="horizontal" theme="light" active-name="1" @on-select="changeMenu">
+      <Menu mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
         <MenuItem v-for="(item, index) in buckets" :key="index" :name="index+1">
           <Icon type="briefcase"></Icon>
           {{ item.bucket }}
@@ -75,6 +75,9 @@ export default {
     changeMenu (name) {
       this.bucket = this.buckets[name - 1]
     }
+  },
+  mounted () {
+    this.bucket = this.buckets[0]
   }
 }
 </script>
