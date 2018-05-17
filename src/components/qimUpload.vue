@@ -53,7 +53,8 @@ export default {
       })
     },
     beforeUpload (file) {
-      this.form.key = `${this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : ''}${file.name}`
+      var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : this.newPrefix
+      this.form.key = `${prefix}${file.name}`
     },
     handleProgress (event, file, fileList) {
       // this.loaded = (event.loaded / 1000000).toFixed(2)
