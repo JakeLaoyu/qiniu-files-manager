@@ -175,6 +175,7 @@ export default {
       }
     },
     clickImage (image) {
+      if (this.clickImageKey === image.key) return
       this.clickImageKey = image.key
       if (this.MultipleSwitch) {
         this.changeMultipleSwitchFile(image.key)
