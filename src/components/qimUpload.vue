@@ -5,7 +5,7 @@
     :on-progress="handleProgress"
     :on-success="handleSuccess"
     :on-error="handleError"
-    :format="['jpg','jpeg','png']"
+    :format="['jpg','jpeg','png','gif']"
     :on-format-error="handleFormatError"
     :before-upload="beforeUpload"
     :data='form'
