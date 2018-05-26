@@ -3,7 +3,7 @@
   <Top
     @getList="getImagesList"
     @switchChange="switchChange"
-    @deleteImage="clickImageKey=''"
+    @deleteImage="clickFileKey=''"
     @inputNewPrefix="inputNewPrefix"
     >
   </Top>
@@ -65,10 +65,10 @@
 
           <transition name="fade">
             <QimDetail
-              :detailFile="fileDetail"
+              :detail="fileDetail"
               :detailStyle="detailStyle"
-              v-if="clickImageKey"
-              @deleteImage="clickImageKey=''"
+              v-if="clickFileKey && fileDetail"
+              @deleteImage="clickFileKey=''"
               @imageload="handleScroll"
               />
           </transition>
@@ -99,7 +99,7 @@ export default {
   },
   data () {
     return {
-      clickImageKey: '',
+      clickFileKey: '',
       MultipleSwitch: false,
       newPrefix: '',
       loading: false,
@@ -113,7 +113,6 @@ export default {
       'buckets',
       'currentBucket',
       'imageList',
-      'fileDetail',
       'prefixs',
       'openPrefixs',
       'multipleSwitchFile'
@@ -122,7 +121,7 @@ export default {
       'getDetail'
     ]),
     fileDetail () {
-      return this.getDetail(this.clickImageKey)
+      return this.getDetail(this.clickFileKey)
     }
   },
   watch: {
@@ -164,12 +163,12 @@ export default {
       }
     },
     clickPrefix (folder) {
-      this.clickImageKey = ''
+      this.clickFileKey = ''
       this.pushOpenPrefixs(folder)
       this.getImagesList()
     },
     returnDirectory () {
-      this.clickImageKey = ''
+      this.clickFileKey = ''
       this.popOpenPrefixs()
       this.getImagesList()
     },
@@ -187,7 +186,7 @@ export default {
       }
     },
     clickFile (image) {
-      this.clickImageKey = image.key
+      this.clickFileKey = image.key
       if (this.MultipleSwitch) {
         this.changeMultipleSwitchFile(image.key)
       }

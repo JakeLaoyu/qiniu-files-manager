@@ -3,17 +3,17 @@
   <div class="detail__wrap" :style="detailStyle">
     <div class="detail__img">
       <Spin size="large" fix v-if="imgLoading"></Spin>
-      <img :src="imageUrl" @load="imgLoad" v-if="detailFile.mimeType.split('/')[0]==='image'">
+      <img :src="imageUrl" @load="imgLoad" v-if="detail.mimeType.split('/')[0]==='image'">
       <QimIcon
         v-else
-        :icon="detailFile.mimeType.split('/')[detailFile.mimeType.split('/').length-1]"
+        :icon="detail.mimeType.split('/')[detail.mimeType.split('/').length-1]"
         size="80"
         />
     </div>
     <div class="detail__info">
-      <div class="detail__name">{{ detailFile.key.split('/')[detailFile.key.split('/').length - 1] }}</div>
+      <div class="detail__name">{{ detail.key.split('/')[detail.key.split('/').length - 1] }}</div>
       <div class="detail__url"><span>url:</span> {{ imageUrl }}</div>
-      <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detailFile)" :key="detailKey"><span>{{detailKey}}:</span> {{ detailFile[detailKey] }}</div>
+      <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detail)" :key="detailKey"><span>{{detailKey}}:</span> {{ detail[detailKey] }}</div>
 
       <div class="detail__operating">
         <ButtonGroup>
@@ -34,7 +34,7 @@
 
   </div>
 
-  <QimModal :isShow="showModal" title="移动或重命名" @ok="saveMove" :image="detailFile" type="move" :loading="modalLoading" @closeModal="closeModal" />
+  <QimModal :isShow="showModal" title="移动或重命名" @ok="saveMove" :image="detail" type="move" :loading="modalLoading" @closeModal="closeModal" />
 </div>
 </template>
 <script>
@@ -51,7 +51,7 @@ import Clipboard from 'clipboard'
 
 export default {
   props: {
-    detailFile: {
+    detail: {
       type: Object
     },
     detailStyle: {
@@ -72,12 +72,12 @@ export default {
       'openPrefixs'
     ]),
     imageUrl () {
-      return this.currentBucket.domain + this.detailFile.key
+      return this.currentBucket.domain + this.detail.key
     }
   },
   watch: {
-    detailFile (val, oldVal) {
-      if (this.detailFile.mimeType.split('/')[0] === 'image' && val.key !== oldVal.key) {
+    detail (val, oldVal) {
+      if (this.detail.mimeType.split('/')[0] === 'image' && val.key !== oldVal.key) {
         this.imgLoading = true
       }
     }
@@ -95,7 +95,7 @@ export default {
     },
     delImage () {
       this.delLoading = true
-      var filename = this.detailFile.key
+      var filename = this.detail.key
 
       this.$Modal.confirm({
         title: '确认删除',
@@ -103,12 +103,12 @@ export default {
         loading: true,
         onOk: async () => {
           let data = {
-            key: this.detailFile.key,
+            key: this.detail.key,
             bucket: this.currentBucket.bucket
           }
           await ajax.post('/api/delImage', data)
           this.delLoading = false
-          this.deleteImage(this.detailFile.key)
+          this.deleteImage(this.detail.key)
           this.$Message.success('删除成功')
           this.$Modal.remove()
           this.$emit('deleteImage')
@@ -123,7 +123,7 @@ export default {
     },
     async saveMove (moveTo) {
       this.modalLoading = true
-      if (moveTo === this.detailFile.key) {
+      if (moveTo === this.detail.key) {
         this.modalLoading = false
         this.showModal = false
         return
@@ -131,7 +131,7 @@ export default {
 
       ajax.post('/api/moveImage', {
         bucket: this.currentBucket.bucket,
-        key: this.detailFile.key,
+        key: this.detail.key,
         newKey: moveTo
       })
 
@@ -142,7 +142,7 @@ export default {
     }
   },
   mounted () {
-    if (this.detailFile.mimeType.split('/')[0] !== 'image') {
+    if (this.detail.mimeType.split('/')[0] !== 'image') {
       this.imgLoading = false
     }
     let clipboard = new Clipboard('#copyBtn', {
