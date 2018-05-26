@@ -32,16 +32,28 @@
             @clickPrefix="clickPrefix"
             />
 
-          <QimImageItem
+          <template
             v-for="item in imageList"
-            :key="item.key"
-            :item="item"
-            v-if="item.mimeType.indexOf('image')!=-1"
-            type="image"
-            :choosed="multipleSwitchFile.includes(item.key)"
-            :domain="currentBucket.domain"
-            @clickImage="clickImage"
-            />
+            >
+            <QimImageItem
+              :item="item"
+              :key="item.putTime"
+              v-if="item.mimeType.indexOf('image')!=-1"
+              type="image"
+              :choosed="multipleSwitchFile.includes(item.key)"
+              :domain="currentBucket.domain"
+              @clickFile="clickFile"
+              />
+            <QimImageItem
+              :item="item"
+              :key="item.putTime"
+              v-else
+              :type="item.mimeType"
+              :choosed="multipleSwitchFile.includes(item.key)"
+              :domain="currentBucket.domain"
+              @clickFile="clickFile"
+              />
+          </template>
         </Col>
 
         <Col span="8" pull="16" class-name="left-part">
@@ -53,7 +65,7 @@
 
           <transition name="fade">
             <QimDetail
-              :detailImage="imageDetail"
+              :detailFile="fileDetail"
               :detailStyle="detailStyle"
               v-if="clickImageKey"
               @deleteImage="clickImageKey=''"
@@ -101,7 +113,7 @@ export default {
       'buckets',
       'currentBucket',
       'imageList',
-      'imageDetail',
+      'fileDetail',
       'prefixs',
       'openPrefixs',
       'multipleSwitchFile'
@@ -109,7 +121,7 @@ export default {
     ...mapGetters([
       'getDetail'
     ]),
-    imageDetail () {
+    fileDetail () {
       return this.getDetail(this.clickImageKey)
     }
   },
@@ -125,7 +137,7 @@ export default {
     ...mapActions([
       'getList',
       'postSecrte',
-      'getImageDetail'
+      'getFileDetail'
     ]),
     ...mapMutations([
       'unshift',
@@ -174,13 +186,12 @@ export default {
         })
       }
     },
-    clickImage (image) {
-      if (this.clickImageKey === image.key) return
+    clickFile (image) {
       this.clickImageKey = image.key
       if (this.MultipleSwitch) {
         this.changeMultipleSwitchFile(image.key)
       }
-      this.getImageDetail({
+      this.getFileDetail({
         bucket: this.currentBucket.bucket,
         image: image
       })

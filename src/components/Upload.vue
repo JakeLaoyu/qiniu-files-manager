@@ -5,7 +5,6 @@
     :on-progress="handleProgress"
     :on-success="handleSuccess"
     :on-error="handleError"
-    :format="['jpg','jpeg','png','gif']"
     :on-format-error="handleFormatError"
     :before-upload="beforeUpload"
     :data='form'
@@ -24,6 +23,8 @@ import {
 import {
   mapState
 } from 'vuex'
+
+import mime from 'mime-types'
 
 export default {
   props: ['newPrefix'],
@@ -48,8 +49,8 @@ export default {
   methods: {
     handleFormatError (file) {
       this.$Notice.warning({
-        title: '请上传图片',
-        desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+        title: '发生错误',
+        desc: '上传 ' + file.name + ' 时，发生错误，请从新上传'
       })
     },
     beforeUpload (file) {
@@ -63,7 +64,7 @@ export default {
       // console.log((event.loaded / event.total * 100).toFixed(2))
     },
     handleSuccess (response, file, fileList) {
-      response.mimeType = 'image'
+      response.mimeType = mime.lookup(file.name)
       response.key = response.key.split('/').pop()
       fileList.splice(fileList.indexOf(file), 1)
       this.$Message.success('上传成功')

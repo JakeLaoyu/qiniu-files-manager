@@ -30,7 +30,7 @@ cd qiniu-images-manager
 ### 前端
 
 ```sh
-npm i
+yarn
 npm run dev
 ```
 
@@ -38,7 +38,7 @@ npm run dev
 
 ```sh
 cd server/
-npm i
+yarn
 npm run dev
 ```
 

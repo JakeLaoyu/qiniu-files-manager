@@ -22,14 +22,7 @@ exports.postSecret = (req, res) => {
 // 获取图片
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
-  // var domain = req.query.domain
   var prefix = req.query.prefix || ''
-
-  console.log('getImages')
-  console.log('bucket: ' + bucket)
-  console.log('prefix: ' + prefix)
-  console.log('req.session.accessKey: ' + req.session.accessKey)
-  console.log('req.session.secretKey: ' + req.session.secretKey)
 
   qiniujs.getImages(req, bucket, prefix, function (statusCode, respBody, images, prefixs) {
     res.json({
@@ -44,9 +37,6 @@ exports.getImages = (req, res) => {
 // 获取token
 exports.uploadToken = (req, res) => {
   var Bucket = req.query.bucket
-  // var Domain = req.query.domain
-  console.log('uploadToken')
-  console.log('Bucket: ' + Bucket)
 
   var token = qiniujs.uploadToken(req, Bucket)
 
@@ -90,7 +80,6 @@ exports.detail = (req, res) => {
   qiniujs.getBucketManager(req).stat(bucket, key, function (err, respBody, respInfo) {
     if (err) {
       console.log(err)
-      // throw err;
     } else {
       if (respInfo.statusCode === 200) {
         res.json({

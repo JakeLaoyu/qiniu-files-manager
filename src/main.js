@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import routerConfig from './router.js'
 import store from './store'
 import 'iview/dist/styles/iview.css'
+import '@/theme/iconfont.js'
 import UiComponents from '@components'
 
 import {

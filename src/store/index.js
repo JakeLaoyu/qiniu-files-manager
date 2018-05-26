@@ -26,11 +26,11 @@ const store = new Vuex.Store({
     imageList: [], // 图片列表
     prefixs: [], // 当前访问路径的前缀
     openPrefixs: [], // 已经打开的 prefix
-    imageDetail: {}, // 图片详情
+    fileDetail: {}, // 图片详情
     multipleSwitchFile: [] // 多选选中文件
   },
   getters: {
-    getDetail: ({imageDetail}) => (key) => imageDetail[ key ]
+    getDetail: ({fileDetail}) => (key) => fileDetail[ key ]
   },
   mutations: {
     chooseAllMultipleSwitchFile (state, payload) {
@@ -68,7 +68,7 @@ const store = new Vuex.Store({
       if (state.currentBucket.bucket === delBucket.bucket) {
         state.openPrefixs = []
         state.imageList = []
-        state.imageDetail = {}
+        state.fileDetail = {}
       }
     },
     emptyOpenPrefixs (state) {
@@ -78,11 +78,11 @@ const store = new Vuex.Store({
       state.imageList = []
     },
     popOpenPrefixs (state) {
-      state.imageDetail = {}
+      state.fileDetail = {}
       state.openPrefixs.pop()
     },
     pushOpenPrefixs (state, payload) {
-      state.imageDetail = {}
+      state.fileDetail = {}
       state.openPrefixs.push(payload)
     },
     deleteImage (state, payload) {
@@ -92,9 +92,9 @@ const store = new Vuex.Store({
     unshift (state, payload) {
       state.imageList.unshift(payload)
     },
-    setImageDetail (state, payload) {
-      state.imageDetail = {
-        ...state.imageDetail,
+    setFileDetail (state, payload) {
+      state.fileDetail = {
+        ...state.fileDetail,
         [ payload.key ]: payload
       }
     },
@@ -121,10 +121,10 @@ const store = new Vuex.Store({
      * @param  {String}  image  图片的key
      * @return {undefined}        [description]
      */
-    async getImageDetail ({commit}, {bucket, image}) {
-      const {info} = ajax.get(`/api/detail?key=${image.key}&bucket=${bucket}`)
+    async getFileDetail ({commit}, {bucket, image}) {
+      const {info} = await ajax.get(`/api/detail?key=${image.key}&bucket=${bucket}`)
 
-      commit('setImageDetail', {
+      commit('setFileDetail', {
         ...image,
         ...info
       })

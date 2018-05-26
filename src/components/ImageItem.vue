@@ -1,7 +1,7 @@
 <template>
 <div v-if="type=='image'">
   <Col span="4" class-name="item">
-    <div class="item__image" :class={active:choosed} @click="$emit('clickImage',item)">
+    <div class="item__image" :class={active:choosed} @click="$emit('clickFile',item)">
       <img :src="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
       <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
@@ -27,6 +27,15 @@
   <Col span="4" class-name="item" >
     <div class="item__folder">
       <div class="folder-name">无文件</div>
+    </div>
+  </Col>
+</div>
+<div v-else>
+  <Col span="4" class-name="item" >
+    <div class="item__file" :class={active:choosed} @click="$emit('clickFile',item)">
+      <QimIcon :icon="type.split('/')[type.split('/').length-1]"></QimIcon>
+      <div class="file-name">{{ item.key.split('/')[item.key.split('/').length-1] }}</div>
+      <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
   </Col>
 </div>
@@ -116,7 +125,8 @@ export default {
             white-space: nowrap;
         }
     }
-    &__image {
+    &__image,
+    &__file {
         width: 100%;
         height: 100%;
         font-size: 0;
@@ -136,5 +146,15 @@ export default {
             bottom: 5%;
         }
     }
+    &__file{
+      display: inline-block;
+      vertical-align: middle;
+      word-wrap: break-word;
+      width: 100%;
+      height: auto;
+    }
+}
+.file-name{
+  font-size: 14px;
 }
 </style>

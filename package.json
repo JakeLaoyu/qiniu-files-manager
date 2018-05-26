@@ -1,7 +1,7 @@
 {
   "name": "qiniu-images-manager",
-  "version": "3.0.0",
-  "description": "基于vue.js + expressjs 的七牛图床管理工具",
+  "version": "3.0.1",
+  "description": "基于vue.js + expressjs 的七牛文件管理工具",
   "author": "Jake <yucj@dxy.cn>",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "axios": "0.18.0",
     "clipboard": "2.0.1",
     "iview": "2.13.1",
+    "mime-types": "2.1.18",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "3.0.1",
