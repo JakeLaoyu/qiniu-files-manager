@@ -151,7 +151,7 @@ export default {
     setDetailDomHeight () {
       var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
       this.detailStyle = {
-        maxHeight: `calc(100vh - ${uploadDomRect.top + uploadDomRect.height + 30}px)`
+        maxHeight: `calc(100vh - ${83 + uploadDomRect.height + 30}px)`
       }
     },
     inputNewPrefix (newPrefix) {
