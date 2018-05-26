@@ -4,10 +4,10 @@ import BucketsManage from '@views/bucketsManage'
 export default [
   {
     path: '/',
-    name: '图片管理',
+    name: '文件管理',
     component: IndexPage,
     meta: {
-      title: 'qim-图片管理'
+      title: 'qim-文件管理'
     }
   }, {
     path: '/buckets',

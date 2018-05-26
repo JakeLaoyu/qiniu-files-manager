@@ -1,9 +1,8 @@
 {
   "name": "qiniu-images-manager",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "基于vue.js + expressjs 的七牛文件管理工具",
   "author": "Jake <yucj@dxy.cn>",
-  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",

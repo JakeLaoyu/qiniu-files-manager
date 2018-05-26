@@ -1,6 +1,6 @@
-## 七牛图床管理
+## 七牛文件管理
 
-前端: vue、vuex、axios、iview、vue-router
+前端: vue、vuex、axios、iview、vue-router、iconfont
 
 服务端: expressjs、七牛SDK
 
@@ -63,6 +63,7 @@ pm2 start pm2.config.json
 - [x] 组件重构
 - [x] 批量删除
 - [x] 新建前缀
+- [x] 支持其他文件
 
 ## License
 MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
