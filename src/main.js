@@ -69,7 +69,7 @@ Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal
 
 Object.keys(UiComponents).forEach((key) => {
-  Vue.component(key, UiComponents[ key ])
+  Vue.component(`Qim${key}`, UiComponents[ key ])
 })
 
 /* eslint-disable */

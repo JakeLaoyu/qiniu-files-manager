@@ -1,11 +1,11 @@
-import QimModal from './qimModal.vue'
-import QimUpload from './qimUpload.vue'
-import QimImageItem from './qimImageItem.vue'
-import QimDetail from './qimDetail.vue'
+import Modal from './Modal.vue'
+import Upload from './Upload.vue'
+import ImageItem from './ImageItem.vue'
+import Detail from './Detail.vue'
 
 export default {
-  QimModal,
-  QimUpload,
-  QimImageItem,
-  QimDetail
+  Modal,
+  Upload,
+  ImageItem,
+  Detail
 }
