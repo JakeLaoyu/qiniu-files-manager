@@ -164,12 +164,10 @@ export default {
       }
     },
     clickPrefix (folder) {
-      this.clickFileKey = ''
       this.pushOpenPrefixs(folder)
       this.getImagesList()
     },
     returnDirectory () {
-      this.clickFileKey = ''
       this.popOpenPrefixs()
       this.getImagesList()
     },
@@ -199,6 +197,7 @@ export default {
     },
     getImagesList () {
       const self = this
+      this.clickFileKey = ''
       this.loading = true
       this.getList({
         bucket: this.currentBucket.bucket,

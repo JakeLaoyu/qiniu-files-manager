@@ -1,6 +1,6 @@
 {
   "name": "qiniu-images-manager",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "基于vue.js + expressjs 的七牛文件管理工具",
   "author": "Jake <yucj@dxy.cn>",
   "scripts": {
