@@ -23,7 +23,7 @@ const store = new Vuex.Store({
   state: {
     buckets: [], // buckets 列表
     currentBucket: {}, // 当前bucket
-    imageList: [], // 图片列表
+    fileList: [], // 图片列表
     prefixs: [], // 当前访问路径的前缀
     openPrefixs: [], // 已经打开的 prefix
     fileDetail: {}, // 图片详情
@@ -34,7 +34,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     chooseAllMultipleSwitchFile (state, payload) {
-      state.imageList.forEach(item => {
+      state.fileList.forEach(item => {
         if (payload && !state.multipleSwitchFile.includes(item.key)) {
           state.multipleSwitchFile.push(item.key)
         } else if (!payload && state.multipleSwitchFile.includes(item.key)) {
@@ -67,15 +67,15 @@ const store = new Vuex.Store({
       state.buckets.splice(index, 1)
       if (state.currentBucket.bucket === delBucket.bucket) {
         state.openPrefixs = []
-        state.imageList = []
+        state.fileList = []
         state.fileDetail = {}
       }
     },
     emptyOpenPrefixs (state) {
       state.openPrefixs = []
     },
-    emptyImageList (state) {
-      state.imageList = []
+    emptyFileList (state) {
+      state.fileList = []
     },
     popOpenPrefixs (state) {
       state.fileDetail = {}
@@ -86,11 +86,11 @@ const store = new Vuex.Store({
       state.openPrefixs.push(payload)
     },
     deleteImage (state, payload) {
-      var indexOfStevie = state.imageList.findIndex(i => i.key === payload)
-      state.imageList.splice(indexOfStevie, 1)
+      var indexOfStevie = state.fileList.findIndex(i => i.key === payload)
+      state.fileList.splice(indexOfStevie, 1)
     },
     unshift (state, payload) {
-      state.imageList.unshift(payload)
+      state.fileList.unshift(payload)
     },
     setFileDetail (state, payload) {
       state.fileDetail = {
@@ -102,14 +102,14 @@ const store = new Vuex.Store({
       state.buckets.push(payload)
     },
     setCurrentBucket (state, payload) {
-      state.imageList = []
+      state.fileList = []
       state.openPrefixs = []
       state.currentBucket = {
         ...payload
       }
     },
     setState (state, payload) {
-      state.imageList = payload.imageList
+      state.fileList = payload.fileList
       state.prefixs = payload.prefixs
     }
   },
@@ -121,11 +121,11 @@ const store = new Vuex.Store({
      * @param  {String}  image  图片的key
      * @return {undefined}        [description]
      */
-    async getFileDetail ({commit}, {bucket, image}) {
-      const {info} = await ajax.get(`/api/detail?key=${image.key}&bucket=${bucket}`)
+    async getFileDetail ({commit}, {bucket, file}) {
+      const {info} = await ajax.get(`/api/detail?key=${file.key}&bucket=${bucket}`)
 
       commit('setFileDetail', {
-        ...image,
+        ...file,
         ...info
       })
     },
@@ -151,14 +151,14 @@ const store = new Vuex.Store({
      * @return {undefined}              [description]
      */
     async getList ({commit}, {bucket, domain, prefix = '', cb}) {
-      commit('emptyImageList')
+      commit('emptyFileList')
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
       if (!images) return
       images.forEach(item => {
         item.key = prefix + item.key
       })
       commit('setState', {
-        imageList: images,
+        fileList: images,
         prefixs: prefixs
       })
       if (cb) {

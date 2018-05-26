@@ -14,7 +14,7 @@
       <Row :gutter="20">
         <Col span="16" push="8" class-name="contentmain">
           <QimImageItem
-            v-if="!openPrefixs.length && !imageList.length"
+            v-if="!openPrefixs.length && !fileList.length"
             type="empty"
             />
 
@@ -33,7 +33,7 @@
             />
 
           <template
-            v-for="item in imageList"
+            v-for="item in fileList"
             >
             <QimImageItem
               :item="item"
@@ -65,9 +65,9 @@
 
           <transition name="fade">
             <QimDetail
-              :detail="fileDetail"
+              :detail="fileDetail || clickFileDetail"
               :detailStyle="detailStyle"
-              v-if="clickFileKey && fileDetail"
+              v-if="clickFileKey"
               @deleteImage="clickFileKey=''"
               @imageload="handleScroll"
               />
@@ -101,6 +101,7 @@ export default {
     return {
       clickFileKey: '',
       MultipleSwitch: false,
+      clickFileDetail: {},
       newPrefix: '',
       loading: false,
       detailStyle: {
@@ -112,7 +113,7 @@ export default {
     ...mapState([
       'buckets',
       'currentBucket',
-      'imageList',
+      'fileList',
       'prefixs',
       'openPrefixs',
       'multipleSwitchFile'
@@ -175,7 +176,7 @@ export default {
     uploadfinish (payload) {
       if (payload.newPrefix.indexOf('/') >= 0) {
         this.setState({
-          imageList: this.imageList,
+          fileList: this.fileList,
           prefixs: this.prefixs.includes(payload.newPrefix.split('/')[0]) ? this.prefixs : [payload.newPrefix.split('/')[0], ...this.prefixs]
         })
       } else {
@@ -185,14 +186,15 @@ export default {
         })
       }
     },
-    clickFile (image) {
-      this.clickFileKey = image.key
+    clickFile (file) {
+      this.clickFileKey = file.key
+      this.clickFileDetail = file
       if (this.MultipleSwitch) {
-        this.changeMultipleSwitchFile(image.key)
+        this.changeMultipleSwitchFile(file.key)
       }
       this.getFileDetail({
         bucket: this.currentBucket.bucket,
-        image: image
+        file
       })
     },
     getImagesList () {
