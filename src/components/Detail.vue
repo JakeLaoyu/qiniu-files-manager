@@ -25,7 +25,6 @@
         </ButtonGroup>
 
         <div style="margin-top:20px;">
-          <a :href="imageUrl" download><Button type="ghost" icon="ios-cloud-download-outline"></Button></a>
           <a :href="imageUrl" target="_blank"><Button type="ghost" icon="eye">打开</Button></a>
           <Button type="primary" id="copyBtn" icon="ios-copy">复制链接</Button>
         </div>
