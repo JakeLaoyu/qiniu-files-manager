@@ -25,7 +25,6 @@
         </ButtonGroup>
 
         <div style="margin-top:20px;">
-          <!-- <Button type="ghost" icon="ios-cloud-download-outline" @click="downFile"></Button> -->
           <a :href="imageUrl" target="_blank"><Button type="ghost" icon="eye">打开</Button></a>
           <Button type="primary" id="copyBtn" icon="ios-copy">复制链接</Button>
         </div>
@@ -139,18 +138,24 @@ export default {
       this.showModal = false
 
       location.reload()
+    },
+    copyUrl () {
+      if (this.clipboard) {
+        this.clipboard.destroy()
+      }
+      this.clipboard = new Clipboard('#copyBtn', {
+        text: () => this.imageUrl
+      })
+      this.clipboard.on('success', e => {
+        this.$Message.success('复制成功 ' + this.imageUrl)
+      })
     }
   },
   mounted () {
     if (this.detail.mimeType.split('/')[0] !== 'image') {
       this.imgLoading = false
     }
-    let clipboard = new Clipboard('#copyBtn', {
-      text: () => this.imageUrl
-    })
-    clipboard.on('success', e => {
-      this.$Message.success('复制成功 ' + this.imageUrl)
-    })
+    this.copyUrl()
   }
 }
 </script>
