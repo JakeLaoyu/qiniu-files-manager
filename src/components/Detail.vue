@@ -3,16 +3,19 @@
   <div class="detail__wrap" :style="detailStyle">
     <div class="detail__img">
       <Spin size="large" fix v-if="imgLoading"></Spin>
-      <img :src="imageUrl" @load="imgLoad" v-if="detail.mimeType.split('/')[0]==='image'">
+      <img :src="fileUrl" @load="imgLoad" v-if="detail.mimeType.split('/')[0]==='image'">
+      <div class="dplayer__wrap" v-show="detail.mimeType.split('/')[0]==='video'">
+        <div id="dplayer"></div>
+      </div>
       <QimIcon
-        v-else
+        v-if="!['video','image'].includes(detail.mimeType.split('/')[0])"
         :icon="detail.mimeType.split('/')[detail.mimeType.split('/').length-1]"
         size="80"
         />
     </div>
     <div class="detail__info">
       <div class="detail__name">{{ detail.key.split('/')[detail.key.split('/').length - 1] }}</div>
-      <div class="detail__url"><span>url:</span> {{ imageUrl }}</div>
+      <div class="detail__url"><span>url:</span> {{ fileUrl }}</div>
       <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detail)" :key="detailKey"><span>{{detailKey}}:</span> {{ detail[detailKey] }}</div>
 
       <div class="detail__operating">
@@ -25,7 +28,7 @@
         </ButtonGroup>
 
         <div style="margin-top:20px;">
-          <a :href="imageUrl" target="_blank"><Button type="ghost" icon="eye">打开</Button></a>
+          <a :href="fileUrl" target="_blank"><Button type="ghost" icon="eye">打开</Button></a>
           <Button type="primary" id="copyBtn" icon="ios-copy">复制链接</Button>
         </div>
       </div>
@@ -47,6 +50,8 @@ import {
 } from '@util'
 
 import Clipboard from 'clipboard'
+import DPlayer from 'dplayer'
+import 'dplayer/dist/DPlayer.min.css'
 
 export default {
   props: {
@@ -70,7 +75,7 @@ export default {
       'currentBucket',
       'openPrefixs'
     ]),
-    imageUrl () {
+    fileUrl () {
       return this.currentBucket.domain + this.detail.key
     }
   },
@@ -78,6 +83,8 @@ export default {
     detail (val, oldVal) {
       if (this.detail.mimeType.split('/')[0] === 'image' && val.key !== oldVal.key) {
         this.imgLoading = true
+      } else if (this.detail.mimeType.split('/')[0] === 'video' && val.key !== oldVal.key) {
+        this.videoInit()
       }
     }
   },
@@ -85,6 +92,16 @@ export default {
     ...mapMutations([
       'deleteImage'
     ]),
+    videoInit () {
+      this.dp = new DPlayer({
+        container: document.getElementById('dplayer'),
+        autoplay: false,
+        lang: 'zh-cn',
+        video: {
+          url: this.currentBucket.domain + this.detail.key
+        }
+      })
+    },
     imgLoad () {
       this.imgLoading = false
       this.$emit('imageload')
@@ -144,16 +161,19 @@ export default {
         this.clipboard.destroy()
       }
       this.clipboard = new Clipboard('#copyBtn', {
-        text: () => this.imageUrl
+        text: () => this.fileUrl
       })
       this.clipboard.on('success', e => {
-        this.$Message.success('复制成功 ' + this.imageUrl)
+        this.$Message.success('复制成功 ' + this.fileUrl)
       })
     }
   },
   mounted () {
     if (this.detail.mimeType.split('/')[0] !== 'image') {
       this.imgLoading = false
+    }
+    if (this.detail.mimeType.split('/')[0] === 'video') {
+      this.videoInit()
     }
     this.copyUrl()
   }
