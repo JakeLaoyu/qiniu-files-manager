@@ -127,10 +127,10 @@ export default {
   },
   watch: {
     newPrefix () {
-      this.setDetailDomHeight()
+      this.handleScroll()
     },
     openPrefixs () {
-      this.setDetailDomHeight()
+      this.handleScroll()
     }
   },
   methods: {
@@ -148,12 +148,6 @@ export default {
       'setState',
       'emptyOpenPrefixs'
     ]),
-    setDetailDomHeight () {
-      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
-      this.detailStyle = {
-        maxHeight: `calc(100vh - ${83 + uploadDomRect.height + 30}px)`
-      }
-    },
     inputNewPrefix (newPrefix) {
       this.newPrefix = newPrefix
     },
@@ -209,28 +203,38 @@ export default {
       })
     },
     handleScroll () {
-      var documentHeight = document.documentElement.clientHeight
+      var timeout
       var contentMain = document.querySelector('.contentmain')
       var detailDom = document.querySelector('.detail')
       var detailWrap = document.querySelector('.detail__wrap')
-      if (detailWrap) {
-        detailWrap.scrollTop = detailWrap.scrollHeight
-      }
+      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
       if (detailDom && contentMain) {
         // var contentMainDomClientRect = contentMain.getBoundingClientRect()
         var detailDomRect = detailDom.getBoundingClientRect()
         if (window.scrollY >= 218) {
-          var csstext = `top:${window.scrollY - 206}px;left:0;width:${detailDomRect.width}px`
-          detailDom.style = detailDomRect.height >= documentHeight ? csstext + 'height:' + documentHeight + 'px;overflow:scroll;' : csstext
+          var csstext = `top:${window.scrollY - 206}px;left:0;width:${detailDomRect.width}px;`
+          this.detailStyle = {
+            maxHeight: 'calc(100vh - 20px)'
+          }
+          detailDom.style = csstext
         } else {
+          this.detailStyle = {
+            maxHeight: `calc(100vh - ${83 + uploadDomRect.height + 30}px)`
+          }
           detailDom.style = ''
         }
+      }
+      if (detailWrap) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          detailWrap.scrollTop = detailWrap.scrollHeight
+        })
       }
     }
   },
   mounted () {
-    window.addEventListener('scroll', debounce(this.handleScroll, 100))
-    window.addEventListener('resize', debounce(this.handleScroll, 100))
+    window.addEventListener('scroll', debounce(this.handleScroll, 50))
+    window.addEventListener('resize', debounce(this.handleScroll, 50))
     this.emptyOpenPrefixs()
     this.emptyMultipleSwitchFile()
     this.getImagesList()
