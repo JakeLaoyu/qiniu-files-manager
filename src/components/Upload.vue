@@ -2,7 +2,6 @@
   <Upload
     multiple
     type="drag"
-    :on-progress="handleProgress"
     :on-success="handleSuccess"
     :on-error="handleError"
     :on-format-error="handleFormatError"
@@ -53,15 +52,10 @@ export default {
         desc: '上传 ' + file.name + ' 时，发生错误，请从新上传'
       })
     },
-    beforeUpload (file) {
+    async beforeUpload (file) {
+      await this.getUploadToken()
       var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : this.newPrefix
       this.form.key = `${prefix}${file.name}`
-    },
-    handleProgress (event, file, fileList) {
-      // this.loaded = (event.loaded / 1000000).toFixed(2)
-      // this.fileSize = (event.total / 1000000).toFixed(2)
-      // this.percent = (event.loaded / event.total * 100).toFixed(2)
-      // console.log((event.loaded / event.total * 100).toFixed(2))
     },
     handleSuccess (response, file, fileList) {
       response.mimeType = mime.lookup(file.name)
