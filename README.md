@@ -57,13 +57,5 @@ cd server/
 pm2 start pm2.config.json
 ```
 
-## TODO
-
-- [x] 接入VUEX
-- [x] 组件重构
-- [x] 批量删除
-- [x] 新建前缀
-- [x] 支持其他文件
-
 ## License
 MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
