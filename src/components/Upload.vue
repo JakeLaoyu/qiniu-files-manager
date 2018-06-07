@@ -53,7 +53,6 @@ export default {
       })
     },
     async beforeUpload (file) {
-      await this.getUploadToken()
       var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : this.newPrefix
       this.form.key = `${prefix}${file.name}`
     },
@@ -84,6 +83,11 @@ export default {
       if (code === 1) {
         this.form.token = uploadToken
       }
+
+      clearTimeout(this.getTokenTimeout)
+      this.getTokenTimeout = setTimeout(() => {
+        this.getUploadToken()
+      }, 1000 * 60 * 50)
     }
   }
 }
