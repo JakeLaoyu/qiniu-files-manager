@@ -76,15 +76,13 @@ const store = new Vuex.Store({
     },
     changeOpenPrefixs (state, payload) {
       state.fileDetail = {}
-      state.openPrefixs = payload
-    },
-    popOpenPrefixs (state) {
-      state.fileDetail = {}
-      state.openPrefixs.pop()
-    },
-    pushOpenPrefixs (state, payload) {
-      state.fileDetail = {}
-      state.openPrefixs.push(payload)
+      if (payload.type === 'pop') {
+        state.openPrefixs.pop()
+      } else if (payload.type === 'push') {
+        state.openPrefixs.push(payload.val)
+      } else if (payload.type === 'jump') {
+        state.openPrefixs = payload.val
+      }
     },
     deleteImage (state, payload) {
       var indexOfStevie = state.fileList.findIndex(i => i.key === payload)

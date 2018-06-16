@@ -141,8 +141,7 @@ export default {
     ]),
     ...mapMutations([
       'unshift',
-      'pushOpenPrefixs',
-      'popOpenPrefixs',
+      'changeOpenPrefixs',
       'changeMultipleSwitchFile',
       'emptyMultipleSwitchFile',
       'setState'
@@ -157,11 +156,16 @@ export default {
       }
     },
     clickPrefix (folder) {
-      this.pushOpenPrefixs(folder)
+      this.changeOpenPrefixs({
+        type: 'push',
+        val: folder
+      })
       this.getImagesList()
     },
     returnDirectory () {
-      this.popOpenPrefixs()
+      this.changeOpenPrefixs({
+        type: 'pop'
+      })
       this.getImagesList()
     },
     uploadfinish (payload) {

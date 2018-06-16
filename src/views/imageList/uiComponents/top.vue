@@ -91,7 +91,10 @@ export default {
       'chooseAllMultipleSwitchFile'
     ]),
     clickBreadcrumb (index) {
-      this.changeOpenPrefixs(this.openPrefixs.slice(0, index + 1))
+      this.changeOpenPrefixs({
+        type: 'jump',
+        val: this.openPrefixs.slice(0, index + 1)
+      })
       this.$emit('getList')
     },
     chooseAll () {
