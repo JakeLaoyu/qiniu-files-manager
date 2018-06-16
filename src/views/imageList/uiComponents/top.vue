@@ -84,8 +84,7 @@ export default {
       'emptyMultipleSwitchFile',
       'deleteImage',
       'changeMultipleSwitchFile',
-      'chooseAllMultipleSwitchFile',
-      'emptyOpenPrefixs'
+      'chooseAllMultipleSwitchFile'
     ]),
     chooseAll () {
       this.chooseAllMultipleSwitchFile(this.chooseAllSwitch)
@@ -119,7 +118,6 @@ export default {
         ? this.buckets.find(item => {
           return item.bucket === value
         }) : this.buckets[0]
-      this.emptyOpenPrefixs()
       this.setCurrentBucket(bucket)
       this.emptyMultipleSwitchFile()
       this.$emit('getList')

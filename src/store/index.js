@@ -71,9 +71,6 @@ const store = new Vuex.Store({
         state.fileDetail = {}
       }
     },
-    emptyOpenPrefixs (state) {
-      state.openPrefixs = []
-    },
     emptyFileList (state) {
       state.fileList = []
     },
