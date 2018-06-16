@@ -96,6 +96,7 @@ export default {
       this.dp = new DPlayer({
         container: document.getElementById('dplayer'),
         autoplay: false,
+        preload: false,
         lang: 'zh-cn',
         video: {
           url: this.currentBucket.domain + this.detail.key
