@@ -7,12 +7,15 @@
   <Button class="add-bucket" type="primary" @click="showModal=true">添加Bucket</Button>
 
   <Breadcrumb>
-    <BreadcrumbItem v-for="item in openPrefixs" :key="item">{{item}}</BreadcrumbItem>
+    <a href="javascript:void(0)" v-if="openPrefixs.length > 0"  @click="clickBreadcrumb(-1)">
+      <BreadcrumbItem >首页</BreadcrumbItem>
+    </a>
+    <template v-for="(item, index) in openPrefixs">
+      <a href="javascript:void(0)" :key="item" @click="clickBreadcrumb(index)">
+        <BreadcrumbItem >{{item}}</BreadcrumbItem>
+      </a>
+    </template>
   </Breadcrumb>
-
-  <span v-if="openPrefixs.length > 0">
-    <span class="ivu-breadcrumb-item-separator">/</span>
-  </span>
 
   <Tooltip slot="append" content="例如: image/jpg/" placement="right">
     <Input
@@ -81,11 +84,16 @@ export default {
     ...mapMutations([
       'setBuckets',
       'setCurrentBucket',
+      'changeOpenPrefixs',
       'emptyMultipleSwitchFile',
       'deleteImage',
       'changeMultipleSwitchFile',
       'chooseAllMultipleSwitchFile'
     ]),
+    clickBreadcrumb (index) {
+      this.changeOpenPrefixs(this.openPrefixs.slice(0, index + 1))
+      this.$emit('getList')
+    },
     chooseAll () {
       this.chooseAllMultipleSwitchFile(this.chooseAllSwitch)
     },

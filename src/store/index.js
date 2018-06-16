@@ -74,6 +74,10 @@ const store = new Vuex.Store({
     emptyFileList (state) {
       state.fileList = []
     },
+    changeOpenPrefixs (state, payload) {
+      state.fileDetail = {}
+      state.openPrefixs = payload
+    },
     popOpenPrefixs (state) {
       state.fileDetail = {}
       state.openPrefixs.pop()
