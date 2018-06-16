@@ -1,6 +1,6 @@
 <template>
 <div class="top">
-  <Select v-model="bucketName" style="width:150px" @on-change="changeBucket">
+  <Select :value="bucketName" style="width:150px" @on-change="changeBucket">
     <Option :value="item.bucket" v-for="item in buckets" :key="item.bucket" >{{ item.bucket }}</Option>
   </Select>
 
@@ -23,12 +23,9 @@
       >
     </Input>
   </Tooltip>
-  <!-- div.multiple -->
 
   <div class="switch">
     <ButtonGroup v-if="multipleSwitch">
-      <!-- <Button>批量移动或重命名</Button>
-                <Button>批量复制</Button> -->
       <Button type="error" @click="del">批量删除</Button>
     </ButtonGroup>
 
@@ -60,7 +57,6 @@ export default {
     return {
       showModal: false,
       modalLoading: false,
-      bucketName: '',
       multipleSwitch: false,
       chooseAllSwitch: false,
       newPrefix: ''
@@ -71,10 +67,12 @@ export default {
       'openPrefixs',
       'buckets',
       'currentBucket',
-      'buckets',
       'imageList',
       'multipleSwitchFile'
-    ])
+    ]),
+    bucketName () {
+      return this.currentBucket.bucket || ''
+    }
   },
   methods: {
     ...mapActions([
@@ -86,7 +84,8 @@ export default {
       'emptyMultipleSwitchFile',
       'deleteImage',
       'changeMultipleSwitchFile',
-      'chooseAllMultipleSwitchFile'
+      'chooseAllMultipleSwitchFile',
+      'emptyOpenPrefixs'
     ]),
     chooseAll () {
       this.chooseAllMultipleSwitchFile(this.chooseAllSwitch)
@@ -115,11 +114,12 @@ export default {
         }
       })
     },
-    changeBucket () {
-      var bucket = this.bucketName
+    changeBucket (value) {
+      var bucket = value
         ? this.buckets.find(item => {
-          return item.bucket === this.bucketName
+          return item.bucket === value
         }) : this.buckets[0]
+      this.emptyOpenPrefixs()
       this.setCurrentBucket(bucket)
       this.emptyMultipleSwitchFile()
       this.$emit('getList')
@@ -142,9 +142,6 @@ export default {
     }
   },
   watch: {
-    currentBucket (val, oldVal) {
-      this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
-    },
     openPrefixs () {
       this.newPrefix = ''
       this.$emit('inputNewPrefix', this.newPrefix)
@@ -154,7 +151,6 @@ export default {
     if (this.buckets.length === 0) {
       this.showModal = true
     }
-    this.bucketName = this.currentBucket ? this.currentBucket.bucket : ''
   }
 }
 </script>

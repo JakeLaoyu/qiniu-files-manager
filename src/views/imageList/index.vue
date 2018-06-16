@@ -145,8 +145,7 @@ export default {
       'popOpenPrefixs',
       'changeMultipleSwitchFile',
       'emptyMultipleSwitchFile',
-      'setState',
-      'emptyOpenPrefixs'
+      'setState'
     ]),
     inputNewPrefix (newPrefix) {
       this.newPrefix = newPrefix
@@ -235,7 +234,6 @@ export default {
   mounted () {
     window.addEventListener('scroll', debounce(this.handleScroll, 50))
     window.addEventListener('resize', debounce(this.handleScroll, 50))
-    this.emptyOpenPrefixs()
     this.emptyMultipleSwitchFile()
     this.getImagesList()
   },
