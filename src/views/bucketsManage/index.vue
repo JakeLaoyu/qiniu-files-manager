@@ -9,7 +9,7 @@
         </MenuItem>
       </Menu>
     </Header>
-    <Content :style="{margin: '88px 20px 0', background: '#fff', minHeight: '500px'}">
+    <Content :style="{margin: '88px 20px 0', background: '#fff', paddingBottom: '30px'}">
       <div class="form">
         <div class="form__item" v-for="(key,index) in Object.keys(bucket)" :key="index">
           <div class="form__label">{{ key }}</div>
@@ -82,13 +82,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.layout {
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-}
 .layout-logo {
     width: 100px;
     height: 30px;
@@ -105,6 +98,9 @@ export default {
 }
 .layout-footer-center {
     text-align: center;
+}
+.ivu-layout {
+  height: calc(~"100vh - 30px");
 }
 .ivu-menu {
     text-align: center;
