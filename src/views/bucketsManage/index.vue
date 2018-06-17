@@ -1,5 +1,5 @@
 <template>
-<div class="layout">
+<div class="buckets">
   <Layout>
     <Header :style="{position: 'fixed', width: '100%'}">
       <Menu mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">

@@ -2,7 +2,7 @@
 <div id="app" class="layout">
     <Menu mode="horizontal" theme="light" active-name="1">
         <router-link class="layout-logo" to="/">七牛文件管理</router-link>
-        <a class="layout-logo" href="https://github.com/JakeLaoyu/qiniu-images-manager" target="_blank">GitHub</a>
+        <a class="layout-logo" href="https://github.com/JakeLaoyu/qiniu-files-manager" target="_blank">GitHub</a>
 
         <router-link class="routerlink" to="/search">
           <Icon type="search"></Icon>
