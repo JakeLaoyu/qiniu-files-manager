@@ -4,6 +4,9 @@
         <router-link class="layout-logo" to="/">七牛文件管理</router-link>
         <a class="layout-logo" href="https://github.com/JakeLaoyu/qiniu-images-manager" target="_blank">GitHub</a>
 
+        <router-link class="routerlink" to="/search">
+          <Icon type="search"></Icon>
+        </router-link>
         <router-link class="routerlink" to="/buckets">Bucket</router-link>
         <router-link class="routerlink" to="/">File</router-link>
     </Menu>
@@ -23,7 +26,6 @@ export default {
 
 <style lang="less" scoped>
 .layout {
-  border: 1px solid #d7dde4;
   background: #f5f7f9;
   border-bottom: 0;
 }

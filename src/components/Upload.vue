@@ -63,7 +63,8 @@ export default {
         desc: '上传 ' + file.name + ' 时，发生错误，请从新上传'
       })
     },
-    async beforeUpload (file) {
+    beforeUpload (file) {
+      console.log(file)
       var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : this.newPrefix
       this.form.key = `${prefix}${file.name}`
     },
@@ -100,6 +101,10 @@ export default {
         this.getUploadToken()
       }, 1000 * 60 * 50)
     }
+  },
+  mounted () {
+    // do something after mounting vue instance
+    this.getUploadToken()
   }
 }
 </script>

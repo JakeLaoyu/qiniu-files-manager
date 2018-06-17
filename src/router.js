@@ -1,5 +1,6 @@
 import IndexPage from '@views/imageList'
 import BucketsManage from '@views/bucketsManage'
+import Search from '@views/search'
 
 export default [
   {
@@ -16,6 +17,14 @@ export default [
     meta: {
       keepAlive: true,
       title: 'qim-Bucket管理'
+    }
+  }, {
+    path: '/search',
+    name: '搜索',
+    component: Search,
+    meta: {
+      keepAlive: true,
+      title: 'qim-搜索'
     }
   }
 ]

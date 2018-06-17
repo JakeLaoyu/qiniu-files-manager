@@ -185,16 +185,18 @@ export default {
   background: #fff;
   font-size: 14px;
   color: #666;
+  padding: 10px 0;
   position: relative;
-  padding: 10px;
   box-sizing: border-box;
   min-height: 100px;
   transition: top 0.5s;
   top: 0;
   &__wrap{
     overflow-y: scroll;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
-  & > div {
+  &__info > div {
     word-break: break-all;
     margin-bottom: 10px;
     span {

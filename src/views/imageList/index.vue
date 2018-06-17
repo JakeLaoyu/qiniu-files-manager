@@ -69,7 +69,7 @@
               :detailStyle="detailStyle"
               v-if="clickFileKey"
               @deleteImage="clickFileKey=''"
-              @imageload="handleScroll"
+              @imageload="handleDetailScroll"
               />
           </transition>
         </Col>
@@ -88,10 +88,6 @@ import {
   mapActions,
   mapMutations
 } from 'vuex'
-
-import {
-  debounce
-} from '@util'
 
 export default {
   components: {
@@ -127,10 +123,10 @@ export default {
   },
   watch: {
     newPrefix () {
-      this.handleScroll()
+      this.handleDetailScroll()
     },
     openPrefixs () {
-      this.handleScroll()
+      this.handleDetailScroll()
     }
   },
   methods: {
@@ -192,6 +188,18 @@ export default {
         file
       })
     },
+    handleDetailScroll () {
+      var timeout
+      var detailWrap = document.querySelector('.detail__wrap')
+      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
+      if (detailWrap) {
+        detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72}px)`
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          detailWrap.scrollTop = detailWrap.scrollHeight
+        })
+      }
+    },
     getImagesList () {
       const self = this
       this.clickFileKey = ''
@@ -204,40 +212,9 @@ export default {
           self.loading = false
         }
       })
-    },
-    handleScroll () {
-      var timeout
-      var contentMain = document.querySelector('.contentmain')
-      var detailDom = document.querySelector('.detail')
-      var detailWrap = document.querySelector('.detail__wrap')
-      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
-      if (detailDom && contentMain) {
-        // var contentMainDomClientRect = contentMain.getBoundingClientRect()
-        var detailDomRect = detailDom.getBoundingClientRect()
-        if (window.scrollY >= 218) {
-          var csstext = `top:${window.scrollY - 206}px;left:0;width:${detailDomRect.width}px;`
-          this.detailStyle = {
-            maxHeight: 'calc(100vh - 20px)'
-          }
-          detailDom.style = csstext
-        } else {
-          this.detailStyle = {
-            maxHeight: `calc(100vh - ${83 + uploadDomRect.height + 30}px)`
-          }
-          detailDom.style = ''
-        }
-      }
-      if (detailWrap) {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
-          detailWrap.scrollTop = detailWrap.scrollHeight
-        })
-      }
     }
   },
   mounted () {
-    window.addEventListener('scroll', debounce(this.handleScroll, 50))
-    window.addEventListener('resize', debounce(this.handleScroll, 50))
     this.emptyMultipleSwitchFile()
     this.getImagesList()
   },
@@ -250,19 +227,23 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.contentmain {
+  height: calc(~"100vh - 92px");
+  overflow-y: scroll;
+}
 .layout {
   width: 1200px;
   margin: 0 auto;
   border: none;
   &-content {
-    min-height: calc(~"100vh - 90px");
-    overflow: hidden;
     border-radius: 4px;
     width: 1200px;
     margin: 0 auto;
   }
   &-content-main {
     padding: 10px;
+    height: calc(~"100vh - 72px");
+    box-sizing: border-box;
   }
 }
 .ivu-spin-fix {
