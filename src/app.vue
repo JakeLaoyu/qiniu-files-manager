@@ -28,6 +28,7 @@ export default {
 .layout {
   background: #f5f7f9;
   border-bottom: 0;
+  min-width: 1200px;
 }
 .layout-logo {
   padding: 0 10px;
@@ -43,7 +44,6 @@ export default {
     &-horizontal {
       height: 30px;
       line-height: 30px;
-      min-width: 1200px;
     }
   }
 }
