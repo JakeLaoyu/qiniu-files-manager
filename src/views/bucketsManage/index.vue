@@ -2,8 +2,8 @@
 <div class="buckets">
   <Layout>
     <Header :style="{position: 'fixed', width: '100%'}">
-      <Menu mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
-        <MenuItem v-for="(item, index) in buckets" :key="index" :name="index+1">
+      <Menu mode="horizontal" theme="light" :active-name="currentBucket.domain" @on-select="changeMenu">
+        <MenuItem v-for="(item, index) in buckets" :key="index" :name="item.domain">
           <Icon type="briefcase"></Icon>
           {{ item.bucket }}
         </MenuItem>
@@ -54,7 +54,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'buckets'
+      'buckets',
+      'currentBucket'
     ])
   },
   methods: {

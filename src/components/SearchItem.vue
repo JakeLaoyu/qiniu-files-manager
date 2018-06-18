@@ -90,6 +90,12 @@ export default {
 .item {
   height: 100%;
   position: relative;
+  overflow: hidden;
+  &:hover {
+    .item__btn {
+      bottom: 0;
+    }
+  }
   img{
     max-width: 100%;
     position: absolute;
@@ -111,7 +117,7 @@ export default {
   }
   &__btn {
     position: absolute;
-    bottom: 0;
+    bottom: -41px;
     left: 0;
     right: 0;
     padding: 10px;
@@ -119,6 +125,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all .2s;
     a {
       display: inline-block;
       color: #fff;
