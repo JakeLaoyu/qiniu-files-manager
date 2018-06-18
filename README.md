@@ -57,5 +57,26 @@ cd server/
 pm2 start pm2.config.json
 ```
 
+## nginx
+
+nginx 配置示例:
+
+```nginx
+server
+{
+  listen 80;
+  server_name qim.jakeyu.top;
+
+  location / {
+    root /home/qiniu-files-manager/dist/;
+    index index.html;
+    try_files $uri $uri/ /index.html;
+  }
+  location /api {
+    proxy_pass http://localhost:2017;
+  }
+}
+```
+
 ## License
 MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
