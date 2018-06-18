@@ -8,6 +8,7 @@ export default [
     name: '文件管理',
     component: IndexPage,
     meta: {
+      keepAlive: true,
       title: 'qim-文件管理'
     }
   }, {

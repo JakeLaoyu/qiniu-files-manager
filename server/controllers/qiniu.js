@@ -25,7 +25,7 @@ exports.uploadToken = (req, bucket) => {
  * @param  {String} prefix 前缀
  * @return {[type]}        [description]
  */
-exports.getImages = (req, bucket, prefix, cb) => {
+exports.getImages = (req, bucket, prefix, search, cb) => {
   // @param options 列举操作的可选参数
   //                prefix    列举的文件前缀
   //                marker    上一次列举返回的位置标记，作为本次列举的起点信息
@@ -45,11 +45,16 @@ exports.getImages = (req, bucket, prefix, cb) => {
     // var commonPrefixes = respBody.commonPrefixes
     var items = respBody.items
     var prefixTraverseResult = {}
-    if (items && items.length > 0) {
+    if (items && items.length > 0 && !search) {
       prefixTraverseResult = prefixTraverse(items, prefix)
+      cb(respInfo.statusCode, respBody, prefixTraverseResult.images, prefixTraverseResult.prefixs)
+    } else {
+      // 返回搜索结果
+      var findResult = items.filter(item => {
+        return new RegExp(search).test(item.key)
+      })
+      cb(respInfo.statusCode, respBody, findResult, [])
     }
-
-    cb(respInfo.statusCode, respBody, prefixTraverseResult.images, prefixTraverseResult.prefixs)
   })
 }
 

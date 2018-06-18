@@ -205,9 +205,6 @@ export default {
       this.clickFileKey = ''
       this.loading = true
       this.getList({
-        bucket: this.currentBucket.bucket,
-        domain: this.currentBucket.domain,
-        prefix: this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : '',
         cb () {
           self.loading = false
         }

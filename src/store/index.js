@@ -86,7 +86,9 @@ const store = new Vuex.Store({
     },
     deleteImage (state, payload) {
       var indexOfStevie = state.fileList.findIndex(i => i.key === payload)
-      state.fileList.splice(indexOfStevie, 1)
+      if (indexOfStevie !== -1) {
+        state.fileList.splice(indexOfStevie, 1)
+      }
     },
     unshift (state, payload) {
       state.fileList.unshift(payload)
@@ -149,17 +151,26 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ({commit}, {bucket, domain, prefix = '', cb}) {
-      commit('emptyFileList')
-      const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}`)
+    async getList ({commit, state}, {search = '', cb}) {
+      if (!search) {
+        commit('emptyFileList')
+      }
+      var bucket = state.currentBucket.bucket
+      var domain = state.currentBucket.domain
+      var prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
+      const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&search=${search}`)
       if (!images) return
-      images.forEach(item => {
-        item.key = prefix + item.key
-      })
-      commit('setState', {
-        fileList: images,
-        prefixs: prefixs
-      })
+      if (!search) {
+        images.forEach(item => {
+          item.key = prefix + item.key
+        })
+        commit('setState', {
+          fileList: images,
+          prefixs: prefixs
+        })
+      } else {
+        return images
+      }
       if (cb) {
         cb()
       }

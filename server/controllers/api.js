@@ -22,9 +22,10 @@ exports.postSecret = (req, res) => {
 // 获取图片
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
+  var search = req.query.search || ''
   var prefix = req.query.prefix || ''
 
-  qiniujs.getImages(req, bucket, prefix, function (statusCode, respBody, images, prefixs) {
+  qiniujs.getImages(req, bucket, prefix, search, function (statusCode, respBody, images, prefixs) {
     res.json({
       code: statusCode === 200 ? 1 : statusCode,
       message: statusCode === 200 ? '' : respBody.error,
