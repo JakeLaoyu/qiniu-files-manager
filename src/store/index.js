@@ -152,12 +152,13 @@ const store = new Vuex.Store({
      * @return {undefined}              [description]
      */
     async getList ({commit, state}, {search = '', cb}) {
-      if (!search) {
-        commit('emptyFileList')
-      }
       var bucket = state.currentBucket.bucket
       var domain = state.currentBucket.domain
-      var prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
+      var prefix = ''
+      if (!search) {
+        prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
+        commit('emptyFileList')
+      }
       const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&search=${search}`)
       if (!images) return
       if (!search) {

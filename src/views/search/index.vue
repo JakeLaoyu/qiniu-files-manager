@@ -89,6 +89,10 @@ export default {
     ])
   },
   watch: {
+    currentBucket () {
+      this.searchValue = ''
+      this.searchResult = []
+    },
     detail (val, oldVal) {
       if (this.detail.mimeType.split('/')[0] === 'image' && val.key !== oldVal.key) {
         this.imgLoading = true
