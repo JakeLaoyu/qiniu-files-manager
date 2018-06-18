@@ -43,6 +43,7 @@ export default {
     &-horizontal {
       height: 30px;
       line-height: 30px;
+      min-width: 1200px;
     }
   }
 }
