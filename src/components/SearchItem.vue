@@ -1,6 +1,7 @@
 <template>
 <div class="item">
-  <img :src="`${domain}${item.key}?imageView2/1/w/285/h/285`" v-if="item.mimeType.indexOf('image')!=-1">
+  <Spin size="large" fix v-if="imgLoading"></Spin>
+  <img :src="`${domain}${item.key}?imageView2/1/w/275/h/275`" @load="imgLoad" v-if="item.mimeType.indexOf('image')!=-1">
   <div class="item__file" v-else>
     <QimIcon :icon="item.mimeType.split('/')[item.mimeType.split('/').length-1]"></QimIcon>
     <Icon item.mimeType="checkmark-circled" size="14" color="#007AFA"></Icon>
@@ -26,7 +27,8 @@ export default {
   props: ['item', 'index', 'domain'],
   data () {
     return {
-      delLoading: false
+      delLoading: false,
+      imgLoading: true
     }
   },
   computed: {
@@ -38,6 +40,9 @@ export default {
     ...mapMutations([
       'deleteImage'
     ]),
+    imgLoad () {
+      this.imgLoading = false
+    },
     copyUrl () {
       if (this.clipboard) {
         this.clipboard.destroy()

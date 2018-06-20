@@ -5,7 +5,10 @@
     </div>
     <div class="search__result">
       <Spin size="large" fix v-if="searching"></Spin>
-      <Row :gutter="20">
+      <div class="search__empty" v-if="searchResult === ''">
+        无搜索内容
+      </div>
+      <Row :gutter="20" v-if="searchResult.length">
         <Col span="6" v-for="(item,index) in searchResult" :key="index" class-name="search__item">
           <qimSearchItem
           :item="item"
@@ -135,7 +138,7 @@ export default {
       const res = await this.getList({
         search: this.searchValue
       })
-      this.searchResult = res
+      this.searchResult = res.length ? res : ''
       this.searching = false
     }
   }
@@ -147,18 +150,24 @@ export default {
   margin: 0 auto;
   height: calc(~"100vh - 30px");
   box-sizing: border-box;
-  padding: 30px 0;
+  padding-top: 30px;
   &__input {
     width: 720px;
     margin: 0 auto;
   }
+  &__empty {
+    text-align: center;
+  }
   &__result {
+    height: calc(~"100% - 56px");
+    box-sizing: border-box;
     margin-top: 20px;
-    min-height: 200px;
+    padding: 0 20px;
+    overflow-y: scroll;
     position: relative;
   }
   &__item {
-    height: 285px;
+    height: 275px;
     margin-bottom: 20px;
   }
 }
