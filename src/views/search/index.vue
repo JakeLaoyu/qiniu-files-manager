@@ -5,8 +5,8 @@
     </div>
     <div class="search__result">
       <Spin size="large" fix v-if="searching"></Spin>
-      <div class="search__empty" v-if="searchResult === ''">
-        无搜索内容
+      <div class="search__prompt">
+        {{searchResult === '' ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
       </div>
       <Row :gutter="20" v-if="searchResult.length">
         <Col span="6" v-for="(item,index) in searchResult" :key="index" class-name="search__item">
@@ -155,8 +155,9 @@ export default {
     width: 720px;
     margin: 0 auto;
   }
-  &__empty {
+  &__prompt {
     text-align: center;
+    margin-bottom: 20px;
   }
   &__result {
     height: calc(~"100% - 56px");
