@@ -5,8 +5,8 @@
     </div>
     <div class="search__result">
       <Spin size="large" fix v-if="searching"></Spin>
-      <div class="search__prompt">
-        {{searchResult === '' ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
+      <div class="search__prompt" v-if="searchOver">
+        {{searchResult.length === 0 ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
       </div>
       <Row :gutter="20" v-if="searchResult.length">
         <Col span="6" v-for="(item,index) in searchResult" :key="index" class-name="search__item">
@@ -76,6 +76,7 @@ export default {
     return {
       searching: false,
       searchValue: '',
+      searchOver: false,
       showDetail: false,
       imgLoading: false,
       showImg: false,
@@ -93,7 +94,9 @@ export default {
   },
   watch: {
     currentBucket () {
+      this.searching = false
       this.searchValue = ''
+      this.searchOver = false
       this.searchResult = []
     },
     detail (val, oldVal) {
@@ -138,8 +141,9 @@ export default {
       const res = await this.getList({
         search: this.searchValue
       })
-      this.searchResult = res.length ? res : ''
+      this.searchResult = res
       this.searching = false
+      this.searchOver = true
     }
   }
 }
