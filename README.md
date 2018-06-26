@@ -52,6 +52,13 @@ npm run build
 
 ### 服务端
 
+`app.js`中有一段[sentry](sentry.io)配置，如果不需要可以删除，详情查看[sentry](sentry.io):
+
+```js
+var Raven = require('raven')
+Raven.config('https://185f6024c5ba4b64a2a1cd6adaabd41c@sentry.io/1232836').install()
+```
+
 ```sh
 cd server/
 pm2 start pm2.config.json
