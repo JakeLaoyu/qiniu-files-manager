@@ -24,7 +24,7 @@
 
 ```js
 module.exports = {
-  sentryUrl: 'https://185f6024c5ba4b64a2a1cd6adaabd41c@sentry.io/1232836' // https://sentry.io 监控错误，如果不需要删除即可
+  sentryUrl: '' // https://sentry.io 监控错误，如果不需要删除即可
 }
 ```
 
