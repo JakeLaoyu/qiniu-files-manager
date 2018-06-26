@@ -6,6 +6,8 @@ var bodyParser = require('body-parser')
 var lessMiddleware = require('less-middleware')
 var session = require('express-session')
 var MongoStore = require('connect-mongo')(session)
+var Raven = require('raven')
+Raven.config('https://185f6024c5ba4b64a2a1cd6adaabd41c@sentry.io/1232836').install()
 
 var router = require('./routes/router')
 
