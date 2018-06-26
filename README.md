@@ -20,6 +20,14 @@
 ### Bucket管理
 ![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20180513-165519.jpg)
 
+## 配置`config.js`：
+
+```js
+module.exports = {
+  sentryUrl: 'https://185f6024c5ba4b64a2a1cd6adaabd41c@sentry.io/1232836' // https://sentry.io 监控错误，如果不需要删除即可
+}
+```
+
 ## 开发
 
 ```sh
@@ -51,13 +59,6 @@ npm run build
 ```
 
 ### 服务端
-
-`app.js`中有一段[sentry](sentry.io)配置，如果不需要可以删除，详情查看[sentry](sentry.io):
-
-```js
-var Raven = require('raven')
-Raven.config('https://185f6024c5ba4b64a2a1cd6adaabd41c@sentry.io/1232836').install()
-```
 
 ```sh
 cd server/
