@@ -7,7 +7,7 @@ var lessMiddleware = require('less-middleware')
 var session = require('express-session')
 var MongoStore = require('connect-mongo')(session)
 var Raven = require('raven')
-var Config = require('../config')
+var Config = require('../configFile')
 
 if (Config.sentryUrl) {
   Raven.config(Config.sentryUrl).install()
