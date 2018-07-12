@@ -50,9 +50,9 @@ exports.getImages = (req, bucket, prefix, search, cb) => {
       cb(respInfo.statusCode, respBody, prefixTraverseResult.images, prefixTraverseResult.prefixs)
     } else {
       // 返回搜索结果
-      var findResult = items.filter(item => {
+      var findResult = items ? items.filter(item => {
         return new RegExp(search).test(item.key)
-      })
+      }) : []
       cb(respInfo.statusCode, respBody, findResult, [])
     }
   })
