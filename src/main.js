@@ -27,7 +27,9 @@ import {
   Layout,
   MenuItem,
   Switch,
-  Tooltip
+  Tooltip,
+  Form,
+  FormItem
 } from 'iview'
 
 Vue.config.productionTip = false
@@ -48,6 +50,8 @@ router.beforeEach((to, from, next) => {
 })
 
 Vue.component('Menu', Menu)
+Vue.component('Form', Form)
+Vue.component('FormItem', FormItem)
 Vue.component('Button', Button)
 Vue.component('Modal', Modal)
 Vue.component('Row', Row)

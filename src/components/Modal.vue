@@ -2,10 +2,20 @@
 <div>
   <Modal v-model="showModal" :mask-closable="false" :title="title" :closable="false">
     <template v-if="type==='addBucket'">
-      <Input v-model="bucket.AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
-      <Input v-model="bucket.SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
-      <Input v-model="bucket.bucket" placeholder="Bucket" style="width: 100%"></Input>
-      <Input v-model="bucket.domain" placeholder="Domain(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
+      <Form ref="bucket" :model="bucket" :rules="ruleValidate" :label-width="90">
+        <FormItem label="AccessKey" prop="AccessKey">
+          <Input v-model="bucket.AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
+        </FormItem>
+        <FormItem label="SecretKey" prop="SecretKey">
+          <Input v-model="bucket.SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
+        </FormItem>
+        <FormItem label="空间名称" prop="bucket">
+          <Input v-model="bucket.bucket" placeholder="空间名称" style="width: 100%"></Input>
+        </FormItem>
+        <FormItem label="域名" prop="domain">
+          <Input v-model="bucket.domain" placeholder="域名(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
+        </FormItem>
+      </Form>
     </template>
 
     <template v-if="type==='move'">
@@ -14,7 +24,7 @@
 
     <div slot="footer">
       <Button type="ghost" @click="$emit('closeModal')">取消</Button>
-      <Button type="primary" :loading="loading" @click="ok">确定</Button>
+      <Button type="primary" :loading="loading" @click="handleSubmit">确定</Button>
     </div>
   </Modal>
 </div>
@@ -39,6 +49,20 @@ export default {
         bucket: '',
         domain: ''
       },
+      ruleValidate: {
+        AccessKey: [
+          { required: true, message: '请填写Ak', trigger: 'blur' }
+        ],
+        SecretKey: [
+          { required: true, message: '请填写Sk', trigger: 'blur' }
+        ],
+        bucket: [
+          { required: true, message: '请填写空间名称', trigger: 'blur' }
+        ],
+        domain: [
+          { required: true, message: '请填写域名', trigger: 'blur' }
+        ]
+      },
       moveTo: this.image ? this.image.key : ''
     }
   },
@@ -48,9 +72,6 @@ export default {
     ]),
     showModal () {
       return this.isShow
-    },
-    valid () {
-      return Object.keys(this.bucket).every(item => this.bucket[item])
     }
   },
   watch: {
@@ -59,20 +80,30 @@ export default {
     }
   },
   methods: {
+    handleSubmit () {
+      if (this.type === 'move') {
+        this.ok()
+        return
+      }
+      this.$refs.bucket.validate((valid) => {
+        if (valid) {
+          this.$Message.success('Success!')
+          this.ok()
+        }
+      })
+    },
     ok () {
       if (this.type === 'addBucket') {
-        if (!this.valid) {
-          return this.$Message.error(`请填写完整`)
-        }
-
         var check = this.buckets.find(item => {
-          // return item.AccessKey == this.bucket.AccessKey
-          // && item.SecretKey == this.bucket.SecretKey
           return item.bucket === this.bucket.bucket
         })
 
         if (check !== undefined) {
           return this.$Message.error(`Bucket 存在`)
+        }
+
+        if (this.bucket.domain.charAt(this.bucket.domain.length - 1) !== '/') {
+          this.bucket.domain = this.bucket.domain + '/'
         }
 
         this.$emit('ok', {
@@ -90,7 +121,4 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.ivu-input-wrapper {
-    margin-bottom: 20px;
-}
 </style>
