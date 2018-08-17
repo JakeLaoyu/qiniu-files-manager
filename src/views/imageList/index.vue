@@ -191,8 +191,9 @@ export default {
     handleDetailScroll () {
       var timeout
       var detailWrap = document.querySelector('.detail__wrap')
-      var uploadDomRect = document.querySelector('.ivu-upload').getBoundingClientRect()
-      if (detailWrap) {
+      var IvuUpload = document.querySelector('.ivu-upload')
+      if (detailWrap && IvuUpload) {
+        var uploadDomRect = IvuUpload.getBoundingClientRect()
         detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72}px)`
         clearTimeout(timeout)
         timeout = setTimeout(() => {

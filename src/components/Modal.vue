@@ -43,12 +43,7 @@ export default {
   },
   data () {
     return {
-      bucket: {
-        AccessKey: '',
-        SecretKey: '',
-        bucket: '',
-        domain: ''
-      },
+      bucket: {},
       ruleValidate: {
         AccessKey: [
           { required: true, message: '请填写Ak', trigger: 'blur' }
@@ -89,6 +84,7 @@ export default {
         if (valid) {
           this.$Message.success('Success!')
           this.ok()
+          this.bucket = {}
         }
       })
     },
