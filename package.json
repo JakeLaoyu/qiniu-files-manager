@@ -4,7 +4,7 @@
   "description": "基于vue.js + expressjs 的七牛文件管理工具",
   "author": "Jake <yucj@dxy.cn>",
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --public --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js"
   },

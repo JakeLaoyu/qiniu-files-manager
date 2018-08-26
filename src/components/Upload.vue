@@ -39,10 +39,15 @@ export default {
       'currentBucket',
       'openPrefixs'
     ]),
+    formatNewPrefix () {
+      var newPrefix = this.newPrefix.charAt(this.newPrefix.length - 1) === '/' ? this.newPrefix : this.newPrefix + '/'
+      newPrefix = newPrefix.replace(/\s/g, '-')
+      return newPrefix
+    },
     placeholder () {
       if (this.openPrefixs.length === 0) {
         if (this.newPrefix) {
-          return this.newPrefix + '/'
+          return this.formatNewPrefix
         } else {
           return '当前文件夹'
         }
@@ -64,8 +69,7 @@ export default {
       })
     },
     beforeUpload (file) {
-      console.log(file)
-      var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.newPrefix}` : this.newPrefix
+      var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.formatNewPrefix}` : this.formatNewPrefix
       this.form.key = `${prefix}${file.name}`
     },
     handleSuccess (response, file, fileList) {
@@ -75,7 +79,7 @@ export default {
       this.$Message.success('上传成功')
       this.$emit('uploadfinish', {
         file: response,
-        newPrefix: this.newPrefix || ''
+        newPrefix: this.formatNewPrefix || ''
       })
     },
     handleError (errorInfo, response, file) {
