@@ -42,6 +42,7 @@ export default {
     formatNewPrefix () {
       var newPrefix = this.newPrefix.charAt(this.newPrefix.length - 1) === '/' ? this.newPrefix : this.newPrefix + '/'
       newPrefix = newPrefix.replace(/\s/g, '-')
+      if (!this.newPrefix) newPrefix = ''
       return newPrefix
     },
     placeholder () {
