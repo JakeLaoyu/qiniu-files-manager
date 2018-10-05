@@ -25,7 +25,7 @@
     </Input>
   </Tooltip>
 
-  <Input v-model="search" icon="search" placeholder="输入关键字过滤" style="width: 200px" />
+  <Input v-model="search" icon="search" placeholder="输入关键字过滤" clearable style="width: 200px" />
 
   <div class="switch">
     <ButtonGroup v-if="multipleSwitch">
