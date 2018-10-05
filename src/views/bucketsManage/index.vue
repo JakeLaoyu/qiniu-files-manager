@@ -7,6 +7,7 @@
           <Icon type="briefcase"></Icon>
           {{ item.bucket }}
         </MenuItem>
+        <Button class="add-bucket" type="primary" @click="showModal=true">添加</Button>
       </Menu>
     </Header>
     <Content :style="{margin: '88px 20px 0', background: '#fff', paddingBottom: '30px'}">
@@ -37,18 +38,23 @@
       <Button type="error" size="large" long @click="del">删除</Button>
     </div>
   </Modal>
+
+  <QimModal :isShow="showModal" title="添加Bucket" @ok="addBucket" type="addBucket" :loading="modalLoading" @closeModal="showModal = false" />
 </div>
 </template>
 <script>
 import {
   mapState,
-  mapMutations
+  mapMutations,
+  mapActions
 } from 'vuex'
 
 export default {
   data () {
     return {
       bucket: {},
+      showModal: false,
+      modalLoading: false,
       delModal: false,
       ruleValidate: {
         AccessKey: [
@@ -72,10 +78,29 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'postSecrte'
+    ]),
     ...mapMutations([
       'delBucket',
-      'changeBucket'
+      'changeBucket',
+      'setBuckets',
+      'setCurrentBucket',
+      'emptyMultipleSwitchFile'
     ]),
+    async addBucket (payload) {
+      this.modalLoading = true
+      this.setBuckets(payload)
+      this.setCurrentBucket(payload)
+      this.modalLoading = false
+      this.showModal = false
+      this.emptyMultipleSwitchFile()
+      await this.postSecrte({
+        accessKey: this.currentBucket.AccessKey,
+        secretKey: this.currentBucket.SecretKey
+      })
+      this.$emit('getList')
+    },
     submit () {
       this.$refs['bucket'].validate((valid) => {
         if (valid) {

@@ -4,8 +4,6 @@
     <Option :value="item.bucket" v-for="item in buckets" :key="item.bucket" >{{ item.bucket }}</Option>
   </Select>
 
-  <Button class="add-bucket" type="primary" @click="showModal=true">添加Bucket</Button>
-
   <Breadcrumb>
     <a href="javascript:void(0)" v-if="openPrefixs.length > 0"  @click="clickBreadcrumb(-1)">
       <BreadcrumbItem >首页</BreadcrumbItem>
