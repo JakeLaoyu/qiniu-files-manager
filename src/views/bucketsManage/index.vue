@@ -2,7 +2,7 @@
 <div class="buckets">
   <Layout>
     <Header :style="{position: 'fixed', width: '100%'}">
-      <Menu mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
+      <Menu ref="menu" mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
         <MenuItem v-for="(item, index) in buckets" :key="index" :name="index + 1">
           <Icon type="briefcase"></Icon>
           {{ item.bucket }}
@@ -17,7 +17,7 @@
             <Input v-model="bucket[key]" :placeholder="key" style="width: 100%"></Input>
           </FormItem>
 
-          <FormItem class="btns">
+          <FormItem class="btns" v-if="this.bucket.bucket">
             <Button type="primary" size="large" @click="submit">提交</Button>
             <Button type="error" size="large" @click="delModal=true">删除</Button>
           </FormItem>
@@ -74,7 +74,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'buckets'
+      'buckets',
+      'currentBucket'
     ])
   },
   methods: {
