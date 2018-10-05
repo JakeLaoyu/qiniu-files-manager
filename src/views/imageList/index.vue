@@ -5,6 +5,7 @@
     @switchChange="switchChange"
     @deleteImage="clickFileKey=''"
     @inputNewPrefix="inputNewPrefix"
+    @handleSearch="(val)=>{this.searchVal = val}"
     >
   </Top>
 
@@ -25,7 +26,7 @@
             />
 
           <QimImageItem
-            v-for="(folder,index) in prefixs"
+            v-for="(folder,index) in filterPrefixs"
             :key="index"
             type="folder"
             :item="folder"
@@ -33,7 +34,7 @@
             />
 
           <template
-            v-for="item in fileList"
+            v-for="item in filterFileList"
             >
             <QimImageItem
               :item="item"
@@ -100,6 +101,7 @@ export default {
       clickFileDetail: {},
       newPrefix: '',
       loading: false,
+      searchVal: '',
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
       }
@@ -119,6 +121,16 @@ export default {
     ]),
     fileDetail () {
       return this.getDetail(this.clickFileKey)
+    },
+    filterFileList () {
+      if (!this.searchVal) return this.fileList
+      let searchReg = new RegExp(this.searchVal)
+      return this.fileList.filter(item => searchReg.test(item.key))
+    },
+    filterPrefixs () {
+      if (!this.searchVal) return this.prefixs
+      let searchReg = new RegExp(this.searchVal)
+      return this.prefixs.filter(item => searchReg.test(item))
     }
   },
   watch: {

@@ -17,7 +17,7 @@
     </template>
   </Breadcrumb>
 
-  <Tooltip slot="append" content="例如: image/jpg/" placement="right">
+  <Tooltip slot="append" content="例如: image/jpg/" placement="right" style="margin-right: 20px;">
     <Input
       v-model="newPrefix"
       placeholder="添加前缀"
@@ -26,6 +26,8 @@
       >
     </Input>
   </Tooltip>
+
+  <Input v-model="search" icon="search" placeholder="输入关键字过滤" style="width: 200px" />
 
   <div class="switch">
     <ButtonGroup v-if="multipleSwitch">
@@ -62,7 +64,8 @@ export default {
       modalLoading: false,
       multipleSwitch: false,
       chooseAllSwitch: false,
-      newPrefix: ''
+      newPrefix: '',
+      search: ''
     }
   },
   computed: {
@@ -151,8 +154,12 @@ export default {
     }
   },
   watch: {
+    search (val) {
+      this.$emit('handleSearch', val)
+    },
     openPrefixs () {
       this.newPrefix = ''
+      this.search = ''
       this.$emit('inputNewPrefix', this.newPrefix)
     }
   },
