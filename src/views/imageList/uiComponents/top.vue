@@ -1,47 +1,51 @@
 <template>
-<div class="top">
-  <Select :value="bucketName" style="width:150px" @on-change="changeBucket">
-    <Option :value="item.bucket" v-for="item in buckets" :key="item.bucket" >{{ item.bucket }}</Option>
-  </Select>
-
-  <Breadcrumb>
-    <a href="javascript:void(0)" v-if="openPrefixs.length > 0"  @click="clickBreadcrumb(-1)">
-      <BreadcrumbItem >首页</BreadcrumbItem>
-    </a>
-    <template v-for="(item, index) in openPrefixs">
-      <a href="javascript:void(0)" :key="item" @click="clickBreadcrumb(index)">
-        <BreadcrumbItem >{{item}}</BreadcrumbItem>
+<div>
+  <div v-if="openPrefixs.length > 0">
+    <Breadcrumb>
+      <a href="javascript:void(0)" v-if="openPrefixs.length > 0"  @click="clickBreadcrumb(-1)">
+        <BreadcrumbItem >首页</BreadcrumbItem>
       </a>
-    </template>
-  </Breadcrumb>
-
-  <Tooltip slot="append" content="例如: image/jpg/" placement="right" style="margin-right: 20px;">
-    <Input
-      v-model="newPrefix"
-      placeholder="添加前缀"
-      style="width: 200px"
-      @on-change="$emit('inputNewPrefix', newPrefix)"
-      >
-    </Input>
-  </Tooltip>
-
-  <Input v-model="search" icon="search" placeholder="输入关键字过滤" clearable style="width: 200px" />
-
-  <div class="switch">
-    <ButtonGroup v-if="multipleSwitch">
-      <Button type="error" @click="del">批量删除</Button>
-    </ButtonGroup>
-
-    <template v-if="multipleSwitch">
-      <div class="switch__label">全选</div>
-      <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
-    </template>
-
-    <div class="switch__label">多选：</div>
-    <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
+      <template v-for="(item, index) in openPrefixs">
+        <a href="javascript:void(0)" :key="item" @click="clickBreadcrumb(index)">
+          <BreadcrumbItem >{{item}}</BreadcrumbItem>
+        </a>
+      </template>
+    </Breadcrumb>
   </div>
 
-  <QimModal :isShow="showModal" title="添加Bucket" @ok="addBucket" type="addBucket" :loading="modalLoading" @closeModal="closeModal" />
+  <div class="top">
+    <Select :value="bucketName" style="width:150px" @on-change="changeBucket">
+      <Option :value="item.bucket" v-for="item in buckets" :key="item.bucket" >{{ item.bucket }}</Option>
+    </Select>
+
+    <Tooltip slot="append" content="例如: image/jpg/" placement="right" style="margin-right: 20px;">
+      <Input
+        v-model="newPrefix"
+        placeholder="添加前缀"
+        style="width: 200px"
+        @on-change="$emit('inputNewPrefix', newPrefix)"
+        >
+      </Input>
+    </Tooltip>
+
+    <Input v-model="search" icon="search" placeholder="输入关键字过滤" clearable style="width: 200px" />
+
+    <div class="switch">
+      <ButtonGroup v-if="multipleSwitch">
+        <Button type="error" @click="del">批量删除</Button>
+      </ButtonGroup>
+
+      <template v-if="multipleSwitch">
+        <div class="switch__label">全选</div>
+        <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
+      </template>
+
+      <div class="switch__label">多选：</div>
+      <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
+    </div>
+
+    <QimModal :isShow="showModal" title="添加Bucket" @ok="addBucket" type="addBucket" :loading="modalLoading" @closeModal="closeModal" />
+  </div>
 </div>
 </template>
 <script>
@@ -186,8 +190,7 @@ export default {
     margin-right: 20px;
   }
   &-breadcrumb {
-    float: left;
-    line-height: 32px;
+    padding: 10px 15px 0;
   }
 }
 
