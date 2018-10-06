@@ -1,8 +1,8 @@
 <template>
 <div>
-  <div v-if="openPrefixs.length > 0">
+  <div>
     <Breadcrumb>
-      <a href="javascript:void(0)" v-if="openPrefixs.length > 0"  @click="clickBreadcrumb(-1)">
+      <a href="javascript:void(0)"  @click="clickBreadcrumb(-1)">
         <BreadcrumbItem >首页</BreadcrumbItem>
       </a>
       <template v-for="(item, index) in openPrefixs">
