@@ -179,6 +179,11 @@ export default {
     },
     closeModal () {
       this.showModal = false
+    },
+    isSwitchAll () {
+      let someone = this.filterFileList.some(item => !this.multipleSwitchFile.includes(item.key))
+      if (someone) this.chooseAllSwitch = false
+      if (!someone) this.chooseAllSwitch = true
     }
   },
   watch: {
@@ -189,6 +194,12 @@ export default {
       this.newPrefix = ''
       this.search = ''
       this.$emit('inputNewPrefix', this.newPrefix)
+    },
+    filterFileList (val) {
+      this.isSwitchAll()
+    },
+    multipleSwitchFile (val) {
+      this.isSwitchAll()
     }
   },
   mounted () {
