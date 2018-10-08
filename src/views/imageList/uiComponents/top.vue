@@ -109,6 +109,7 @@ export default {
       const { code } = await ajax.post('/api/multipleMoveImage', data)
       if (code === 1) {
         this.emptyMultipleSwitchFile()
+        this.chooseAllSwitch = false
         this.modalLoading = false
         this.moveModal = false
       }
@@ -143,6 +144,7 @@ export default {
           })
           this.$Message.success('删除成功')
           this.emptyMultipleSwitchFile()
+          this.chooseAllSwitch = false
           this.$Modal.remove()
           this.$emit('deleteImage')
         },
@@ -158,6 +160,7 @@ export default {
         }) : this.buckets[0]
       this.setCurrentBucket(bucket)
       this.emptyMultipleSwitchFile()
+      this.chooseAllSwitch = false
       this.$emit('getList')
     },
     async addBucket (payload) {
@@ -167,6 +170,7 @@ export default {
       this.modalLoading = false
       this.showModal = false
       this.emptyMultipleSwitchFile()
+      this.chooseAllSwitch = false
       await this.postSecrte({
         accessKey: this.currentBucket.AccessKey,
         secretKey: this.currentBucket.SecretKey
