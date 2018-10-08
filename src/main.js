@@ -29,7 +29,8 @@ import {
   Switch,
   Tooltip,
   Form,
-  FormItem
+  FormItem,
+  Tag
 } from 'iview'
 
 Vue.config.productionTip = false
@@ -68,6 +69,7 @@ Vue.component('Option', Option)
 Vue.component('Layout', Layout)
 Vue.component('MenuItem', MenuItem)
 Vue.component('Tooltip', Tooltip)
+Vue.component('Tag', Tag)
 Vue.component('i-switch', Switch)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice

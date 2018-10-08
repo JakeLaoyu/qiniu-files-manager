@@ -31,7 +31,7 @@
     <Input v-model="search" icon="search" placeholder="输入关键字过滤" clearable style="width: 200px" />
 
     <div class="switch">
-      <ButtonGroup v-if="multipleSwitch">
+      <ButtonGroup v-if="multipleSwitch" style="margin-right: 10px;">
         <Button type="primary" @click="moveModal=true">移动</Button>
         <Button type="error" @click="del">删除</Button>
       </ButtonGroup>
@@ -40,6 +40,8 @@
         <div class="switch__label">全选</div>
         <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
       </template>
+
+      <Tag v-if="multipleSwitch" checkable color="blue" style="margin: 0 10px;">{{ multipleSwitchFile.length }}</Tag>
 
       <div class="switch__label">多选：</div>
       <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
@@ -237,7 +239,6 @@ export default {
   line-height: 32px;
   &__label {
     display: inline-block;
-    margin-left: 20px;
   }
 }
 .add-bucket {
