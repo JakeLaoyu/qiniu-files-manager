@@ -94,6 +94,12 @@ exports.delImage = (req, res) => {
   var deleteOperations = []
 
   if (key instanceof Array) {
+    if (key.length > 1000) {
+      return res.json({
+        code: 0,
+        message: '单次最多1000个文件'
+      })
+    }
     key.forEach(item => {
       deleteOperations.push(qiniu.rs.deleteOp(bucket, item))
     })
