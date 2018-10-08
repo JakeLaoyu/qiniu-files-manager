@@ -1,6 +1,7 @@
 <template>
 <div class="layout">
   <Top
+    :filterFileList="filterFileList"
     @getList="getImagesList"
     @switchChange="switchChange"
     @deleteImage="clickFileKey=''"

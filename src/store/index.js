@@ -33,11 +33,11 @@ const store = new Vuex.Store({
     getDetail: ({fileDetail}) => (key) => fileDetail[ key ]
   },
   mutations: {
-    chooseAllMultipleSwitchFile (state, payload) {
-      state.fileList.forEach(item => {
-        if (payload && !state.multipleSwitchFile.includes(item.key)) {
+    chooseAllMultipleSwitchFile (state, { status, fileList }) {
+      fileList.forEach(item => {
+        if (status && !state.multipleSwitchFile.includes(item.key)) {
           state.multipleSwitchFile.push(item.key)
-        } else if (!payload && state.multipleSwitchFile.includes(item.key)) {
+        } else if (!status && state.multipleSwitchFile.includes(item.key)) {
           state.multipleSwitchFile.splice(state.multipleSwitchFile.indexOf(item.key), 1)
         }
       })

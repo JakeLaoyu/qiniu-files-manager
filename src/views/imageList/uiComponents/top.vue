@@ -60,6 +60,7 @@ import {
 import { ajax } from '@util'
 
 export default {
+  props: ['filterFileList'],
   data () {
     return {
       showModal: false,
@@ -121,7 +122,10 @@ export default {
       this.$emit('getList')
     },
     chooseAll () {
-      this.chooseAllMultipleSwitchFile(this.chooseAllSwitch)
+      this.chooseAllMultipleSwitchFile({
+        status: this.chooseAllSwitch,
+        fileList: this.filterFileList
+      })
     },
     del () {
       this.$Modal.confirm({
