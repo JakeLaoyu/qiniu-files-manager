@@ -1,11 +1,3 @@
-/**
- * @Author: Jake
- * @Date:   2017-11-09T15:44:59+08:00
- * @Email:  yucj@dxy.cn
- * @Last modified by:   Jake
- * @Last modified time: 2017-11-16T10:27:19+08:00
- */
-
 const qiniujs = require('./qiniu')
 const qiniu = require('qiniu')
 
