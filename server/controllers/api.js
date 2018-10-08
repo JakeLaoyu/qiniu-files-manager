@@ -180,9 +180,12 @@ exports.multipleMoveImage = (req, res) => {
 
   if (keys.length < 1000) {
     keys.forEach(item => {
-      console.log('item', item)
-      console.log(`${newKey}${item.split('/').pop()}`)
       moveOperations.push(qiniu.rs.moveOp(bucket, item, bucket, `${newKey}${item.split('/').pop()}`))
+    })
+  } else {
+    return res.json({
+      code: 0,
+      message: '单次最多1000个文件'
     })
   }
 
