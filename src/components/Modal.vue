@@ -19,7 +19,7 @@
     </template>
 
     <template v-if="type==='move'">
-      <Input v-model="moveTo" :placeholder="image.key" style="width: 100%"></Input>
+      <Input v-model="moveTo" :placeholder="image ? image.key : '移动到的路径（必须是绝对路径）'" style="width: 100%"></Input>
     </template>
 
     <div slot="footer">

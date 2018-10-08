@@ -32,7 +32,8 @@
 
     <div class="switch">
       <ButtonGroup v-if="multipleSwitch">
-        <Button type="error" @click="del">批量删除</Button>
+        <Button type="primary" @click="moveModal=true">移动</Button>
+        <Button type="error" @click="del">删除</Button>
       </ButtonGroup>
 
       <template v-if="multipleSwitch">
@@ -45,6 +46,7 @@
     </div>
 
     <QimModal :isShow="showModal" title="添加Bucket" @ok="addBucket" type="addBucket" :loading="modalLoading" @closeModal="closeModal" />
+    <QimModal :isShow="moveModal" title="批量移动" @ok="saveMove" type="move" :loading="modalLoading" @closeModal="moveModal=false" />
   </div>
 </div>
 </template>
@@ -55,9 +57,7 @@ import {
   mapActions
 } from 'vuex'
 
-import {
-  ajax
-} from '@util'
+import { ajax } from '@util'
 
 export default {
   data () {
@@ -66,6 +66,7 @@ export default {
       modalLoading: false,
       multipleSwitch: false,
       chooseAllSwitch: false,
+      moveModal: false,
       newPrefix: '',
       search: ''
     }
@@ -95,6 +96,23 @@ export default {
       'changeMultipleSwitchFile',
       'chooseAllMultipleSwitchFile'
     ]),
+    async saveMove (moveTo) {
+      if (moveTo.charAt(0) !== '/') return this.$Message.error('请输入以 / 开头的绝对路径')
+      moveTo = moveTo.charAt(moveTo.length - 1) === '/' ? moveTo : `${moveTo}/`
+      this.modalLoading = true
+      let data = {
+        keys: this.multipleSwitchFile,
+        bucket: this.currentBucket.bucket,
+        newKey: moveTo
+      }
+      const { code } = await ajax.post('/api/multipleMoveImage', data)
+      if (code === 1) {
+        this.emptyMultipleSwitchFile()
+        this.modalLoading = false
+        this.moveModal = false
+      }
+      this.$emit('getList')
+    },
     clickBreadcrumb (index) {
       this.changeOpenPrefixs({
         type: 'jump',

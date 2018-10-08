@@ -167,3 +167,60 @@ exports.moveImage = (req, res) => {
     }
   })
 }
+
+// 批量移动
+exports.multipleMoveImage = (req, res) => {
+  let keys = req.body.keys
+  let bucket = req.body.bucket
+  let newKey = req.body.newKey
+
+  newKey = newKey.substr(1)
+
+  let moveOperations = []
+
+  if (keys.length < 1000) {
+    keys.forEach(item => {
+      console.log('item', item)
+      console.log(`${newKey}${item.split('/').pop()}`)
+      moveOperations.push(qiniu.rs.moveOp(bucket, item, bucket, `${newKey}${item.split('/').pop()}`))
+    })
+  }
+
+  qiniujs.getBucketManager(req).batch(moveOperations, function (err, respBody, respInfo) {
+    if (err) {
+      console.log(err)
+    // throw err;
+    } else {
+      var errList = []
+      // 200 is success, 298 is part success
+      if (parseInt(respInfo.statusCode / 100) === 2) {
+        respBody.forEach(function (item) {
+          if (item.code === 200) {
+            // console.log(item.code + '\tsuccess')
+          } else {
+            errList.push(item.code + '\t' + item.data.error)
+          }
+        })
+
+        if (errList.length === 0) {
+          res.json({
+            code: 1
+          })
+        } else {
+          res.json({
+            code: 0,
+            message: errList
+          })
+        }
+      } else {
+        console.log(respInfo.deleteusCode)
+        console.log(respBody)
+
+        res.json({
+          code: 1,
+          info: respBody
+        })
+      }
+    }
+  })
+}

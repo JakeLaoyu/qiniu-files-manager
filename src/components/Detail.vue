@@ -45,9 +45,7 @@ import {
   mapMutations
 } from 'vuex'
 
-import {
-  ajax
-} from '@util'
+import { ajax } from '@util'
 
 import Clipboard from 'clipboard'
 import DPlayer from 'dplayer'

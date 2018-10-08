@@ -11,6 +11,7 @@ router.get('/detail', api.detail)
 
 router.post('/delImage', api.delImage)
 router.post('/moveImage', api.moveImage)
+router.post('/multipleMoveImage', api.multipleMoveImage)
 
 router.get('/delSession', api.delSession)
 
