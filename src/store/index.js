@@ -33,6 +33,9 @@ const store = new Vuex.Store({
     getDetail: ({fileDetail}) => (key) => fileDetail[ key ]
   },
   mutations: {
+    saveState (state, payload) {
+      state[payload.key] = payload.value
+    },
     chooseAllMultipleSwitchFile (state, { status, fileList }) {
       fileList.forEach(item => {
         if (status && !state.multipleSwitchFile.includes(item.key)) {

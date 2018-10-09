@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import routerConfig from './router.js'
 import store from './store'
 import 'iview/dist/styles/iview.css'
+import '@/theme/custom.less'
 import '@/theme/iconfont.js'
 import UiComponents from '@components'
 
@@ -30,7 +31,8 @@ import {
   Tooltip,
   Form,
   FormItem,
-  Tag
+  Tag,
+  Table
 } from 'iview'
 
 Vue.config.productionTip = false
@@ -70,6 +72,7 @@ Vue.component('Layout', Layout)
 Vue.component('MenuItem', MenuItem)
 Vue.component('Tooltip', Tooltip)
 Vue.component('Tag', Tag)
+Vue.component('Table', Table)
 Vue.component('i-switch', Switch)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice

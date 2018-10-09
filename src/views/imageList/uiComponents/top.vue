@@ -41,7 +41,7 @@
         <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
       </template>
 
-      <Tag v-if="multipleSwitch" color="blue" style="margin: 0 10px;">{{ multipleSwitchFile.length }}</Tag>
+      <Tag v-if="multipleSwitch" color="blue" style="margin: 0 10px;" @click.native="handleTag">{{ multipleSwitchFile.length }}</Tag>
 
       <div class="switch__label">多选：</div>
       <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
@@ -49,10 +49,13 @@
 
     <QimModal :isShow="showModal" title="添加Bucket" @ok="addBucket" type="addBucket" :loading="modalLoading" @closeModal="closeModal" />
     <QimModal :isShow="moveModal" title="批量移动" @ok="saveMove" type="move" :loading="modalLoading" @closeModal="moveModal=false" />
+
+    <SelectedModal :isShow="showSelectModal" :list="multipleSwitchFile" @close="showSelectModal=false"></SelectedModal>
   </div>
 </div>
 </template>
 <script>
+import SelectedModal from './SelectedModal.vue'
 import {
   mapState,
   mapMutations,
@@ -63,12 +66,16 @@ import { ajax } from '@util'
 
 export default {
   props: ['filterFileList'],
+  components: {
+    SelectedModal
+  },
   data () {
     return {
       showModal: false,
       modalLoading: false,
       multipleSwitch: false,
       chooseAllSwitch: false,
+      showSelectModal: false,
       moveModal: false,
       newPrefix: '',
       search: ''
@@ -99,6 +106,10 @@ export default {
       'changeMultipleSwitchFile',
       'chooseAllMultipleSwitchFile'
     ]),
+    handleTag () {
+      if (this.multipleSwitchFile.length === 0) return this.$Message.info('请先选择文件')
+      this.showSelectModal = true
+    },
     async saveMove (moveTo) {
       if (moveTo.charAt(0) !== '/') return this.$Message.error('请输入以 / 开头的绝对路径')
       moveTo = moveTo.charAt(moveTo.length - 1) === '/' ? moveTo : `${moveTo}/`
@@ -216,6 +227,7 @@ export default {
     width: 1200px;
     margin: 0 auto;
     padding: 10px 15px 0;
+    user-select: none;
     &:after {
         content: '';
         display: block;
