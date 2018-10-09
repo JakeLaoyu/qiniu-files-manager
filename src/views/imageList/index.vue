@@ -241,7 +241,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .contentmain {
-  height: calc(~"100vh - 92px");
+  height: calc(~"100vh - 123px");
   overflow-y: scroll;
 }
 .layout {
@@ -255,7 +255,7 @@ export default {
   }
   &-content-main {
     padding: 10px;
-    height: calc(~"100vh - 72px");
+    height: calc(~"100vh - 103px");
     box-sizing: border-box;
   }
 }
