@@ -140,7 +140,9 @@ export default {
   },
   watch: {
     newPrefix () {
-      this.handleDetailScroll()
+      this.$nextTick(() => {
+        this.handleDetailScroll()
+      })
     },
     openPrefixs () {
       this.$nextTick(() => {
@@ -197,23 +199,26 @@ export default {
         })
       }
     },
-    clickFile (file) {
+    async clickFile (file) {
       this.clickFileKey = file.key
       this.clickFileDetail = file
       if (this.MultipleSwitch) {
         this.changeMultipleSwitchFile(file.key)
       }
-      this.getFileDetail({
+      await this.getFileDetail({
         bucket: this.currentBucket.bucket,
         file
       })
+      this.handleDetailScroll()
     },
     handleDetailScroll () {
       var detailWrap = document.querySelector('.detail__wrap')
       var IvuUpload = document.querySelector('.ivu-upload')
       if (detailWrap && IvuUpload) {
         var uploadDomRect = IvuUpload.getBoundingClientRect()
-        detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
+        this.detailStyle = {
+          maxHeight: `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
+        }
         this.$nextTick(() => {
           detailWrap.scrollTop = detailWrap.scrollHeight
         })

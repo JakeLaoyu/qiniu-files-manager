@@ -213,6 +213,7 @@ export default {
     min-height: 100px;
     position: relative;
     text-align: center;
+    font-size: 0;
     img {
       width: 100%;
     }
