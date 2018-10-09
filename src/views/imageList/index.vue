@@ -209,14 +209,12 @@ export default {
       })
     },
     handleDetailScroll () {
-      var timeout
       var detailWrap = document.querySelector('.detail__wrap')
       var IvuUpload = document.querySelector('.ivu-upload')
       if (detailWrap && IvuUpload) {
         var uploadDomRect = IvuUpload.getBoundingClientRect()
         detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
+        this.$nextTick(() => {
           detailWrap.scrollTop = detailWrap.scrollHeight
         })
       }
