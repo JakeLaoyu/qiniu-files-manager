@@ -41,7 +41,7 @@
         <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
       </template>
 
-      <Tag v-if="multipleSwitch" checkable color="blue" style="margin: 0 10px;">{{ multipleSwitchFile.length }}</Tag>
+      <Tag v-if="multipleSwitch" color="blue" style="margin: 0 10px;">{{ multipleSwitchFile.length }}</Tag>
 
       <div class="switch__label">多选：</div>
       <i-switch v-model="multipleSwitch" @on-change="$emit('switchChange',multipleSwitch)"></i-switch>
