@@ -196,7 +196,7 @@ export default {
     isSwitchAll () {
       let someone = this.filterFileList.some(item => !this.multipleSwitchFile.includes(item.key))
       if (someone) this.chooseAllSwitch = false
-      if (!someone) this.chooseAllSwitch = true
+      if (!someone && this.filterFileList.length) this.chooseAllSwitch = true
     }
   },
   watch: {
