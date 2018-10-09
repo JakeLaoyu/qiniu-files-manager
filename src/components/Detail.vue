@@ -156,9 +156,7 @@ export default {
       location.reload()
     },
     copyUrl () {
-      if (this.clipboard) {
-        this.clipboard.destroy()
-      }
+      if (this.clipboard) this.clipboard.destroy()
       this.clipboard = new Clipboard('#copyBtn', {
         text: () => this.fileUrl
       })
@@ -174,6 +172,15 @@ export default {
     if (this.detail.mimeType.split('/')[0] === 'video') {
       this.videoInit()
     }
+    this.copyUrl()
+  },
+  beforeDestroy () {
+    if (this.clipboard) this.clipboard.destroy()
+  },
+  beforeUpdate () {
+    if (this.clipboard) this.clipboard.destroy()
+  },
+  updated () {
     this.copyUrl()
   }
 }
