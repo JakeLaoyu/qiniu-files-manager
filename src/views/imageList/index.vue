@@ -209,7 +209,6 @@ export default {
       })
     },
     handleDetailScroll () {
-      console.log('handleDetailScroll')
       var timeout
       var detailWrap = document.querySelector('.detail__wrap')
       var IvuUpload = document.querySelector('.ivu-upload')
