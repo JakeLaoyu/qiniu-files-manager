@@ -11,10 +11,10 @@
   </Top>
 
   <div class="layout-content">
-    <div class="layout-content-main">
+    <div class="layout-content-main" :style="layoutContentMainStyle">
       <Spin fix size="large" v-if="loading"></Spin>
       <Row :gutter="20">
-        <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }">
+        <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
           <QimImageItem
             v-if="!openPrefixs.length && !fileList.length"
             type="empty"
@@ -105,6 +105,8 @@ export default {
       newPrefix: '',
       loading: false,
       searchVal: '',
+      contentmainStyle: {},
+      layoutContentMainStyle: {},
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
       }
@@ -141,7 +143,10 @@ export default {
       this.handleDetailScroll()
     },
     openPrefixs () {
-      this.handleDetailScroll()
+      this.$nextTick(() => {
+        this.handleDetailScroll()
+        this.resetContentHeight()
+      })
     }
   },
   methods: {
@@ -204,12 +209,13 @@ export default {
       })
     },
     handleDetailScroll () {
+      console.log('handleDetailScroll')
       var timeout
       var detailWrap = document.querySelector('.detail__wrap')
       var IvuUpload = document.querySelector('.ivu-upload')
       if (detailWrap && IvuUpload) {
         var uploadDomRect = IvuUpload.getBoundingClientRect()
-        detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72}px)`
+        detailWrap.style.maxHeight = `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
         clearTimeout(timeout)
         timeout = setTimeout(() => {
           detailWrap.scrollTop = detailWrap.scrollHeight
@@ -225,11 +231,20 @@ export default {
           self.loading = false
         }
       })
+    },
+    resetContentHeight () {
+      this.contentmainStyle = {
+        height: `calc(100vh - ${72 + document.querySelector('.ivu-breadcrumb').offsetHeight + 20}px)`
+      }
+      this.layoutContentMainStyle = {
+        height: `calc(100vh - ${72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
+      }
     }
   },
   mounted () {
     this.emptyMultipleSwitchFile()
     this.getImagesList()
+    this.resetContentHeight()
   },
   async created () {
     await this.postSecrte({
