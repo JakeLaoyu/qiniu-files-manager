@@ -74,6 +74,8 @@ export default {
     ]),
     reset () {
       this.formatList = this.list.map(item => { return { 'name': item, selected: true } })
+      this.showReset = false
+      this.$Message.success('重置成功')
     },
     handleSubmit () {
       this.saveState({
@@ -96,7 +98,7 @@ export default {
 <style lang="scss" scoped>
 .table__wrap {
   max-height: 500px;
-  padding: 0 20px;
+  padding: 0 10px;
   overflow-y: scroll;
 }
 .reset-btn {
