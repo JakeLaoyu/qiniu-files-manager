@@ -4,6 +4,8 @@ import iView from 'iview'
 
 export const baseURL = process.env.NODE_ENV === 'development' ? '//dev.jakeyu.top:8080' : location.origin
 
+export const isWin = /windows/ig.test(window.navigator.userAgent)
+
 export const ajax = axios.create({
   baseURL: baseURL,
   timeout: 30000,

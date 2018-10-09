@@ -5,3 +5,32 @@
 .mb20 {
   margin-bottom: 20px;
 }
+
+.beautyScroll{
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f5f5f5;
+    visibility: hidden;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(.44,#7a99d9),color-stop(.72,#497dbd),color-stop(.86,#1c3a94));
+    visibility: hidden;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    visibility: hidden;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track {
+      visibility: visible;
+    }
+  }
+}

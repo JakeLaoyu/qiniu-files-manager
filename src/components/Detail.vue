@@ -1,6 +1,6 @@
 <template>
 <div class="detail">
-  <div class="detail__wrap" :style="detailStyle">
+  <div class="detail__wrap" :class="{ 'beautyScroll': isWin }" :style="detailStyle">
     <div class="detail__img">
       <Spin size="large" fix v-if="imgLoading"></Spin>
       <img :src="fileUrl" @load="imgLoad" v-if="detail.mimeType.split('/')[0]==='image'">
@@ -45,7 +45,7 @@ import {
   mapMutations
 } from 'vuex'
 
-import { ajax } from '@util'
+import { ajax, isWin } from '@util'
 
 import Clipboard from 'clipboard'
 import DPlayer from 'dplayer'
@@ -62,6 +62,7 @@ export default {
   },
   data () {
     return {
+      isWin,
       delLoading: false,
       showModal: false,
       modalLoading: false,

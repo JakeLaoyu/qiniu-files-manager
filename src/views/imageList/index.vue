@@ -14,7 +14,7 @@
     <div class="layout-content-main">
       <Spin fix size="large" v-if="loading"></Spin>
       <Row :gutter="20">
-        <Col span="16" push="8" class-name="contentmain">
+        <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }">
           <QimImageItem
             v-if="!openPrefixs.length && !fileList.length"
             type="empty"
@@ -83,6 +83,7 @@
 </template>
 <script>
 import Top from './uiComponents/top.vue'
+import { isWin } from '@/libs/util'
 
 import {
   mapState,
@@ -97,6 +98,7 @@ export default {
   },
   data () {
     return {
+      isWin,
       clickFileKey: '',
       MultipleSwitch: false,
       clickFileDetail: {},
