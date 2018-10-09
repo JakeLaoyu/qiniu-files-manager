@@ -9,7 +9,9 @@
     >
       <Button v-if="showReset" class="reset-btn mb10" type="warning" @click="reset">重置</Button>
 
-      <Table class="table" border :columns="columns" :data="formatList"></Table>
+      <div class="table__wrap" :class="{ 'beautyScroll': isWin }">
+        <Table border :columns="columns" :data="formatList"></Table>
+      </div>
 
       <div slot="footer">
         <Button type="primary" size="large" long @click="handleSubmit">确定</Button>
@@ -19,10 +21,12 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
+import { isWin } from '@/libs/util'
 export default {
   props: ['list', 'isShow'],
   data () {
     return {
+      isWin,
       formatList: [],
       showReset: false,
       columns: [{
@@ -90,8 +94,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.table {
+.table__wrap {
   max-height: 500px;
+  padding: 0 20px;
   overflow-y: scroll;
 }
 .reset-btn {
