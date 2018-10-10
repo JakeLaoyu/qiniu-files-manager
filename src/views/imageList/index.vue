@@ -248,12 +248,10 @@ export default {
     this.getImagesList()
     this.resetContentHeight()
 
-    window.onresize = () => {
-      debounce(() => {
-        this.resetContentHeight()
-        this.handleDetailScroll()
-      }, 500)
-    }
+    window.onresize = debounce(() => {
+      this.resetContentHeight()
+      this.handleDetailScroll()
+    }, 500)
   },
   async created () {
     await this.postSecrte({
