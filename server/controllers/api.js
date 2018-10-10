@@ -1,5 +1,27 @@
 const qiniujs = require('./qiniu')
 const qiniu = require('qiniu')
+const axios = require('axios')
+
+// 通过ak, sk获取 buckets列表
+exports.getBuckets = (req, res) => {
+  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey)
+  console.log(mac)
+  axios.defaults.headers.common['Authorization'] = qiniu.util.generateAccessToken(mac, 'https://rs.qbox.me/buckets', null)
+  axios({
+    url: 'https://rs.qbox.me/buckets',
+    method: 'get'
+  }).then(res => {
+    res.json({
+      code: 1,
+      data: res.data
+    })
+  }).catch(error => {
+    res.json({
+      code: 0,
+      message: `获取buckets列表发生错误: ${JSON.stringify(error)}`
+    })
+  })
+}
 
 // 保存 ak sk
 exports.postSecret = (req, res) => {

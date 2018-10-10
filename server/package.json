@@ -5,6 +5,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "~1.17.1",
     "connect-mongo": "^2.0.0",
     "cookie-parser": "~1.4.3",
