@@ -1,16 +1,6 @@
-import axios from 'axios'
-import Vue from 'vue'
-import iView from 'iview'
-
-export const baseURL = process.env.NODE_ENV === 'development' ? '//dev.jakeyu.top:8080' : location.origin
+export { ajax, baseURL } from './ajax'
 
 export const isWin = /windows/ig.test(window.navigator.userAgent)
-
-export const ajax = axios.create({
-  baseURL: baseURL,
-  timeout: 30000,
-  responseType: 'json'
-})
 
 /**
  * 去抖函数
@@ -30,26 +20,3 @@ export const debounce = (fn, delay) => {
     }, delay)
   }
 }
-
-axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  iView.LoadingBar.start()
-  return config
-}, function (error) {
-  // Do something with request error
-  return Promise.reject(error)
-})
-
-ajax.interceptors.response.use(({data = {}, request}) => {
-  iView.LoadingBar.finish()
-  if (data && data.code !== 1) {
-    if (typeof data.message === 'string') Vue.prototype.$Message.error(data.message)
-    if (Array.isArray(data.message)) {
-      data.message.forEach(item => Vue.prototype.$Message.error(item))
-    }
-    // return Promise.reject(new Error(data.message))
-  }
-  return data
-}, error =>
-  Promise.reject(error)
-)
