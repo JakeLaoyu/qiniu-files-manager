@@ -6,6 +6,10 @@
 
 [DEMO](http://qim.jakeyu.top)
 
+## TODO
+
+- [] 通过ak、sk自动获取buckets列表
+
 ## 预览
 
 ### 图片列表
