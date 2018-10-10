@@ -83,7 +83,7 @@
 </template>
 <script>
 import Top from './uiComponents/top.vue'
-import { isWin } from '@/libs/util'
+import { isWin, debounce } from '@/libs/util'
 
 import {
   mapState,
@@ -249,8 +249,10 @@ export default {
     this.resetContentHeight()
 
     window.onresize = () => {
-      this.resetContentHeight()
-      this.handleDetailScroll()
+      debounce(() => {
+        this.resetContentHeight()
+        this.handleDetailScroll()
+      }, 500)
     }
   },
   async created () {
