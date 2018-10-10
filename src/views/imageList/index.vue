@@ -247,6 +247,11 @@ export default {
     this.emptyMultipleSwitchFile()
     this.getImagesList()
     this.resetContentHeight()
+
+    window.onresize = () => {
+      this.resetContentHeight()
+      this.handleDetailScroll()
+    }
   },
   async created () {
     await this.postSecrte({
