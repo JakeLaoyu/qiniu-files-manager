@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" :class="{ 'beautyScroll': isWin }">
     <div class="search__input">
       <Input v-model="searchValue" icon="ios-search" size="large" placeholder="关键字" @on-enter="search"></Input>
     </div>
@@ -67,13 +67,14 @@ import {
   mapState,
   mapActions
 } from 'vuex'
-
+import { isWin } from '@/libs/util'
 import DPlayer from 'dplayer'
 import 'dplayer/dist/DPlayer.min.css'
 
 export default {
   data () {
     return {
+      isWin,
       searching: false,
       searchValue: '',
       searchOver: false,
