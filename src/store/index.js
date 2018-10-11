@@ -36,6 +36,18 @@ const store = new Vuex.Store({
     saveState (state, payload) {
       state[payload.key] = payload.value
     },
+    emptyState (state) {
+      state = {
+        ...state,
+        buckets: [],
+        currentBucket: {},
+        fileList: [],
+        prefixs: [],
+        openPrefixs: [],
+        fileDetail: {},
+        multipleSwitchFile: []
+      }
+    },
     chooseAllMultipleSwitchFile (state, { status, fileList }) {
       fileList.forEach(item => {
         if (status && !state.multipleSwitchFile.includes(item.key)) {

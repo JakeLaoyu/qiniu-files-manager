@@ -19,8 +19,28 @@
 </template>
 
 <script>
+
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    ...mapState([
+      'currentBucket'
+    ])
+  },
+  methods: {
+    ...mapMutations([
+      'emptyState'
+    ])
+  },
+  created () {
+    // 更新为 通过 ak、sk获取数据后，需要重新拉数据
+    if (this.currentBucket.domain && !this.currentBucket.domains) {
+      this.$Message.info('新版更细，需要重新获取数据')
+      this.emptyState()
+    }
+  }
 }
 </script>
 
