@@ -39,7 +39,12 @@ import {
 Vue.config.productionTip = false
 
 Vue.use(VueLazyload, {
-  error: ErrorImg
+  error: ErrorImg,
+  observer: true,
+  observerOptions: {
+    rootMargin: '0px',
+    threshold: 0.1
+  }
 })
 Vue.use(Router)
 
