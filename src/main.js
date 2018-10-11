@@ -8,6 +8,7 @@ import '@/theme/iconfont.js'
 import UiComponents from '@components'
 import VueLazyload from 'vue-lazyload'
 import ErrorImg from '@/assets/file_error.png'
+import * as Filter from '@/libs/filter'
 
 import {
   Menu,
@@ -101,6 +102,9 @@ Vue.prototype.$Modal = Modal
 
 Object.keys(UiComponents).forEach((key) => {
   Vue.component(`Qim${key}`, UiComponents[ key ])
+})
+Object.keys(Filter).forEach((key) => {
+  Vue.filter(`Filter${key}`, Filter[ key ])
 })
 
 /* eslint-disable */
