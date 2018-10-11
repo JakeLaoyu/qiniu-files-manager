@@ -4,8 +4,9 @@
       <Col span="12">
         <router-link class="layout-logo" to="/">
           <QimIcon size="60" icon="niu" :style="{
-            'vertical-align': 'middle'
-          }"/>
+            verticalAlign: 'middle',
+            marginRight: '10px'
+          }" />
           <span>QIM</span>
         </router-link>
       </Col>
@@ -99,11 +100,6 @@ export default {
   height: 60px;
   line-height: 60px;
   font-size: 0;
-  img {
-    height: 100%;
-    vertical-align: middle;
-    margin-right: 10px;
-  }
   span {
     font-size: 24px;
     vertical-align: middle;
