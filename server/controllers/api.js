@@ -9,13 +9,22 @@ const QiniuApi = {
 
 // 通过ak, sk获取 buckets列表
 exports.getBuckets = async (req, res) => {
-  const result = await axios({
-    url: QiniuApi.buckets,
-    method: 'get',
-    headers: {
-      Authorization: qiniu.util.generateAccessToken(qiniujs.getMac(req), QiniuApi.buckets, null)
-    }
-  })
+  let result = {}
+
+  try {
+    result = await axios({
+      url: QiniuApi.buckets,
+      method: 'get',
+      headers: {
+        Authorization: qiniu.util.generateAccessToken(qiniujs.getMac(req), QiniuApi.buckets, null)
+      }
+    })
+  } catch (error) {
+    return res.json({
+      code: error.response.status,
+      message: '请填写合法AccessKey、SecretKey'
+    })
+  }
 
   if (result.data && result.data.length) {
     var getDomainFunList = []
