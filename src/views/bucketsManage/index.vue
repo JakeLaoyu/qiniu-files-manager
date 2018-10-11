@@ -12,9 +12,12 @@
     </Header>
     <Content :style="{margin: '88px 20px 0', background: '#fff', paddingBottom: '30px'}">
       <div class="form">
-        <Form ref="bucket" :model="bucket" :rules="ruleValidate">
+        <Form ref="bucket" :model="bucket">
           <FormItem :label="key" :prop="key" v-for="(key,index) in Object.keys(bucket)" :key="index" >
-            <Input v-model="bucket[key]" :placeholder="key" style="width: 100%"></Input>
+            <Input v-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
+            <Select v-if="key==='domains'" v-model="bucket['domain']">
+              <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
+            </Select>
           </FormItem>
 
           <FormItem class="btns" v-if="this.bucket.bucket">
@@ -55,21 +58,7 @@ export default {
       bucket: {},
       showModal: false,
       modalLoading: false,
-      delModal: false,
-      ruleValidate: {
-        AccessKey: [
-          { required: true, message: '请填写Ak', trigger: 'blur' }
-        ],
-        SecretKey: [
-          { required: true, message: '请填写Sk', trigger: 'blur' }
-        ],
-        bucket: [
-          { required: true, message: '请填写空间名称', trigger: 'blur' }
-        ],
-        domain: [
-          { required: true, message: '请填写域名', trigger: 'blur' }
-        ]
-      }
+      delModal: false
     }
   },
   computed: {
