@@ -50,6 +50,11 @@ Vue.use(VueLazyload, {
       // 移出search loading动画
       var spin = el.parentNode.querySelector('.ivu-spin')
       if (spin) spin.parentNode.removeChild(spin)
+    },
+    error ({el}, Init) {
+      // 移出search loading动画
+      var spin = el.parentNode.querySelector('.ivu-spin')
+      if (spin) spin.parentNode.removeChild(spin)
     }
   }
 })
