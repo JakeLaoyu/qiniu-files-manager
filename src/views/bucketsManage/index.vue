@@ -1,32 +1,30 @@
 <template>
 <div class="buckets">
-  <Layout>
-    <Header :style="{position: 'fixed', width: '100%'}">
-      <Menu ref="menu" mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
-        <MenuItem v-for="(item, index) in buckets" :key="index" :name="index + 1">
-          <Icon type="social-dropbox"></Icon>
-          {{ item.bucket }}
-        </MenuItem>
-        <Button class="add-bucket" type="primary" @click="showModal=true">添加</Button>
-      </Menu>
-    </Header>
-    <Content :style="{margin: '88px 20px 0', background: '#fff', paddingBottom: '30px'}">
-      <div class="form">
-        <Form ref="bucket" :model="bucket">
-          <FormItem :label="key" :prop="key" v-for="(key,index) in Object.keys(bucket)" :key="index" >
-            <Input v-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
-            <Select v-if="key==='domains'" v-model="bucket['domain']" @on-open-change="submit">
-              <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
-            </Select>
-          </FormItem>
+  <Header>
+    <Menu ref="menu" mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
+      <MenuItem v-for="(item, index) in buckets" :key="index" :name="index + 1">
+        <Icon type="social-dropbox"></Icon>
+        {{ item.bucket }}
+      </MenuItem>
+      <Button class="add-bucket" type="primary" @click="showModal=true">添加</Button>
+    </Menu>
+  </Header>
+  <div :style="{background: '#fff', paddingBottom: '30px'}">
+    <div class="form">
+      <Form ref="bucket" :model="bucket">
+        <FormItem :label="key" :prop="key" v-for="(key,index) in Object.keys(bucket)" :key="index" >
+          <Input v-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
+          <Select v-if="key==='domains'" v-model="bucket['domain']" @on-open-change="submit">
+            <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
+          </Select>
+        </FormItem>
 
-          <FormItem class="btns">
-            <Button type="error" size="large" long @click="delModal=true">删除</Button>
-          </FormItem>
-        </Form>
-      </div>
-    </Content>
-  </Layout>
+        <FormItem class="btns">
+          <Button type="error" size="large" long @click="delModal=true">删除</Button>
+        </FormItem>
+      </Form>
+    </div>
+  </div>
 
   <Modal v-model="delModal" width="360">
     <p slot="header" style="color:#f60;text-align:center">
@@ -115,15 +113,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
+.buckets {
+  margin-top: 5px;
 }
 .layout-nav {
     width: 420px;
@@ -131,9 +122,6 @@ export default {
 }
 .layout-footer-center {
     text-align: center;
-}
-.ivu-layout {
-  height: calc(~"100vh - 30px");
 }
 .ivu-menu {
     text-align: center;

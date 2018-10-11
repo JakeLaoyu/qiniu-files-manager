@@ -153,7 +153,7 @@ export default {
 .search {
   width: 1200px;
   margin: 0 auto;
-  height: calc(~"100vh - 30px");
+  height: calc(~"100vh - 60px");
   box-sizing: border-box;
   padding-top: 30px;
   &__input {

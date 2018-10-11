@@ -217,7 +217,7 @@ export default {
       if (detailWrap && IvuUpload) {
         var uploadDomRect = IvuUpload.getBoundingClientRect()
         this.detailStyle = {
-          maxHeight: `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
+          maxHeight: `calc(100vh - ${20 + uploadDomRect.height + 8 + 10 + 102 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
         }
         this.$nextTick(() => {
           detailWrap.scrollTop = detailWrap.scrollHeight
@@ -237,10 +237,10 @@ export default {
     resetContentHeight () {
       if (!document.querySelector('.ivu-breadcrumb')) return
       this.contentmainStyle = {
-        height: `calc(100vh - ${72 + document.querySelector('.ivu-breadcrumb').offsetHeight + 20}px)`
+        height: `calc(100vh - ${102 + document.querySelector('.ivu-breadcrumb').offsetHeight + 20}px)`
       }
       this.layoutContentMainStyle = {
-        height: `calc(100vh - ${72 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
+        height: `calc(100vh - ${102 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
       }
     }
   },
