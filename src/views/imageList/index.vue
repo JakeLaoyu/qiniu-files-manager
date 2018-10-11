@@ -235,6 +235,7 @@ export default {
       })
     },
     resetContentHeight () {
+      if (!document.querySelector('.ivu-breadcrumb')) return
       this.contentmainStyle = {
         height: `calc(100vh - ${72 + document.querySelector('.ivu-breadcrumb').offsetHeight + 20}px)`
       }
