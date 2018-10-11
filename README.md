@@ -14,16 +14,21 @@
 ## 预览
 
 ### 图片列表
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181006-121509.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174720.png)
 
 ### 添加Bucket
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181006-121543.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174812.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174830.png)
 
 ### 批量管理
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181008-172947.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174931.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174946.png)
 
 ### Bucket管理
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181006-121642.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175040.png)
+
+## 搜索
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175142.png)
 
 ## 配置`config.js`：
 

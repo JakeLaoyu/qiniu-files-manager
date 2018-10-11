@@ -19,7 +19,7 @@
           </Select>
         </FormItem>
 
-        <FormItem class="btns">
+        <FormItem class="btns" v-if="this.bucket.bucket">
           <Button type="error" size="large" long @click="delModal=true">删除</Button>
         </FormItem>
       </Form>
