@@ -44,6 +44,13 @@ Vue.use(VueLazyload, {
   observerOptions: {
     rootMargin: '0px',
     threshold: 0.1
+  },
+  adapter: {
+    loaded ({ bindType, el, naturalHeight, naturalWidth, $parent, src, loading, error, Init }) {
+      // 移出search loading动画
+      var spin = el.parentNode.querySelector('.ivu-spin')
+      if (spin) spin.parentNode.removeChild(spin)
+    }
   }
 })
 Vue.use(Router)
