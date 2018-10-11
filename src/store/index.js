@@ -103,7 +103,10 @@ const store = new Vuex.Store({
       }
     },
     setBuckets (state, payload) {
-      state.buckets.push(payload)
+      state.buckets = [
+        ...state.buckets,
+        ...payload
+      ]
     },
     setCurrentBucket (state, payload) {
       state.fileList = []

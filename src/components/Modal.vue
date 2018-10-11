@@ -1,7 +1,7 @@
 <template>
 <div>
   <Modal v-model="showModal" :mask-closable="false" :title="title" :closable="false">
-    <template v-if="type==='addBucket'">
+    <template v-if="type==='addBucket' && !allBuckets.length">
       <Form ref="bucket" :model="bucket" :rules="ruleValidate" :label-width="90">
         <FormItem label="AccessKey" prop="AccessKey">
           <Input v-model="bucket.AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
@@ -9,13 +9,11 @@
         <FormItem label="SecretKey" prop="SecretKey">
           <Input v-model="bucket.SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
         </FormItem>
-        <FormItem label="空间名称" prop="bucket">
-          <Input v-model="bucket.bucket" placeholder="空间名称" style="width: 100%"></Input>
-        </FormItem>
-        <FormItem label="域名" prop="domain">
-          <Input v-model="bucket.domain" placeholder="域名(http://blogimg.jakeyu.top/)" style="width: 100%"></Input>
-        </FormItem>
       </Form>
+    </template>
+
+    <template v-if="allBuckets.length">
+      <Table border :columns="columns" :data="allBuckets" @on-selection-change="selectionChange"></Table>
     </template>
 
     <template v-if="type==='move'">
@@ -23,16 +21,18 @@
     </template>
 
     <div slot="footer">
-      <Button type="ghost" @click="$emit('closeModal')">取消</Button>
-      <Button type="primary" :loading="loading" @click="handleSubmit">确定</Button>
+      <Button type="ghost" @click="$emit('closeModal')" v-if="buckets.length">取消</Button>
+      <Button type="primary" :loading="loading || btnLoading" @click="handleSubmit">{{ btnLoading ? '获取中' : '确定' }}</Button>
     </div>
   </Modal>
 </div>
 </template>
 <script>
 import {
-  mapState
+  mapState,
+  mapActions
 } from 'vuex'
+import { ajax } from '@/libs/util'
 export default {
   props: {
     type: String,
@@ -43,6 +43,9 @@ export default {
   },
   data () {
     return {
+      btnLoading: false,
+      allBuckets: [],
+      selectedBuckets: [],
       bucket: {},
       ruleValidate: {
         AccessKey: [
@@ -50,14 +53,35 @@ export default {
         ],
         SecretKey: [
           { required: true, message: '请填写Sk', trigger: 'blur' }
-        ],
-        bucket: [
-          { required: true, message: '请填写空间名称', trigger: 'blur' }
-        ],
-        domain: [
-          { required: true, message: '请填写域名', trigger: 'blur' }
         ]
       },
+      columns: [
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+        {
+          title: '空间名称',
+          key: 'bucket'
+        },
+        {
+          title: '域名',
+          key: 'domains',
+          render: (h, params) => {
+            return h('Select', {
+              props: {
+                value: params.row.domain
+              },
+              on: {
+                'on-chage': (e) => {
+                  console.log(e)
+                }
+              }
+            }, params.row.domains.map((item, index) => h('Option', { props: {value: item} }, item)))
+          }
+        }
+      ],
       moveTo: this.image ? this.image.key : ''
     }
   },
@@ -75,36 +99,71 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'postSecrte'
+    ]),
+    selectionChange (selection) {
+      this.selectedBuckets = selection
+    },
     handleSubmit () {
       if (this.type === 'move') {
         this.ok()
         return
       }
-      this.$refs.bucket.validate((valid) => {
+      if (this.allBuckets.length) {
+        if (!this.selectedBuckets.length) return this.$Message.info('至少选中一个')
+        this.ok()
+        this.bucket = {}
+        this.selectedBuckets = []
+        this.allBuckets = []
+        return
+      }
+      this.$refs.bucket.validate(async (valid) => {
         if (valid) {
-          this.$Message.success('Success!')
-          this.ok()
-          this.bucket = {}
+          this.btnLoading = true
+          await this.postSecrte({
+            accessKey: this.bucket.AccessKey,
+            secretKey: this.bucket.SecretKey
+          })
+          const res = await ajax.get('/api/getBuckets')
+          console.log(res)
+          this.btnLoading = false
+          if (res.code === 1) {
+            this.allBuckets = res.data.map(item => {
+              item['_checked'] = true
+              item.domains = item.domains.map(i => `//${i}/`)
+              item['domain'] = item.domains.filter(item => item.indexOf('.clouddn.com') === -1)[0] || item.domains[0]
+              return item
+            })
+            this.selectedBuckets = this.allBuckets
+          }
         }
       })
     },
     ok () {
       if (this.type === 'addBucket') {
-        var check = this.buckets.find(item => {
-          return item.bucket === this.bucket.bucket
+        if (!this.selectedBuckets.length) return
+        var selectedDomains = this.selectedBuckets.map(item => item.domain)
+        var check = this.buckets.filter(item => {
+          return selectedDomains.includes(item.domain)
         })
 
-        if (check !== undefined) {
-          return this.$Message.error(`Bucket 存在`)
+        if (check.length) {
+          check.forEach(item => {
+            this.$Message.error(`${item.bucket} 存在`)
+          })
+          return
         }
 
-        if (this.bucket.domain.charAt(this.bucket.domain.length - 1) !== '/') {
-          this.bucket.domain = this.bucket.domain + '/'
-        }
-
-        this.$emit('ok', {
-          ...this.bucket
+        this.selectedBuckets = this.selectedBuckets.map(item => {
+          delete item._checked
+          return item
         })
+
+        this.$emit('ok', [
+          ...this.selectedBuckets
+        ])
+        this.$Message.success('success')
       } else if (this.type === 'move') {
         if (!this.moveTo) {
           this.$Message.error('请填写新的名称')

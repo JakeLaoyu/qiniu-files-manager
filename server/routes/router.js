@@ -1,18 +1,20 @@
 var express = require('express')
 var router = express.Router()
-const api = require('../controllers/api')
+const Api = require('../controllers/api')
 
-router.post('/postSecret', api.postSecret)
+router.post('/postSecret', Api.postSecret)
 
-router.get('/uploadToken', api.checkAccessKeySecretKey, api.uploadToken)
-router.get('/getImages', api.checkAccessKeySecretKey, api.getImages)
+router.get('/getBuckets', Api.getBuckets)
 
-router.get('/detail', api.detail)
+router.get('/uploadToken', Api.checkAccessKeySecretKey, Api.uploadToken)
+router.get('/getImages', Api.checkAccessKeySecretKey, Api.getImages)
 
-router.post('/delImage', api.delImage)
-router.post('/moveImage', api.moveImage)
-router.post('/multipleMoveImage', api.multipleMoveImage)
+router.get('/detail', Api.detail)
 
-router.get('/delSession', api.delSession)
+router.post('/delImage', Api.delImage)
+router.post('/moveImage', Api.moveImage)
+router.post('/multipleMoveImage', Api.multipleMoveImage)
+
+router.get('/delSession', Api.delSession)
 
 module.exports = router

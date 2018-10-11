@@ -1,30 +1,56 @@
 const qiniujs = require('./qiniu')
 const qiniu = require('qiniu')
 const axios = require('axios')
+const Async = require('async')
 const QiniuApi = {
   buckets: 'https://rs.qbox.me/buckets',
-  domainList: '/v6/domain/list?tbl='
+  domainList: 'https://api.qiniu.com/v6/domain/list?tbl='
 }
 
 // 通过ak, sk获取 buckets列表
-exports.getBuckets = (req, res) => {
-  var mac = new qiniu.auth.digest.Mac(req.session.accessKey, req.session.secretKey)
-  console.log(mac)
-  axios.defaults.headers.common['Authorization'] = qiniu.util.generateAccessToken(mac, QiniuApi.buckets, null)
-  axios({
+exports.getBuckets = async (req, res) => {
+  const result = await axios({
     url: QiniuApi.buckets,
-    method: 'get'
-  }).then(res => {
-    res.json({
-      code: 1,
-      data: res.data
+    method: 'get',
+    headers: {
+      Authorization: qiniu.util.generateAccessToken(qiniujs.getMac(req), QiniuApi.buckets, null)
+    }
+  })
+
+  if (result.data && result.data.length) {
+    var getDomainFunList = []
+
+    result.data.forEach(item => {
+      getDomainFunList.push(function (callback) {
+        axios({
+          url: QiniuApi.domainList + item,
+          method: 'get',
+          headers: {
+            Authorization: qiniu.util.generateAccessToken(qiniujs.getMac(req), QiniuApi.domainList + item, null)
+          }
+        }).then(domain => {
+          return callback(null, {
+            AccessKey: req.session.accessKey,
+            SecretKey: req.session.secretKey,
+            bucket: item,
+            domains: domain.data
+          })
+        })
+      })
     })
-  }).catch(error => {
+    Async.parallel(getDomainFunList, (err, result) => {
+      if (err) console.log(err)
+      res.json({
+        code: 1,
+        data: result
+      })
+    })
+  } else {
     res.json({
       code: 0,
-      message: `获取buckets列表发生错误: ${JSON.stringify(error)}`
+      message: '发生错误，请检查AccessKey、SecretKey是否填写正确'
     })
-  })
+  }
 }
 
 // 保存 ak sk

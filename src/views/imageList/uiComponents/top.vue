@@ -179,7 +179,7 @@ export default {
     async addBucket (payload) {
       this.modalLoading = true
       this.setBuckets(payload)
-      this.setCurrentBucket(payload)
+      this.setCurrentBucket(payload[0])
       this.modalLoading = false
       this.showModal = false
       this.emptyMultipleSwitchFile()

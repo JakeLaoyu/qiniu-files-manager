@@ -5,6 +5,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "async": "^2.6.1",
     "axios": "^0.18.0",
     "body-parser": "~1.17.1",
     "connect-mongo": "^2.0.0",
