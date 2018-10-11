@@ -3,7 +3,9 @@
     <Row class="menu__wrap">
       <Col span="12">
         <router-link class="layout-logo" to="/">
-          <img class="logo" :src="Logo">
+          <QimIcon size="60" icon="niu" :style="{
+            'vertical-align': 'middle'
+          }"></QimIcon>
           <span>QIM</span>
         </router-link>
       </Col>
@@ -35,13 +37,11 @@
 <script>
 
 import { mapState, mapMutations } from 'vuex'
-import Logo from '@/assets/logo.png'
 
 export default {
   name: 'App',
   data () {
     return {
-      Logo,
       activeName: 1
     }
   },
