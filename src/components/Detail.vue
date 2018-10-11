@@ -17,7 +17,8 @@
       <div class="detail__name">{{ detail.key.split('/')[detail.key.split('/').length - 1] }}</div>
       <div class="detail__url"><span>url:</span> {{ fileUrl }}</div>
       <div class="detail__fsize"><span>fsize:</span> {{ detail.fsize | FilterFsize }}</div>
-      <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detail)" :key="detailKey" v-if="detailKey!=='fsize'"><span>{{detailKey}}:</span> {{ detail[detailKey] }}</div>
+      <div class="detail__putTime"><span>putTime:</span> {{ detail.putTime | FilterFtime }}</div>
+      <div :class="`detail__${detailKey}`" v-for="detailKey in Object.keys(detail)" :key="detailKey" v-if="!['fsize','putTime'].includes(detailKey)"><span>{{detailKey}}:</span> {{ detail[detailKey] }}</div>
 
       <div class="detail__operating">
         <ButtonGroup>
