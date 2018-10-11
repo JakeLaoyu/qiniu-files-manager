@@ -3664,9 +3664,9 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-iview@2.13.1:
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/iview/-/iview-2.13.1.tgz#3517e963f2e34649df61de0e3554d4a0a291d27b"
+iview@2.14.3:
+  version "2.14.3"
+  resolved "https://registry.yarnpkg.com/iview/-/iview-2.14.3.tgz#0f32a450f956cce2ac60a4df5a6eba30816a0708"
   dependencies:
     async-validator "^1.8.2"
     deepmerge "^2.1.0"
@@ -3675,6 +3675,7 @@ iview@2.13.1:
     lodash.throttle "^4.1.1"
     popper.js "^1.14.1"
     tinycolor2 "^1.4.1"
+    v-click-outside-x "^3.0.0"
 
 js-base64@^2.1.8:
   version "2.4.9"
@@ -6485,6 +6486,10 @@ uuid@^3.0.1, uuid@^3.1.0:
 uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
+
+v-click-outside-x@^3.0.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/v-click-outside-x/-/v-click-outside-x-3.3.0.tgz#8dd1055c844053b580802400fe55184714eb5264"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.3"

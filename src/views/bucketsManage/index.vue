@@ -4,7 +4,7 @@
     <Header :style="{position: 'fixed', width: '100%'}">
       <Menu ref="menu" mode="horizontal" theme="light" :active-name="1" @on-select="changeMenu">
         <MenuItem v-for="(item, index) in buckets" :key="index" :name="index + 1">
-          <Icon type="briefcase"></Icon>
+          <Icon type="social-dropbox"></Icon>
           {{ item.bucket }}
         </MenuItem>
         <Button class="add-bucket" type="primary" @click="showModal=true">添加</Button>
@@ -15,14 +15,13 @@
         <Form ref="bucket" :model="bucket">
           <FormItem :label="key" :prop="key" v-for="(key,index) in Object.keys(bucket)" :key="index" >
             <Input v-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
-            <Select v-if="key==='domains'" v-model="bucket['domain']">
+            <Select v-if="key==='domains'" v-model="bucket['domain']" @on-open-change="submit">
               <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
             </Select>
           </FormItem>
 
-          <FormItem class="btns" v-if="this.bucket.bucket">
-            <Button type="primary" size="large" @click="submit">提交</Button>
-            <Button type="error" size="large" @click="delModal=true">删除</Button>
+          <FormItem class="btns">
+            <Button type="error" size="large" long @click="delModal=true">删除</Button>
           </FormItem>
         </Form>
       </div>
@@ -91,13 +90,10 @@ export default {
       })
       this.$emit('getList')
     },
-    submit () {
-      this.$refs['bucket'].validate((valid) => {
-        if (valid) {
-          this.changeBucket(this.bucket)
-          this.$Message.success('提交成功')
-        }
-      })
+    submit (val) {
+      if (val) return
+      this.changeBucket(this.bucket)
+      this.$Message.success('保存成功')
     },
     del () {
       this.delBucket(this.bucket)
@@ -153,9 +149,6 @@ export default {
     padding-top: 20px;
 }
 .btns {
-    text-align: center;
-    button:first-child {
-        margin-right: 100px;
-    }
+  text-align: center;
 }
 </style>
