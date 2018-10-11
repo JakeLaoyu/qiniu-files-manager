@@ -129,7 +129,7 @@ export default {
             this.allBuckets = res.data.map(item => {
               item['_checked'] = true
               item.domains = item.domains.map(i => `//${i}/`)
-              item['domain'] = item.domains.filter(item => item.indexOf('.clouddn.com') === -1)[0] || item.domains[0]
+              item['domain'] = item.domains.filter(item => !/(clouddn.com)|(qiniucdn.com)|(qiniudn.com)|(qnssl.com)|(qbox.me)$/.test(item))[0] || item.domains[0]
               return item
             })
             this.selectedBuckets = this.allBuckets
