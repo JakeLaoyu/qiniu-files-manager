@@ -113,9 +113,6 @@ export default {
       if (this.allBuckets.length) {
         if (!this.selectedBuckets.length) return this.$Message.info('至少选中一个')
         this.ok()
-        this.bucket = {}
-        this.selectedBuckets = []
-        this.allBuckets = []
         return
       }
       this.$refs.bucket.validate(async (valid) => {
@@ -163,6 +160,9 @@ export default {
         this.$emit('ok', [
           ...this.selectedBuckets
         ])
+        this.bucket = {}
+        this.selectedBuckets = []
+        this.allBuckets = []
         this.$Message.success('success')
       } else if (this.type === 'move') {
         if (!this.moveTo) {
