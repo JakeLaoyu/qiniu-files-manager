@@ -58,13 +58,19 @@ export default {
       if (name === 1) this.$router.push('/')
       if (name === 2) this.$router.push('/buckets')
       if (name === 3) this.$router.push('/search')
+    },
+    updateMenu () {
+      const { path } = this.$route
+      if (path === '/') this.activeName = 1
+      if (path === '/buckets') this.activeName = 2
+      if (path === '/search') this.activeName = 3
     }
   },
   mounted () {
-    const { path } = this.$route
-    if (path === '/') this.activeName = 1
-    if (path === '/buckets') this.activeName = 2
-    if (path === '/search') this.activeName = 3
+    this.updateMenu()
+  },
+  updated () {
+    this.updateMenu()
   },
   created () {
     // 更新为 通过 ak、sk获取数据后，需要重新拉数据

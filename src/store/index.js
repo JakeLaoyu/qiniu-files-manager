@@ -166,7 +166,7 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ({commit, state}, {search = '', cb}) {
+    async getList ({commit, state}, {search = ''}) {
       var bucket = state.currentBucket.bucket
       var domain = state.currentBucket.domain
       var prefix = ''
@@ -185,10 +185,9 @@ const store = new Vuex.Store({
           prefixs: prefixs
         })
       } else {
-        return images
-      }
-      if (cb) {
-        cb()
+        return {
+          images
+        }
       }
     }
   }

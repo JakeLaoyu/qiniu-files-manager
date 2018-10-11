@@ -139,10 +139,10 @@ export default {
     },
     async search () {
       this.searching = true
-      const res = await this.getList({
+      const { images } = await this.getList({
         search: this.searchValue
       })
-      this.searchResult = res
+      this.searchResult = images
       this.searching = false
       this.searchOver = true
     }

@@ -123,7 +123,6 @@ export default {
             secretKey: this.bucket.SecretKey
           })
           const res = await ajax.get('/api/getBuckets')
-          console.log(res)
           this.btnLoading = false
           if (res.code === 1) {
             this.allBuckets = res.data.map(item => {

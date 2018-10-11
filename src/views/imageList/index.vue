@@ -224,15 +224,11 @@ export default {
         })
       }
     },
-    getImagesList () {
-      const self = this
+    async getImagesList () {
       this.clickFileKey = ''
       this.loading = true
-      this.getList({
-        cb () {
-          self.loading = false
-        }
-      })
+      await this.getList({})
+      this.loading = false
     },
     resetContentHeight () {
       if (!document.querySelector('.ivu-breadcrumb')) return

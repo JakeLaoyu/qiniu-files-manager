@@ -7,6 +7,7 @@
         {{ item.bucket }}
       </MenuItem>
       <Button class="add-bucket" type="primary" @click="showModal=true">添加</Button>
+      <Button class="add-bucket" type="error" @click="handleEmpty">清空</Button>
     </Menu>
   </Header>
   <div :style="{background: '#fff', paddingBottom: '30px'}">
@@ -66,15 +67,32 @@ export default {
   },
   methods: {
     ...mapActions([
-      'postSecrte'
+      'postSecrte',
+      'getList'
     ]),
     ...mapMutations([
       'delBucket',
       'changeBucket',
       'setBuckets',
       'setCurrentBucket',
-      'emptyMultipleSwitchFile'
+      'emptyMultipleSwitchFile',
+      'emptyState'
     ]),
+    handleEmpty () {
+      this.$Modal.confirm({
+        title: '确认',
+        content: '是否清空',
+        okText: '取消',
+        cancelText: '确认',
+        onOk: () => {},
+        onCancel: () => {
+          this.emptyState()
+          this.bucket = {}
+          this.$Message.success('清除成功')
+          this.showModal = true
+        }
+      })
+    },
     async addBucket (payload) {
       this.modalLoading = true
       this.setBuckets(payload)
@@ -86,7 +104,7 @@ export default {
         accessKey: this.currentBucket.AccessKey,
         secretKey: this.currentBucket.SecretKey
       })
-      this.$emit('getList')
+      this.getList({})
     },
     submit (val) {
       if (val) return
@@ -98,6 +116,7 @@ export default {
       this.delModal = false
       this.bucket = {}
       this.$Message.success('删除成功')
+      if (!this.buckets.length) this.showModal = true
     },
     changeMenu (name) {
       this.bucket = this.buckets[name - 1]

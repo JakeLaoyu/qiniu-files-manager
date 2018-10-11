@@ -26,6 +26,12 @@ ajax.interceptors.response.use(({data = {}, request}) => {
     if (Array.isArray(data.message)) {
       data.message.forEach(item => Vue.prototype.$Message.error(item))
     }
+    if (data.code === 401) {
+      Vue.prototype.$Notice.error({
+        title: '发生错误',
+        desc: '请检查Accesskey、SecretKey是否正确'
+      })
+    }
     // return Promise.reject(new Error(data.message))
   }
   return data
