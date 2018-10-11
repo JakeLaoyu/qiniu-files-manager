@@ -5,7 +5,7 @@
         <router-link class="layout-logo" to="/">
           <QimIcon size="60" icon="niu" :style="{
             'vertical-align': 'middle'
-          }"></QimIcon>
+          }"/>
           <span>QIM</span>
         </router-link>
       </Col>
