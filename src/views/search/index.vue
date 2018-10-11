@@ -46,7 +46,7 @@
         >
         <div class="detail__img">
           <Spin size="large" fix v-if="imgLoading"></Spin>
-          <img :src="`${this.currentBucket.domain + detail.key}`" @load="imgLoading = false" v-if="detail.mimeType.split('/')[0]==='image'">
+          <img v-lazy="`${this.currentBucket.domain + detail.key}`" v-if="detail.mimeType.split('/')[0]==='image'">
           <div class="dplayer__wrap" v-show="detail.mimeType.split('/')[0]==='video'">
             <div id="dplayer"></div>
           </div>
