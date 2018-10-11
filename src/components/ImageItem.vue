@@ -2,7 +2,7 @@
 <div v-if="type=='image'">
   <Col span="4" class-name="item">
     <div class="item__image" :class={active:choosed} @click="$emit('clickFile',item)">
-      <img :src="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+      <img v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
       <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
   </Col>

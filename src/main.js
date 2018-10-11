@@ -6,6 +6,8 @@ import store from './store'
 import '@/theme/custom.less'
 import '@/theme/iconfont.js'
 import UiComponents from '@components'
+import VueLazyload from 'vue-lazyload'
+import ErrorImg from '@/assets/file_error.png'
 
 import {
   Menu,
@@ -36,6 +38,9 @@ import {
 
 Vue.config.productionTip = false
 
+Vue.use(VueLazyload, {
+  error: ErrorImg
+})
 Vue.use(Router)
 
 // 路由配置
