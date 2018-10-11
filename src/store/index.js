@@ -37,16 +37,13 @@ const store = new Vuex.Store({
       state[payload.key] = payload.value
     },
     emptyState (state) {
-      state = {
-        ...state,
-        buckets: [],
-        currentBucket: {},
-        fileList: [],
-        prefixs: [],
-        openPrefixs: [],
-        fileDetail: {},
-        multipleSwitchFile: []
-      }
+      state.buckets = []
+      state.currentBucket = {}
+      state.fileList = []
+      state.prefixs = []
+      state.openPrefixs = []
+      state.fileDetail = {}
+      state.multipleSwitchFile = []
     },
     chooseAllMultipleSwitchFile (state, { status, fileList }) {
       fileList.forEach(item => {
