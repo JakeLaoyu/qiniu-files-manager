@@ -1,7 +1,11 @@
 <template>
 <div class="item">
   <Spin size="large" fix v-if="imgLoading"></Spin>
-  <img v-lazy="`${domain}${item.key}?imageView2/1/w/275/h/275`" v-if="item.mimeType.indexOf('image')!=-1">
+  <template v-if="item.mimeType.indexOf('image')!=-1">
+    <img v-if="!currentBucket.isPrivate" v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+    <img v-else v-lazy="`${domain}${item.key}?${item.private}`" alt="">
+  </template>
+
   <div class="item__file" v-else>
     <QimIcon :icon="item.mimeType.split('/')[item.mimeType.split('/').length-1]"></QimIcon>
     <Icon item.mimeType="checkmark-circled" size="14" color="#007AFA"></Icon>

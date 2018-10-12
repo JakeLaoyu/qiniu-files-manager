@@ -77,7 +77,7 @@ export default {
       'openPrefixs'
     ]),
     fileUrl () {
-      return this.currentBucket.domain + this.detail.key
+      return this.currentBucket.isPrivate ? `${this.currentBucket.domain}${this.detail.key}?${this.detail.private}` : this.currentBucket.domain + this.detail.key
     }
   },
   watch: {

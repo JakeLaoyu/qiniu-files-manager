@@ -18,6 +18,10 @@
           <Select v-if="key==='domains'" v-model="bucket['domain']" @on-open-change="submit">
             <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
           </Select>
+          <Select v-if="key==='isPrivate'" v-model="bucket['isPrivate']" @on-open-change="submit">
+            <Option :value="0" >否</Option>
+            <Option :value="1" >是</Option>
+          </Select>
         </FormItem>
 
         <FormItem class="btns" v-if="this.bucket.bucket">

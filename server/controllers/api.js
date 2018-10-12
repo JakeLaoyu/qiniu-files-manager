@@ -7,6 +7,20 @@ const QiniuApi = {
   domainList: 'https://api.qiniu.com/v6/domain/list?tbl='
 }
 
+// 获取私有空间文件 凭证
+exports.getPrivateToken = (req, res) => {
+  var token = qiniujs.privateToken({
+    accessKey: req.session.accessKey,
+    secretKey: req.session.secretKey,
+    key: req.query.key,
+    domain: req.query.domain.substring(0, req.query.domain.length - 1)
+  })
+  res.json({
+    code: 1,
+    token: token.split('?')[1]
+  })
+}
+
 // 通过ak, sk获取 buckets列表
 exports.getBuckets = async (req, res) => {
   let result = {}
@@ -42,7 +56,8 @@ exports.getBuckets = async (req, res) => {
             AccessKey: req.session.accessKey,
             SecretKey: req.session.secretKey,
             bucket: item,
-            domains: domain.data
+            domains: domain.data,
+            isPrivate: 0
           })
         })
       })
@@ -75,10 +90,23 @@ exports.postSecret = (req, res) => {
 // 获取图片
 exports.getImages = (req, res) => {
   var bucket = req.query.bucket
+  var domain = req.query.domain
+  var isPrivate = req.query.private
   var search = req.query.search || ''
   var prefix = req.query.prefix || ''
 
   qiniujs.getImages(req, bucket, prefix, search, function (statusCode, respBody, images, prefixs) {
+    if (isPrivate) {
+      // 私有空间获取凭证
+      images && images.forEach(item => {
+        item.private = qiniujs.privateToken({
+          accessKey: req.session.accessKey,
+          secretKey: req.session.secretKey,
+          key: item.key,
+          domain: domain.substring(0, domain.length - 1)
+        }).split('?')[1]
+      })
+    }
     res.json({
       code: statusCode === 200 ? 1 : statusCode,
       message: statusCode === 200 ? '' : respBody.error,

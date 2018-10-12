@@ -3,7 +3,8 @@
   <Col span="4" class-name="item">
     <div class="item__image" :class={active:choosed} @click="$emit('clickFile',item)">
       <Spin size="small" fix></Spin>
-      <img v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+      <img v-if="!isPrivate" v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+      <img v-else v-lazy="`${domain}${item.key}?${item.private}`" alt="">
       <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
     </div>
   </Col>
@@ -63,6 +64,10 @@ export default {
     choosed: {
       type: Boolean,
       default: false
+    },
+    isPrivate: {
+      type: Number,
+      default: 0
     }
   },
   data () {

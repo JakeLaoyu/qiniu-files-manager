@@ -30,6 +30,11 @@
 ## 搜索
 ![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175142.png)
 
+
+## 私有空间
+
+> 再添加空间时需要手动选择是否是私有空间，后面也可以在 空间管理 中进行修改。默认情况下，获取私有空间图片会401错误，因为需要获取凭证
+
 ## 配置`config.js`：
 
 ```js

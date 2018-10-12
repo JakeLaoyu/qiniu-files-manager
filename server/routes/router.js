@@ -7,6 +7,7 @@ router.post('/postSecret', Api.postSecret)
 router.get('/getBuckets', Api.getBuckets)
 
 router.get('/uploadToken', Api.checkAccessKeySecretKey, Api.uploadToken)
+router.get('/getPrivateToken', Api.checkAccessKeySecretKey, Api.getPrivateToken)
 router.get('/getImages', Api.checkAccessKeySecretKey, Api.getImages)
 
 router.get('/detail', Api.detail)

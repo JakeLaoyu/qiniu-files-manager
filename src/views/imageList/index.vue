@@ -44,6 +44,7 @@
               type="image"
               :choosed="multipleSwitchFile.includes(item.key)"
               :domain="currentBucket.domain"
+              :isPrivate="currentBucket.isPrivate"
               @clickFile="clickFile"
               />
             <QimImageItem
@@ -83,7 +84,7 @@
 </template>
 <script>
 import Top from './uiComponents/top.vue'
-import { isWin, debounce } from '@/libs/util'
+import { isWin, debounce, ajax } from '@/libs/util'
 
 import {
   mapState,
@@ -186,16 +187,21 @@ export default {
       })
       this.getImagesList()
     },
-    uploadfinish (payload) {
+    async uploadfinish (payload) {
       if (payload.newPrefix.indexOf('/') >= 0) {
         this.setState({
           fileList: this.fileList,
           prefixs: this.prefixs.includes(payload.newPrefix.split('/')[0]) ? this.prefixs : [payload.newPrefix.split('/')[0], ...this.prefixs]
         })
       } else {
+        let key = `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${payload.file.key}`
+        if (this.currentBucket.isPrivate) {
+          const { token } = await ajax.get(`/api/getPrivateToken?key=${key}&domain=${window.location.protocol + this.currentBucket.domain}`)
+          payload.file.private = token
+        }
         this.unshift({
           ...payload.file,
-          key: `${this.openPrefixs.length ? this.openPrefixs.join('/') + '/' : ''}${payload.file.key}`
+          key
         })
       }
     },

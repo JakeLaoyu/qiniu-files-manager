@@ -74,11 +74,37 @@ export default {
                 value: params.row.domain
               },
               on: {
-                'on-chage': (e) => {
-                  console.log(e)
+                'on-change': (e) => {
+                  this.allBuckets[params.index].domain = e
                 }
               }
             }, params.row.domains.map((item, index) => h('Option', { props: {value: item} }, item)))
+          }
+        }, {
+          title: '是否是私有空间',
+          key: 'isPrivate',
+          render: (h, params) => {
+            return h('Select', {
+              props: {
+                value: params.row.isPrivate
+              },
+              on: {
+                'on-change': (e) => {
+                  this.allBuckets[params.index].isPrivate = e
+                }
+              }
+            }, [
+              h('Option', {
+                props: {
+                  value: 0
+                }
+              }, '否'),
+              h('Option', {
+                props: {
+                  value: 1
+                }
+              }, '是')
+            ])
           }
         }
       ],
@@ -139,9 +165,10 @@ export default {
     ok () {
       if (this.type === 'addBucket') {
         if (!this.selectedBuckets.length) return
-        var selectedDomains = this.selectedBuckets.map(item => item.domain)
         var check = this.buckets.filter(item => {
-          return selectedDomains.includes(item.domain)
+          return this.selectedBuckets.some(i => {
+            return item.AccessKey === i.AccessKey && item.SecretKey === i.SecretKey && item.bucket === i.bucket
+          })
         })
 
         if (check.length) {

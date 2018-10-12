@@ -66,7 +66,7 @@ const store = new Vuex.Store({
       }
     },
     changeBucket (state, newBucket) {
-      var index = state.buckets.findIndex(item => item.bucket === newBucket.bucket)
+      var index = state.buckets.findIndex(item => item.bucket === newBucket.bucket && item.AccessKey === newBucket.AccessKey && item.SecretKey === newBucket.SecretKey)
 
       if (state.currentBucket.bucket === state.buckets[ index ].bucket) {
         state.currentBucket = newBucket
@@ -169,12 +169,16 @@ const store = new Vuex.Store({
     async getList ({commit, state}, {search = ''}) {
       var bucket = state.currentBucket.bucket
       var domain = state.currentBucket.domain
+      var isPrivate = state.currentBucket.isPrivate || 0
       var prefix = ''
       if (!search) {
         prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
         commit('emptyFileList')
       }
-      const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&search=${search}`)
+      if (isPrivate) {
+        domain = window.location.protocol + domain
+      }
+      const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&private=${isPrivate}&search=${search}`)
       if (!images) return
       if (!search) {
         images.forEach(item => {
