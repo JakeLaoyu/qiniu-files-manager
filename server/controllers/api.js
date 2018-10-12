@@ -102,7 +102,7 @@ exports.getImages = (req, res) => {
         item.private = qiniujs.privateToken({
           accessKey: req.session.accessKey,
           secretKey: req.session.secretKey,
-          key: item.key,
+          key: `${prefix}${item.key}`,
           domain: domain.substring(0, domain.length - 1)
         }).split('?')[1]
       })
