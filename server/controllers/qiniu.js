@@ -11,7 +11,6 @@ exports.privateToken = ({accessKey, secretKey, key, domain}) => {
   var bucketManager = new qiniu.rs.BucketManager(mac, config)
   var deadline = parseInt(Date.now() / 1000) + 3600 // 1小时过期
   var privateDownloadUrl = bucketManager.privateDownloadUrl(domain, key, deadline)
-  console.log(privateDownloadUrl)
   return privateDownloadUrl
 }
 
