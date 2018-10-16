@@ -265,7 +265,7 @@ exports.multipleMoveImage = (req, res) => {
 
   let moveOperations = []
 
-  if (keys.length < 1000) {
+  if (keys.length <= 1000) {
     keys.forEach(item => {
       moveOperations.push(qiniu.rs.moveOp(bucket, item, bucket, `${newKey}${item.split('/').pop()}`))
     })
