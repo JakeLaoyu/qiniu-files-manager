@@ -3,12 +3,16 @@ import App from './app.vue'
 import Router from 'vue-router'
 import routerConfig from './router.js'
 import store from './store'
+import 'ant-design-vue/dist/antd.css'
 import '@/theme/custom.less'
 import '@/theme/iconfont.js'
 import UiComponents from '@components'
 import VueLazyload from 'vue-lazyload'
 import ErrorImg from '@/assets/file_error.png'
 import * as Filter from '@/libs/filter'
+import {
+  Switch as ASwitch
+} from 'ant-design-vue'
 
 import {
   Menu,
@@ -96,6 +100,7 @@ Vue.component('Tooltip', Tooltip)
 Vue.component('Tag', Tag)
 Vue.component('Table', Table)
 Vue.component('i-switch', Switch)
+Vue.component('ASwitch', ASwitch)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal

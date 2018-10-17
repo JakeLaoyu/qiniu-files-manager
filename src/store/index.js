@@ -46,13 +46,19 @@ const store = new Vuex.Store({
       state.multipleSwitchFile = []
     },
     chooseAllMultipleSwitchFile (state, { status, fileList }) {
-      fileList.forEach(item => {
-        if (status && !state.multipleSwitchFile.includes(item.key)) {
-          state.multipleSwitchFile.push(item.key)
-        } else if (!status && state.multipleSwitchFile.includes(item.key)) {
-          state.multipleSwitchFile.splice(state.multipleSwitchFile.indexOf(item.key), 1)
-        }
-      })
+      if (status) {
+        var keys = fileList.map(item => item.key)
+        state.multipleSwitchFile = [
+          ...state.multipleSwitchFile,
+          ...keys
+        ]
+      } else {
+        let selectedKeys = [...state.multipleSwitchFile]
+        fileList.forEach(item => {
+          selectedKeys.splice(selectedKeys.indexOf(item.key), 1)
+        })
+        state.multipleSwitchFile = [...selectedKeys]
+      }
     },
     emptyMultipleSwitchFile (state) {
       state.multipleSwitchFile = []
