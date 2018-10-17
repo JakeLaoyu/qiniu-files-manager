@@ -38,7 +38,7 @@
 
       <template v-if="multipleSwitch">
         <div class="switch__label">全选</div>
-        <ASwitch v-model="chooseAllSwitch" @change="chooseAll" :loading="switchIng"></ASwitch>
+        <i-switch v-model="chooseAllSwitch" @on-change="chooseAll"></i-switch>
       </template>
 
       <Tag v-if="multipleSwitch" color="blue" style="margin: 0 10px;" @click.native="handleTag">{{ multipleSwitchFile.length }}</Tag>
@@ -78,8 +78,7 @@ export default {
       showSelectModal: false,
       moveModal: false,
       newPrefix: '',
-      search: '',
-      switchIng: false
+      search: ''
     }
   },
   computed: {
@@ -137,12 +136,9 @@ export default {
       this.$emit('getList')
     },
     chooseAll () {
-      this.switchIng = true
-      this.$nextTick(() => {
-        this.chooseAllMultipleSwitchFile({
-          status: this.chooseAllSwitch,
-          fileList: this.filterFileList
-        })
+      this.chooseAllMultipleSwitchFile({
+        status: this.chooseAllSwitch,
+        fileList: this.filterFileList
       })
     },
     del () {
@@ -217,7 +213,6 @@ export default {
     },
     multipleSwitchFile (val) {
       this.isSwitchAll()
-      this.switchIng = false
     }
   },
   mounted () {
