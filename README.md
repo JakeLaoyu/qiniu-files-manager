@@ -27,7 +27,7 @@
 ### Bucket管理
 ![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175040.png)
 
-## 搜索
+### 搜索
 ![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175142.png)
 
 
