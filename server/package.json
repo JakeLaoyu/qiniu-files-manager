@@ -5,6 +5,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "@pm2/io": "^2.4.5",
     "async": "^2.6.1",
     "axios": "^0.18.0",
     "body-parser": "~1.17.1",

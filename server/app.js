@@ -1,17 +1,12 @@
-var express = require('express')
-var path = require('path')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-var lessMiddleware = require('less-middleware')
-var session = require('express-session')
-var MongoStore = require('connect-mongo')(session)
-var Raven = require('raven')
-var Config = require('../configFile')
-
-if (Config.sentryUrl) {
-  Raven.config(Config.sentryUrl).install()
-}
+const express = require('express')
+const path = require('path')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const lessMiddleware = require('less-middleware')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
+const io = require('@pm2/io')
 
 var router = require('./routes/router')
 
@@ -51,6 +46,7 @@ app.use(session({
 }))
 
 app.use('/api', router)
+app.use(io.expressErrorHandler())
 
 app.listen(port)
 console.log('listen port: ' + port)
