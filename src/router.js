@@ -1,6 +1,10 @@
-import IndexPage from '@views/imageList'
-import BucketsManage from '@views/bucketsManage'
-import Search from '@views/search'
+// import IndexPage from '@views/imageList'
+// import BucketsManage from '@views/bucketsManage'
+// import Search from '@views/search'
+
+const IndexPage = () => import('@views/imageList')
+const BucketsManage = () => import('@views/bucketsManage')
+const Search = () => import('@views/search')
 
 export default [
   {
