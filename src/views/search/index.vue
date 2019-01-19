@@ -4,7 +4,7 @@
       <Input v-model="searchValue" icon="ios-search" size="large" placeholder="关键字" @on-enter="search"></Input>
     </div>
     <div class="search__result" :class="{ 'beautyScroll': isWin }">
-      <ASpin size="large" :spinning="searching">
+      <ASpin class="search__loading" size="large" :spinning="searching">
         <div class="search__prompt" v-if="searchOver">
           {{searchResult.length === 0 ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
         </div>
@@ -159,6 +159,10 @@ export default {
   height: calc(~"100vh - 60px");
   box-sizing: border-box;
   padding-top: 30px;
+  &__loading {
+    display: block;
+    margin: 0 auto;
+  }
   &__input {
     width: 720px;
     margin: 0 auto;
