@@ -9,6 +9,11 @@ import UiComponents from '@components'
 import VueLazyload from 'vue-lazyload'
 import ErrorImg from '@/assets/file_error.png'
 import * as Filter from '@/libs/filter'
+import {
+  Spin as ASpin
+} from 'ant-design-vue'
+// import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/lib/spin/style'
 
 import {
   Menu,
@@ -96,6 +101,7 @@ Vue.component('Tooltip', Tooltip)
 Vue.component('Tag', Tag)
 Vue.component('Table', Table)
 Vue.component('i-switch', Switch)
+Vue.component('ASpin', ASpin)
 Vue.prototype.$Message = Message
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Modal = Modal

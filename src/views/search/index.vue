@@ -4,23 +4,24 @@
       <Input v-model="searchValue" icon="ios-search" size="large" placeholder="关键字" @on-enter="search"></Input>
     </div>
     <div class="search__result" :class="{ 'beautyScroll': isWin }">
-      <Spin size="large" fix v-if="searching"></Spin>
-      <div class="search__prompt" v-if="searchOver">
-        {{searchResult.length === 0 ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
-      </div>
-      <Row :gutter="20" v-if="searchResult.length">
-        <Col span="6" v-for="(item,index) in searchResult" :key="index" class-name="search__item">
-          <qimSearchItem
-          :item="item"
-          :index="index"
-          :domain="currentBucket.domain"
-          @itemDetail="itemDetail"
-          @preview="itemPreview"
-          @delItem="delItem"
-          >
-          </qimSearchItem>
-        </Col>
-      </Row>
+      <ASpin size="large" :spinning="searching">
+        <div class="search__prompt" v-if="searchOver">
+          {{searchResult.length === 0 ? '没有搜索到相关内容' : `共计 ${searchResult.length} 条搜索结果` }}
+        </div>
+        <Row :gutter="20" v-if="searchResult.length">
+          <Col span="6" v-for="(item,index) in searchResult" :key="index" class-name="search__item">
+            <qimSearchItem
+            :item="item"
+            :index="index"
+            :domain="currentBucket.domain"
+            @itemDetail="itemDetail"
+            @preview="itemPreview"
+            @delItem="delItem"
+            >
+            </qimSearchItem>
+          </Col>
+        </Row>
+      </ASpin>
     </div>
 
     <Modal

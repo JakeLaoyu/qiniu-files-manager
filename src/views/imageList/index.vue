@@ -12,71 +12,72 @@
 
   <div class="layout-content">
     <div class="layout-content-main" :style="layoutContentMainStyle">
-      <Spin fix size="large" v-if="loading"></Spin>
-      <Row :gutter="20">
-        <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
-          <QimImageItem
-            v-if="!openPrefixs.length && !fileList.length"
-            type="empty"
-            />
-
-          <QimImageItem
-            v-if="openPrefixs.length"
-            type="return"
-            @returnDirectory="returnDirectory"
-            />
-
-          <QimImageItem
-            v-for="(folder,index) in filterPrefixs"
-            :key="index"
-            type="folder"
-            :item="folder"
-            @clickPrefix="clickPrefix"
-            />
-
-          <template
-            v-for="item in filterFileList"
-            >
+      <ASpin size="large" :spinning="loading">
+        <Row :gutter="20">
+          <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
             <QimImageItem
-              :item="item"
-              :key="item.putTime"
-              v-if="item.mimeType.indexOf('image')!=-1"
-              type="image"
-              :choosed="multipleSwitchFile.includes(item.key)"
-              :domain="currentBucket.domain"
-              :isPrivate="currentBucket.isPrivate"
-              @clickFile="clickFile"
+              v-if="!openPrefixs.length && !fileList.length"
+              type="empty"
               />
+
             <QimImageItem
-              :item="item"
-              :key="item.putTime"
-              v-else
-              :type="item.mimeType"
-              :choosed="multipleSwitchFile.includes(item.key)"
-              :domain="currentBucket.domain"
-              @clickFile="clickFile"
+              v-if="openPrefixs.length"
+              type="return"
+              @returnDirectory="returnDirectory"
               />
-          </template>
-        </Col>
 
-        <Col span="8" pull="16" class-name="left-part">
-          <QimUpload
-            @uploadfinish="uploadfinish"
-            :newPrefix="newPrefix"
-            >
-          </QimUpload>
-
-          <transition name="fade">
-            <QimDetail
-              :detail="fileDetail || clickFileDetail"
-              :detailStyle="detailStyle"
-              v-if="clickFileKey"
-              @deleteImage="clickFileKey=''"
-              @imageload="handleDetailScroll"
+            <QimImageItem
+              v-for="(folder,index) in filterPrefixs"
+              :key="index"
+              type="folder"
+              :item="folder"
+              @clickPrefix="clickPrefix"
               />
-          </transition>
-        </Col>
-      </Row>
+
+            <template
+              v-for="item in filterFileList"
+              >
+              <QimImageItem
+                :item="item"
+                :key="item.putTime"
+                v-if="item.mimeType.indexOf('image')!=-1"
+                type="image"
+                :choosed="multipleSwitchFile.includes(item.key)"
+                :domain="currentBucket.domain"
+                :isPrivate="currentBucket.isPrivate"
+                @clickFile="clickFile"
+                />
+              <QimImageItem
+                :item="item"
+                :key="item.putTime"
+                v-else
+                :type="item.mimeType"
+                :choosed="multipleSwitchFile.includes(item.key)"
+                :domain="currentBucket.domain"
+                @clickFile="clickFile"
+                />
+            </template>
+          </Col>
+
+          <Col span="8" pull="16" class-name="left-part">
+            <QimUpload
+              @uploadfinish="uploadfinish"
+              :newPrefix="newPrefix"
+              >
+            </QimUpload>
+
+            <transition name="fade">
+              <QimDetail
+                :detail="fileDetail || clickFileDetail"
+                :detailStyle="detailStyle"
+                v-if="clickFileKey"
+                @deleteImage="clickFileKey=''"
+                @imageload="handleDetailScroll"
+                />
+            </transition>
+          </Col>
+        </Row>
+      </ASpin>
     </div>
   </div>
 
