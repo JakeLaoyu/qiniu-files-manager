@@ -39,7 +39,7 @@
               >
               <QimImageItem
                 :item="item"
-                :key="item.putTime"
+                :key="item.hash"
                 v-if="item.mimeType.indexOf('image')!=-1"
                 type="image"
                 :choosed="multipleSwitchFile.includes(item.key)"
@@ -49,7 +49,7 @@
                 />
               <QimImageItem
                 :item="item"
-                :key="item.putTime"
+                :key="item.hash"
                 v-else
                 :type="item.mimeType"
                 :choosed="multipleSwitchFile.includes(item.key)"
@@ -109,6 +109,9 @@ export default {
       searchVal: '',
       contentmainStyle: {},
       layoutContentMainStyle: {},
+      query: {
+        pagesize: 1000
+      },
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
       }
@@ -234,7 +237,9 @@ export default {
     async getImagesList () {
       this.clickFileKey = ''
       this.loading = true
-      await this.getList({})
+      await this.getList({
+        query: this.query
+      })
       this.loading = false
     },
     resetContentHeight () {

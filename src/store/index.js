@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import { objToQuery } from '@/libs/util'
 
 import {
   ajax
@@ -172,7 +173,7 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ({commit, state}, {search = ''}) {
+    async getList ({commit, state}, {search = '', query = {}}) {
       var bucket = state.currentBucket.bucket
       var domain = state.currentBucket.domain
       var isPrivate = state.currentBucket.isPrivate || 0
@@ -184,7 +185,7 @@ const store = new Vuex.Store({
       if (isPrivate) {
         domain = window.location.protocol + domain
       }
-      const {images, prefixs} = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&private=${isPrivate}&search=${search}`)
+      const { images, prefixs } = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&private=${isPrivate}&search=${search}&${objToQuery(query)}`)
       if (!images) return
       if (!search) {
         images.forEach(item => {

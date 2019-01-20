@@ -20,3 +20,16 @@ export const debounce = (fn, delay) => {
     }, delay)
   }
 }
+
+/**
+ * 对象转换为get请求 query
+ * @param {Object} obj 要转化的对象
+ */
+export const objToQuery = (obj) => {
+  if (!obj) return ''
+  let strArr = []
+  Object.keys(obj).forEach(item => {
+    strArr.push(`${item}=${obj[item]}`)
+  })
+  return strArr.join('&')
+}

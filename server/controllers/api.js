@@ -88,31 +88,46 @@ exports.postSecret = (req, res) => {
 }
 
 // 获取图片
-exports.getImages = (req, res) => {
+exports.getImages = async (req, res) => {
   var bucket = req.query.bucket
   var domain = req.query.domain
   var isPrivate = req.query.private
   var search = req.query.search || ''
   var prefix = req.query.prefix || ''
+  var nextMarker = req.query.nextMarker
+  var pagesize = req.query.pagesize || 50
 
-  qiniujs.getImages(req, bucket, prefix, search, function (statusCode, respBody, images, prefixs) {
-    if (isPrivate) {
-      // 私有空间获取凭证
-      images && images.forEach(item => {
-        item.private = qiniujs.privateToken({
-          accessKey: req.session.accessKey,
-          secretKey: req.session.secretKey,
-          key: `${prefix}${item.key}`,
-          domain: domain.substring(0, domain.length - 1)
-        }).split('?')[1]
-      })
-    }
-    res.json({
-      code: statusCode === 200 ? 1 : statusCode,
-      message: statusCode === 200 ? '' : respBody.error,
-      images: images || [],
-      prefixs: prefixs || []
+  const result = await qiniujs.getImages({
+    req,
+    bucket,
+    prefix,
+    search,
+    nextMarker,
+    pagesize
+  })
+  if (isPrivate) {
+    // 私有空间获取凭证
+    result.images && result.images.forEach(item => {
+      item.private = qiniujs.privateToken({
+        accessKey: req.session.accessKey,
+        secretKey: req.session.secretKey,
+        key: `${prefix}${item.key}`,
+        domain: domain.substring(0, domain.length - 1)
+      }).split('?')[1]
     })
+  }
+  result.prefixs = result.prefixs.map(item => {
+    let str = item
+    if (prefix) str = item.replace(prefix, '')
+    str = str.slice(0, str.length - 1)
+    return str
+  })
+  res.json({
+    code: result.statusCode === 200 ? 1 : result.statusCode,
+    message: result.statusCode === 200 ? '' : result.resultpBody.error,
+    images: result.images || [],
+    prefixs: result.prefixs || [],
+    nextMarker: result.nextMarker
   })
 }
 
