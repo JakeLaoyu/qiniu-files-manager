@@ -1,16 +1,8 @@
-// import IndexPage from '@views/imageList'
-// import BucketsManage from '@views/bucketsManage'
-// import Search from '@views/search'
-
-const IndexPage = () => import('@views/imageList')
-const BucketsManage = () => import('@views/bucketsManage')
-const Search = () => import('@views/search')
-
 export default [
   {
     path: '/',
     name: '文件管理',
-    component: IndexPage,
+    component: () => import('@views/imageList'),
     meta: {
       keepAlive: true,
       title: 'qim-文件管理'
@@ -18,7 +10,7 @@ export default [
   }, {
     path: '/buckets',
     name: 'Bucket管理',
-    component: BucketsManage,
+    component: () => import('@views/bucketsManage'),
     meta: {
       keepAlive: true,
       title: 'qim-Bucket管理'
@@ -26,7 +18,7 @@ export default [
   }, {
     path: '/search',
     name: '搜索',
-    component: Search,
+    component: () => import('@views/search'),
     meta: {
       keepAlive: true,
       title: 'qim-搜索'

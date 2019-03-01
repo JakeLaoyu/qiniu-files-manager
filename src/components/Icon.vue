@@ -11,8 +11,9 @@ export default {
       type: String
     },
     size: {
-      type: String
-    }
+      type: [String, Number]
+    },
+    color: String
   },
   data () {
     return {}
@@ -21,7 +22,8 @@ export default {
     style () {
       return {
         width: `${this.size}px`,
-        height: `${this.size}px`
+        height: `${this.size}px`,
+        color: this.color
       }
     }
   }

@@ -13,7 +13,7 @@ const store = new Vuex.Store({
   plugins: [createPersistedState({
     // https://github.com/robinvdvleuten/vuex-persistedstate/issues/4
     reducer: (state) => {
-      const reducerState = {...state}
+      const reducerState = { ...state }
       // state should be exclude
       delete reducerState.signatureHint
       delete reducerState.auditFailHint
@@ -31,7 +31,7 @@ const store = new Vuex.Store({
     multipleSwitchFile: [] // 多选选中文件
   },
   getters: {
-    getDetail: ({fileDetail}) => (key) => fileDetail[ key ]
+    getDetail: ({ fileDetail }) => (key) => fileDetail[ key ]
   },
   mutations: {
     saveState (state, payload) {
@@ -144,8 +144,8 @@ const store = new Vuex.Store({
      * @param  {String}  image  图片的key
      * @return {undefined}        [description]
      */
-    async getFileDetail ({commit}, {bucket, file}) {
-      const {info} = await ajax.get(`/api/detail?key=${file.key}&bucket=${bucket}`)
+    async getFileDetail ({ commit }, { bucket, file }) {
+      const { info } = await ajax.get(`/api/detail?key=${file.key}&bucket=${bucket}`)
 
       commit('setFileDetail', {
         ...file,
@@ -159,7 +159,7 @@ const store = new Vuex.Store({
      * @param  {String}  secretKey sk
      * @return {undefined}           [description]
      */
-    postSecrte ({commit}, {accessKey, secretKey}) {
+    postSecrte ({ commit }, { accessKey, secretKey }) {
       return ajax.post('/api/postSecret', {
         accessKey: accessKey,
         secretKey: secretKey
@@ -173,7 +173,7 @@ const store = new Vuex.Store({
      * @param  {String}  [prefix=''}] 前缀 默认为空
      * @return {undefined}              [description]
      */
-    async getList ({commit, state}, {search = '', query = {}}) {
+    async getList ({ commit, state }, { search = '', query = {} }) {
       var bucket = state.currentBucket.bucket
       var domain = state.currentBucket.domain
       var isPrivate = state.currentBucket.isPrivate || 0

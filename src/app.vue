@@ -89,7 +89,6 @@ export default {
 
 <style lang="less" scoped>
 .layout {
-  background: #f5f7f9;
   border-bottom: 0;
   min-width: 1200px;
 }

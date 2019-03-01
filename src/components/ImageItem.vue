@@ -12,23 +12,23 @@
 <div v-else-if="type=='folder'">
   <Col span="4" class-name="item" >
     <div class="item__folder" @click="$emit('clickPrefix',item)">
-      <img :src="folderImg" alt="">
-      <div class="folder-name">{{ item }}</div>
+      <QimIcon icon="folder" :size="60" color="#FFD667" />
+      <div class="item__folder-name">{{ item }}</div>
     </div>
   </Col>
 </div>
 <div v-else-if="type=='return'">
   <Col span="4" class-name="item" >
     <div class="item__folder" @click="$emit('returnDirectory')">
-      <img :src="returnImg" alt="">
-      <div class="folder-name">返回上一级</div>
+      <QimIcon icon="24" :size="60" />
+      <div class="item__folder-name">返回上一级</div>
     </div>
   </Col>
 </div>
 <div v-else-if="type=='empty'">
   <Col span="4" class-name="item" >
     <div class="item__folder">
-      <div class="folder-name">无文件</div>
+      <div class="item__folder-name">无文件</div>
     </div>
   </Col>
 </div>
@@ -120,12 +120,11 @@ export default {
         display: inline-block;
         vertical-align: middle;
         cursor: pointer;
-        img {
-            width: 50%;
-            margin-bottom: 10%;
-        }
         &-name {
-            font-size: 16px;
+            font-size: 12px;
+            height: 15px;
+            line-height: 15px;
+            padding: 0 5px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -161,6 +160,11 @@ export default {
     }
 }
 .file-name{
-  font-size: 14px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 5px;
+  margin-top: 10px;
 }
 </style>
