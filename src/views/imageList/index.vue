@@ -35,11 +35,11 @@
               />
 
             <template
-              v-for="item in filterFileList"
+              v-for="(item,index) in filterFileList"
               >
               <QimImageItem
                 :item="item"
-                :key="item.hash"
+                :key="index + filterPrefixs.length"
                 v-if="item.mimeType.indexOf('image')!=-1"
                 type="image"
                 :choosed="multipleSwitchFile.includes(item.key)"
@@ -49,7 +49,7 @@
                 />
               <QimImageItem
                 :item="item"
-                :key="item.hash"
+                :key="index + filterPrefixs.length"
                 v-else
                 :type="item.mimeType"
                 :choosed="multipleSwitchFile.includes(item.key)"
@@ -274,6 +274,7 @@ export default {
 .contentmain {
   height: calc(~"100vh - 123px");
   overflow-y: scroll;
+  transform: translateZ(0);
 }
 .layout {
   width: 1200px;
