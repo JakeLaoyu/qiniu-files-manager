@@ -316,6 +316,7 @@ export default {
   overflow-y: scroll;
   transform: translateZ(0);
   position: relative;
+  font-size: 0;
 }
 .layout {
   width: 1200px;
