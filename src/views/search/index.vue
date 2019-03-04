@@ -49,7 +49,7 @@
         >
         <div class="detail__img">
           <Spin size="large" fix v-if="imgLoading"></Spin>
-          <img v-lazy="`${this.currentBucket.domain + detail.key}`" v-if="detail.mimeType.split('/')[0]==='image'">
+          <img :src="`${this.currentBucket.domain + detail.key}`" v-if="detail.mimeType.split('/')[0]==='image'" @load="imgLoading=false">
           <div class="dplayer__wrap" v-show="detail.mimeType.split('/')[0]==='video'">
             <div id="dplayer"></div>
           </div>
@@ -133,8 +133,8 @@ export default {
       }
     },
     itemPreview (item) {
-      this.showImg = true
       this.detail = item
+      this.showImg = true
     },
     itemDetail (item) {
       this.showDetail = true
