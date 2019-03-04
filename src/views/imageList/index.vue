@@ -259,7 +259,8 @@ export default {
       const contentmain = this.$refs.contentmain.$el
       const items = document.querySelectorAll('.contentmain .item')
       items.forEach(itemImage => {
-        if (itemImage.getAttribute('data-top') + itemImage.clientHeight < contentmain.scrollTop || contentmain.scrollTop + contentmain.clientHeight < itemImage.getAttribute('data-top')) {
+        if (Number(itemImage.getAttribute('data-top')) + itemImage.clientHeight < contentmain.scrollTop ||
+         (contentmain.scrollTop + contentmain.clientHeight < Number(itemImage.getAttribute('data-top')))) {
           if (itemImage.getAttribute('data-key')) return
           let key = randomWord(true, 3, 32)
           while (this.domCache[key]) {
