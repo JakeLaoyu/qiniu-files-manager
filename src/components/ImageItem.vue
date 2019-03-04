@@ -80,8 +80,8 @@ export default {
     overflow: hidden;
     cursor: pointer;
     width: 130px;
-    height: 113px;
-    margin-bottom: 20px;
+    height: 100px;
+    margin-bottom: 10px;
     border-radius: 5px;
     background: #fff;
     &:hover {
