@@ -14,7 +14,7 @@
     <div class="layout-content-main" :style="layoutContentMainStyle">
       <ASpin size="large" :spinning="loading">
         <Row :gutter="20">
-          <Col span="16" push="8" class-name="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
+          <Col span="16" push="8" class-name="contentmain" ref="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
             <QimImageItem
               v-if="!openPrefixs.length && !fileList.length"
               type="empty"
@@ -85,7 +85,7 @@
 </template>
 <script>
 import Top from './uiComponents/top.vue'
-import { isWin, debounce, ajax } from '@/libs/util'
+import { isWin, debounce, ajax, randomWord, throttle } from '@/libs/util'
 
 import {
   mapState,
@@ -114,7 +114,8 @@ export default {
       },
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
-      }
+      },
+      domCache: {}
     }
   },
   computed: {
@@ -241,6 +242,9 @@ export default {
         query: this.query
       })
       this.loading = false
+      this.$nextTick(() => {
+        this.domAddPosition()
+      })
     },
     resetContentHeight () {
       if (!document.querySelector('.ivu-breadcrumb')) return
@@ -250,12 +254,47 @@ export default {
       this.layoutContentMainStyle = {
         height: `calc(100vh - ${102 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
       }
+    },
+    contentmainScroll () {
+      const contentmain = this.$refs.contentmain.$el
+      const items = document.querySelectorAll('.contentmain .item')
+      items.forEach(itemImage => {
+        if (itemImage.getAttribute('data-top') + itemImage.clientHeight < contentmain.scrollTop || contentmain.scrollTop + contentmain.clientHeight < itemImage.getAttribute('data-top')) {
+          if (itemImage.getAttribute('data-key')) return
+          let key = randomWord(true, 3, 32)
+          while (this.domCache[key]) {
+            key = randomWord(true, 3, 32)
+          }
+          let arr = []
+          for (let index = 0; index < itemImage.children.length; index++) {
+            arr.push(itemImage.children[index])
+            itemImage.children[index].parentNode.removeChild(itemImage.children[index])
+          }
+          this.domCache[key] = arr
+          itemImage.setAttribute('data-key', key)
+        } else {
+          let key = itemImage.getAttribute('data-key')
+          if (!key) return
+          this.domCache[key].forEach(child => {
+            itemImage.appendChild(child)
+          })
+          delete this.domCache[key]
+          itemImage.removeAttribute('data-key')
+        }
+      })
+    },
+    domAddPosition () {
+      document.querySelectorAll('.contentmain .item').forEach(item => {
+        item.setAttribute('data-top', item.offsetTop)
+      })
+      this.$nextTick(this.contentmainScroll)
     }
   },
   mounted () {
     this.emptyMultipleSwitchFile()
     this.getImagesList()
     this.resetContentHeight()
+    this.$refs.contentmain.$el.addEventListener('scroll', throttle(this.contentmainScroll, 10, 20))
 
     window.onresize = debounce(() => {
       this.resetContentHeight()
@@ -275,6 +314,7 @@ export default {
   height: calc(~"100vh - 123px");
   overflow-y: scroll;
   transform: translateZ(0);
+  position: relative;
 }
 .layout {
   width: 1200px;
