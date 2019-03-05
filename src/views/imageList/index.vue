@@ -261,6 +261,7 @@ export default {
       items.forEach(itemImage => {
         if (Number(itemImage.getAttribute('data-top')) + itemImage.clientHeight < contentmain.scrollTop ||
          (contentmain.scrollTop + contentmain.clientHeight < Number(itemImage.getAttribute('data-top')))) {
+          //  不在显示区域内
           if (itemImage.getAttribute('data-key')) return
           let key = randomWord(true, 3, 32)
           while (this.domCache[key]) {
@@ -274,6 +275,7 @@ export default {
           this.domCache[key] = arr
           itemImage.setAttribute('data-key', key)
         } else {
+          // 在显示区域内
           let key = itemImage.getAttribute('data-key')
           if (!key) return
           this.domCache[key].forEach(child => {
