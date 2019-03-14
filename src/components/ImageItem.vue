@@ -33,8 +33,6 @@
 </div>
 </template>
 <script>
-import folderImg from '@assets/folder.png'
-import returnImg from '@assets/return.png'
 
 import {
   mapState
@@ -61,10 +59,7 @@ export default {
     }
   },
   data () {
-    return {
-      folderImg,
-      returnImg
-    }
+    return {}
   },
   computed: {
     ...mapState([
