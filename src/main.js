@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './app.vue'
-import Router from 'vue-router'
-import routerConfig from './router.js'
+import router from './router.js'
 import store from './store'
 import '@/theme/custom.less'
 import '@/theme/iconfont.js'
@@ -63,20 +62,6 @@ Vue.use(VueLazyload, {
       if (spin) spin.parentNode.removeChild(spin)
     }
   }
-})
-Vue.use(Router)
-
-// 路由配置
-const router = new Router({
-  mode: 'history',
-  routes: routerConfig
-})
-
-router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
-  next()
 })
 
 Vue.component('Menu', Menu)

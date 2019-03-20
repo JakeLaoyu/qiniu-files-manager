@@ -16,6 +16,7 @@
     "iview": "2.14.3",
     "mime-types": "2.1.18",
     "node-sass": "^4.9.3",
+    "nprogress": "^0.2.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.6",
