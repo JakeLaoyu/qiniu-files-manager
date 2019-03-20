@@ -28,7 +28,7 @@
 
             <QimImageItem
               v-for="(folder,index) in filterPrefixs"
-              :key="index"
+              :key="`${index}`"
               type="folder"
               :item="folder"
               @clickPrefix="clickPrefix"
@@ -115,7 +115,12 @@ export default {
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
       },
-      domCache: {}
+      domCache: {},
+      throttleContentmainScroll: throttle(this.contentmainScroll, 10, 20),
+      handleResize: debounce(() => {
+        this.resetContentHeight()
+        this.handleDetailScroll()
+      }, 500)
     }
   },
   computed: {
@@ -145,6 +150,20 @@ export default {
     }
   },
   watch: {
+    searchVal (val, oldval) {
+      if (oldval) return
+      const items = document.querySelectorAll('.contentmain .item')
+      items.forEach(itemImage => {
+        // 在显示区域内
+        let key = itemImage.getAttribute('data-key')
+        key && this.domCache[key].forEach(child => {
+          itemImage.appendChild(child)
+        })
+        delete this.domCache[key]
+        itemImage.removeAttribute('data-key')
+        itemImage.removeAttribute('data-top')
+      })
+    },
     newPrefix () {
       this.$nextTick(() => {
         this.handleDetailScroll()
@@ -297,18 +316,18 @@ export default {
     this.emptyMultipleSwitchFile()
     this.getImagesList()
     this.resetContentHeight()
-    this.$refs.contentmain.$el.addEventListener('scroll', throttle(this.contentmainScroll, 10, 20))
+    this.$refs.contentmain.$el.addEventListener('scroll', this.throttleContentmainScroll)
 
-    window.onresize = debounce(() => {
-      this.resetContentHeight()
-      this.handleDetailScroll()
-    }, 500)
+    window.onresize = this.handleResize
   },
   async created () {
     await this.postSecrte({
       accessKey: this.currentBucket.AccessKey,
       secretKey: this.currentBucket.SecretKey
     })
+  },
+  updated () {
+    this.domAddPosition()
   }
 }
 </script>

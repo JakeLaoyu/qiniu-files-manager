@@ -62,7 +62,7 @@ import {
   mapActions
 } from 'vuex'
 
-import { ajax } from '@util'
+import { ajax, throttle } from '@util'
 
 export default {
   props: ['filterFileList'],
@@ -78,7 +78,8 @@ export default {
       showSelectModal: false,
       moveModal: false,
       newPrefix: '',
-      search: ''
+      search: '',
+      throttleHandleSearch: throttle(this.hendleSearch, 500, 1000)
     }
   },
   computed: {
@@ -106,6 +107,9 @@ export default {
       'changeMultipleSwitchFile',
       'chooseAllMultipleSwitchFile'
     ]),
+    hendleSearch () {
+      this.$emit('handleSearch', this.search)
+    },
     handleTag () {
       if (this.multipleSwitchFile.length === 0) return this.$Message.info('请先选择文件')
       this.showSelectModal = true
@@ -201,7 +205,7 @@ export default {
   },
   watch: {
     search (val) {
-      this.$emit('handleSearch', val)
+      this.throttleHandleSearch()
     },
     openPrefixs () {
       this.newPrefix = ''

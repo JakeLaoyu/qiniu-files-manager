@@ -1,6 +1,6 @@
 <template>
 <div v-if="type=='image'" class="item">
-  <div class="item__image" :class={active:choosed} @click="$emit('clickFile',item)">
+  <div class="item__image" :class="{active:choosed}" @click="$emit('clickFile',item)">
     <Spin size="small" fix></Spin>
     <img v-if="!isPrivate" v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
     <img v-else v-lazy="`${domain}${item.key}?${item.private}`" alt="">
@@ -25,7 +25,7 @@
   </div>
 </div>
 <div v-else class="item">
-  <div class="item__file" :class={active:choosed} @click="$emit('clickFile',item)">
+  <div class="item__file" :class="{active:choosed}" @click="$emit('clickFile',item)">
     <QimIcon :icon="type.split('/')[type.split('/').length-1]"></QimIcon>
     <div class="file-name">{{ item.key.split('/')[item.key.split('/').length-1] }}</div>
     <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
