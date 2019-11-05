@@ -16,7 +16,7 @@
     "express": "~4.15.2",
     "express-session": "^1.15.6",
     "less-middleware": "~2.2.0",
-    "mongoose": "^4.13.1",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
     "qiniu": "^7.1.1",
     "raven": "2.6.3",
