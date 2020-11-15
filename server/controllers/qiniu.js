@@ -85,7 +85,7 @@ exports.getImages = ({ req, bucket, prefix, search, cb, nextMarker = '', pagesiz
  * @param  {Array} images 七牛返回的图片数组
  * @return {[type]}        前缀数组
  */
-function prefixTraverse (images, prefix) {
+function prefixTraverse (images = [], prefix) {
   var prefixs = []
   var imagesUrl = []
 

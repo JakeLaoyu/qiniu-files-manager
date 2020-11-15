@@ -2,32 +2,43 @@
 <div v-if="type=='image'" class="item">
   <div class="item__image" :class="{active:choosed}" @click="$emit('clickFile',item)">
     <Spin size="small" fix></Spin>
+
     <img v-if="!isPrivate" v-lazy="`${domain}${item.key}?imageView2/1/w/113/h/113`" alt="">
+
     <img v-else v-lazy="`${domain}${item.key}?${item.private}`" alt="">
+
     <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
   </div>
 </div>
+
 <div v-else-if="type=='folder'" class="item">
   <div class="item__folder" @click="$emit('clickPrefix',item)">
     <QimIcon icon="folder" :size="60" color="#FFD667" />
+
     <div class="item__folder-name">{{ item }}</div>
   </div>
 </div>
+
 <div v-else-if="type=='return'" class="item">
   <div class="item__folder" @click="$emit('returnDirectory')">
     <QimIcon icon="24" :size="60" />
+
     <div class="item__folder-name">返回上一级</div>
   </div>
 </div>
+
 <div v-else-if="type=='empty'" class="item">
   <div class="item__folder">
     <div class="item__folder-name">无文件</div>
   </div>
 </div>
+
 <div v-else class="item">
   <div class="item__file" :class="{active:choosed}" @click="$emit('clickFile',item)">
     <QimIcon :icon="type.split('/')[type.split('/').length-1]"></QimIcon>
+
     <div class="file-name">{{ item.key.split('/')[item.key.split('/').length-1] }}</div>
+
     <Icon type="checkmark-circled" size="14" color="#007AFA"></Icon>
   </div>
 </div>
