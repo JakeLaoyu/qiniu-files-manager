@@ -2,6 +2,7 @@ const qiniujs = require('./qiniu')
 const qiniu = require('qiniu')
 const axios = require('axios')
 const Async = require('async')
+const lodash = require('lodash')
 const QiniuApi = {
   buckets: 'https://rs.qbox.me/buckets',
   domainList: 'https://api.qiniu.com/v6/domain/list?tbl='
@@ -122,9 +123,10 @@ exports.getImages = async (req, res) => {
     str = str.slice(0, str.length - 1)
     return str
   })
+
   res.json({
     code: result.statusCode === 200 ? 1 : result.statusCode,
-    message: result.statusCode === 200 ? '' : result.resultpBody.error,
+    message: result.statusCode === 200 ? '' : lodash.get(result, 'resultpBody.error', '发生错误'),
     images: result.images || [],
     prefixs: result.prefixs || [],
     nextMarker: result.nextMarker

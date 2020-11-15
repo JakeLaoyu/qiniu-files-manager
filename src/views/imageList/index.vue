@@ -2,7 +2,7 @@
 <div class="layout">
   <Top
     :filterFileList="filterFileList"
-    @getList="getImagesList"
+    @getList="reGetImagesList"
     @switchChange="switchChange"
     @deleteImage="clickFileKey=''"
     @inputNewPrefix="inputNewPrefix"
@@ -12,72 +12,90 @@
 
   <div class="layout-content">
     <div class="layout-content-main" :style="layoutContentMainStyle">
-      <ASpin size="large" :spinning="loading">
-        <Row :gutter="20">
-          <Col span="16" push="8" class-name="contentmain" ref="contentmain" :class="{ 'beautyScroll': isWin }" :style="contentmainStyle">
-            <QimImageItem
-              v-if="!openPrefixs.length && !fileList.length"
-              type="empty"
-              />
-
-            <QimImageItem
-              v-if="openPrefixs.length"
-              type="return"
-              @returnDirectory="returnDirectory"
-              />
-
-            <QimImageItem
-              v-for="(folder,index) in filterPrefixs"
-              :key="`${index}`"
-              type="folder"
-              :item="folder"
-              @clickPrefix="clickPrefix"
-              />
-
-            <template
-              v-for="(item,index) in filterFileList"
-              >
+      <Row :gutter="20">
+        <Col
+          span="16"
+          push="8"
+          class-name="contentmain"
+          ref="contentmain"
+          :class="{ 'beautyScroll': isWin }"
+          :style="contentmainStyle"
+        >
+          <div
+            v-infinite-scroll="getImagesList"
+            :infinite-scroll-disabled="loadingPagination"
+          >
+            <span>
               <QimImageItem
-                :item="item"
-                :key="index + filterPrefixs.length"
-                v-if="item.mimeType.indexOf('image')!=-1"
-                type="image"
-                :choosed="multipleSwitchFile.includes(item.key)"
-                :domain="currentBucket.domain"
-                :isPrivate="currentBucket.isPrivate"
-                @clickFile="clickFile"
+                v-if="!openPrefixs.length && !fileList.length"
+                type="empty"
                 />
+
               <QimImageItem
-                :item="item"
-                :key="index + filterPrefixs.length"
-                v-else
-                :type="item.mimeType"
-                :choosed="multipleSwitchFile.includes(item.key)"
-                :domain="currentBucket.domain"
-                @clickFile="clickFile"
+                v-if="openPrefixs.length"
+                type="return"
+                @returnDirectory="returnDirectory"
                 />
-            </template>
-          </Col>
 
-          <Col span="8" pull="16" class-name="left-part">
-            <QimUpload
-              @uploadfinish="uploadfinish"
-              :newPrefix="newPrefix"
-              >
-            </QimUpload>
-
-            <transition name="fade">
-              <QimDetail
-                :detail="fileDetail || clickFileDetail"
-                :detailStyle="detailStyle"
-                v-if="clickFileKey"
-                @deleteImage="clickFileKey=''"
-                @imageload="handleDetailScroll"
+              <QimImageItem
+                v-for="(folder,index) in filterPrefixs"
+                :key="folder + index"
+                type="folder"
+                :item="folder"
+                @clickPrefix="clickPrefix"
                 />
-            </transition>
-          </Col>
-        </Row>
-      </ASpin>
+            </span>
+
+            <span>
+              <template
+                v-for="(item, index) in filterFileList"
+                >
+                <QimImageItem
+                  :item="item"
+                  :key="index + filterPrefixs.length"
+                  v-if="item.mimeType.indexOf('image')!=-1"
+                  type="image"
+                  :choosed="multipleSwitchFile.includes(item.key)"
+                  :domain="currentBucket.domain"
+                  :isPrivate="currentBucket.isPrivate"
+                  @clickFile="clickFile"
+                  />
+                <QimImageItem
+                  :item="item"
+                  :key="index + filterPrefixs.length"
+                  v-else
+                  :type="item.mimeType"
+                  :choosed="multipleSwitchFile.includes(item.key)"
+                  :domain="currentBucket.domain"
+                  @clickFile="clickFile"
+                  />
+              </template>
+            </span>
+
+            <div class="layout-content-main__spin">
+              <a-spin v-show="loadingPagination && !loadingPaginationFinished" tip="Loading..."></a-spin>
+            </div>
+          </div>
+        </Col>
+
+        <Col span="8" pull="16" class-name="left-part">
+          <QimUpload
+            @uploadfinish="uploadfinish"
+            :newPrefix="newPrefix"
+            >
+          </QimUpload>
+
+          <transition name="fade">
+            <QimDetail
+              :detail="fileDetail || clickFileDetail"
+              :detailStyle="detailStyle"
+              v-if="clickFileKey"
+              @deleteImage="clickFileKey=''"
+              @imageload="handleDetailScroll"
+              />
+          </transition>
+        </Col>
+      </Row>
     </div>
   </div>
 
@@ -85,7 +103,8 @@
 </template>
 <script>
 import Top from './uiComponents/top.vue'
-import { isWin, debounce, ajax, randomWord, throttle } from '@/libs/util'
+import infiniteScroll from 'vue-infinite-scroll'
+import { isWin, debounce, ajax, randomWord } from '@/libs/util'
 
 import {
   mapState,
@@ -95,9 +114,12 @@ import {
 } from 'vuex'
 
 export default {
+  directives: {infiniteScroll},
+
   components: {
     Top
   },
+
   data () {
     return {
       isWin,
@@ -105,18 +127,20 @@ export default {
       MultipleSwitch: false,
       clickFileDetail: {},
       newPrefix: '',
-      loading: false,
+      loadingPagination: false,
+      loadingPaginationFinished: false,
       searchVal: '',
       contentmainStyle: {},
       layoutContentMainStyle: {},
       query: {
+        nextMarker: '',
         pagesize: 1000
       },
       detailStyle: {
         maxHeight: 'calc(100vh - 240px)'
       },
       domCache: {},
-      throttleContentmainScroll: throttle(this.contentmainScroll, 10, 20),
+      throttleContentmainScroll: debounce(this.contentmainScroll, 500),
       handleResize: debounce(() => {
         this.resetContentHeight()
         this.handleDetailScroll()
@@ -156,7 +180,7 @@ export default {
       items.forEach(itemImage => {
         // 在显示区域内
         let key = itemImage.getAttribute('data-key')
-        key && this.domCache[key].forEach(child => {
+        key && this.domCache[key] && this.domCache[key].forEach(child => {
           itemImage.appendChild(child)
         })
         delete this.domCache[key]
@@ -206,13 +230,19 @@ export default {
         type: 'push',
         val: folder
       })
-      this.getImagesList()
+      this.reGetImagesList()
     },
 
     returnDirectory () {
       this.changeOpenPrefixs({
         type: 'pop'
       })
+      this.reGetImagesList()
+    },
+
+    reGetImagesList () {
+      this.query.nextMarker = ''
+      this.loadingPaginationFinished = false
       this.getImagesList()
     },
 
@@ -263,14 +293,23 @@ export default {
     },
 
     async getImagesList () {
+      if (this.loadingPagination || this.loadingPaginationFinished) return
+
       this.clickFileKey = ''
-      this.loading = true
-      await this.getList({
+      this.loadingPagination = true
+      const res = await this.getList({
         query: this.query
-      })
-      this.loading = false
+      }) || {}
+      this.query.nextMarker = res.nextMarker || ''
+
+      // 没有返回 nextMarker ，表示加载完成
+      if (!res.nextMarker) {
+        this.loadingPaginationFinished = true
+      }
+
       this.$nextTick(() => {
         this.domAddPosition()
+        this.loadingPagination = false
       })
     },
 
@@ -298,8 +337,10 @@ export default {
           }
           let arr = []
           for (let index = 0; index < itemImage.children.length; index++) {
-            arr.push(itemImage.children[index])
-            itemImage.children[index].parentNode.removeChild(itemImage.children[index])
+            if (itemImage.children[index].localName === 'img') {
+              arr.push(itemImage.children[index])
+              itemImage.children[index].parentNode.removeChild(itemImage.children[index])
+            }
           }
           this.domCache[key] = arr
           itemImage.setAttribute('data-key', key)
@@ -326,7 +367,6 @@ export default {
 
   mounted () {
     this.emptyMultipleSwitchFile()
-    this.getImagesList()
     this.resetContentHeight()
     this.$refs.contentmain.$el.addEventListener('scroll', this.throttleContentmainScroll)
 
@@ -351,6 +391,7 @@ export default {
   position: relative;
   font-size: 0;
 }
+
 .layout {
   width: 1200px;
   margin: 0 auto;
@@ -360,10 +401,15 @@ export default {
     width: 1200px;
     margin: 0 auto;
   }
+
   &-content-main {
     padding: 10px;
     height: calc(~"100vh - 103px");
     box-sizing: border-box;
+
+    &__spin {
+      text-align: center;
+    }
   }
 }
 .ivu-spin-fix {

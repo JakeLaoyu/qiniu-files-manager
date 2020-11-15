@@ -14,9 +14,11 @@ const store = new Vuex.Store({
     // https://github.com/robinvdvleuten/vuex-persistedstate/issues/4
     reducer: (state) => {
       const reducerState = { ...state }
-      // state should be exclude
-      delete reducerState.signatureHint
-      delete reducerState.auditFailHint
+
+      delete reducerState.fileList
+      delete reducerState.prefixs
+      delete reducerState.fileDetail
+      delete reducerState.multipleSwitchFile
 
       return reducerState
     }
@@ -95,6 +97,8 @@ const store = new Vuex.Store({
     },
     changeOpenPrefixs (state, payload) {
       state.fileDetail = {}
+      state.fileList = []
+      state.prefixs = []
       if (payload.type === 'pop') {
         state.openPrefixs.pop()
       } else if (payload.type === 'push') {
@@ -126,14 +130,17 @@ const store = new Vuex.Store({
     },
     setCurrentBucket (state, payload) {
       state.fileList = []
+      state.prefixs = []
       state.openPrefixs = []
       state.currentBucket = {
         ...payload
       }
     },
     setState (state, payload) {
-      state.fileList = payload.fileList
-      state.prefixs = payload.prefixs
+      state.fileList = [...state.fileList, ...payload.fileList]
+
+      const filterPrefix = new Set([...state.prefixs, ...payload.prefixs])
+      state.prefixs = [...filterPrefix]
     }
   },
   actions: {
@@ -180,13 +187,14 @@ const store = new Vuex.Store({
       var prefix = ''
       if (!search) {
         prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
-        commit('emptyFileList')
+        // commit('emptyFileList')
       }
       if (isPrivate) {
         domain = window.location.protocol + domain
       }
-      const { images, prefixs } = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&private=${isPrivate}&search=${search}&${objToQuery(query)}`)
-      if (!images) return
+
+      const { images, prefixs, nextMarker = '' } = await ajax.get(`/api/getImages?bucket=${bucket}&prefix=${prefix}&domain=${domain}&private=${isPrivate}&search=${search}&${objToQuery(query)}`)
+      if (!images) return {}
       if (!search) {
         images.forEach(item => {
           item.key = prefix + item.key
@@ -195,9 +203,14 @@ const store = new Vuex.Store({
           fileList: images,
           prefixs: prefixs
         })
+
+        return {
+          nextMarker
+        }
       } else {
         return {
-          images
+          images,
+          nextMarker
         }
       }
     }
