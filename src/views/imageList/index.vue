@@ -189,15 +189,18 @@ export default {
       'emptyMultipleSwitchFile',
       'setState'
     ]),
+
     inputNewPrefix (newPrefix) {
       this.newPrefix = newPrefix
     },
+
     switchChange (val) {
       this.MultipleSwitch = val
       if (!this.MultipleSwitch) {
         this.emptyMultipleSwitchFile()
       }
     },
+
     clickPrefix (folder) {
       this.changeOpenPrefixs({
         type: 'push',
@@ -205,12 +208,14 @@ export default {
       })
       this.getImagesList()
     },
+
     returnDirectory () {
       this.changeOpenPrefixs({
         type: 'pop'
       })
       this.getImagesList()
     },
+
     async uploadfinish (payload) {
       if (payload.newPrefix.indexOf('/') >= 0) {
         this.setState({
@@ -229,6 +234,7 @@ export default {
         })
       }
     },
+
     async clickFile (file) {
       this.clickFileKey = file.key
       this.clickFileDetail = file
@@ -241,6 +247,7 @@ export default {
       })
       this.handleDetailScroll()
     },
+
     handleDetailScroll () {
       var detailWrap = document.querySelector('.detail__wrap')
       var IvuUpload = document.querySelector('.ivu-upload')
@@ -254,6 +261,7 @@ export default {
         })
       }
     },
+
     async getImagesList () {
       this.clickFileKey = ''
       this.loading = true
@@ -265,6 +273,7 @@ export default {
         this.domAddPosition()
       })
     },
+
     resetContentHeight () {
       if (!document.querySelector('.ivu-breadcrumb')) return
       this.contentmainStyle = {
@@ -274,6 +283,7 @@ export default {
         height: `calc(100vh - ${102 + document.querySelector('.ivu-breadcrumb').offsetHeight}px)`
       }
     },
+
     contentmainScroll () {
       const contentmain = this.$refs.contentmain.$el
       const items = document.querySelectorAll('.contentmain .item')
@@ -305,6 +315,7 @@ export default {
         }
       })
     },
+
     domAddPosition () {
       document.querySelectorAll('.contentmain .item').forEach(item => {
         item.setAttribute('data-top', item.offsetTop)
@@ -312,6 +323,7 @@ export default {
       this.$nextTick(this.contentmainScroll)
     }
   },
+
   mounted () {
     this.emptyMultipleSwitchFile()
     this.getImagesList()
