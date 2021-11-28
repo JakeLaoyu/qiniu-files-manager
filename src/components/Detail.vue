@@ -161,7 +161,7 @@ export default {
     copyUrl () {
       if (this.clipboard) this.clipboard.destroy()
       this.clipboard = new Clipboard('#copyBtn', {
-        text: () => encodeURIComponent(this.fileUrl)
+        text: () => encodeURI(this.fileUrl)
       })
       this.clipboard.on('success', e => {
         this.$Message.success('复制成功 ' + this.fileUrl)
