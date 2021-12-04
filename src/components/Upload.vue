@@ -83,7 +83,7 @@ export default {
         newPrefix: this.formatNewPrefix || ''
       })
     },
-    handleError (errorInfo, response, file) {
+    handleError (errorInfo, response = {}, file = {}) {
       this.$Message.error('上传失败')
       this.$Notice.error({
         title: 'errorInfo',
