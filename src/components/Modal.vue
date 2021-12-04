@@ -132,8 +132,6 @@ export default {
               )
             )
 
-            console.log('region', region)
-
             return h(
               'Select',
               {
