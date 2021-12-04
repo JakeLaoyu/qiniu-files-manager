@@ -1,38 +1,71 @@
 <template>
-<div>
-  <Modal v-model="showModal" :mask-closable="false" :title="title" :closable="false">
-    <template v-if="type==='addBucket' && !allBuckets.length">
-      <Form ref="bucket" :model="bucket" :rules="ruleValidate" :label-width="90">
-        <FormItem label="AccessKey" prop="AccessKey">
-          <Input v-model="bucket.AccessKey" placeholder="AccessKey" style="width: 100%"></Input>
-        </FormItem>
-        <FormItem label="SecretKey" prop="SecretKey">
-          <Input v-model="bucket.SecretKey" placeholder="SecretKey" style="width: 100%"></Input>
-        </FormItem>
-      </Form>
-    </template>
+  <div>
+    <Modal
+      v-model="showModal"
+      :mask-closable="false"
+      :title="title"
+      :closable="false"
+    >
+      <template v-if="type === 'addBucket' && !allBuckets.length">
+        <Form
+          ref="bucket"
+          :model="bucket"
+          :rules="ruleValidate"
+          :label-width="90"
+        >
+          <FormItem label="AccessKey" prop="AccessKey">
+            <Input
+              v-model="bucket.AccessKey"
+              placeholder="AccessKey"
+              style="width: 100%"
+            />
+          </FormItem>
+          <FormItem label="SecretKey" prop="SecretKey">
+            <Input
+              v-model="bucket.SecretKey"
+              placeholder="SecretKey"
+              style="width: 100%"
+            />
+          </FormItem>
+        </Form>
+      </template>
 
-    <template v-if="allBuckets.length">
-      <Table border :columns="columns" :data="allBuckets" @on-selection-change="selectionChange"></Table>
-    </template>
+      <template v-if="allBuckets.length">
+        <Table
+          border
+          :columns="columns"
+          :data="allBuckets"
+          @on-selection-change="selectionChange"
+        />
+      </template>
 
-    <template v-if="type==='move'">
-      <Input v-model="moveTo" :placeholder="image ? image.key : '移动到的路径（必须是绝对路径）'" style="width: 100%"></Input>
-    </template>
+      <template v-if="type === 'move'">
+        <Input
+          v-model="moveTo"
+          :placeholder="image ? image.key : '移动到的路径（必须是绝对路径）'"
+          style="width: 100%"
+        />
+      </template>
 
-    <div slot="footer">
-      <Button type="ghost" @click="$emit('closeModal')" v-if="buckets.length">取消</Button>
-      <Button type="primary" :loading="loading || btnLoading" @click="handleSubmit">{{ btnLoading ? '获取中' : '确定' }}</Button>
-    </div>
-  </Modal>
-</div>
+      <div slot="footer">
+        <Button type="ghost" @click="$emit('closeModal')" v-if="buckets.length">
+          取消
+        </Button>
+        <Button
+          type="primary"
+          :loading="loading || btnLoading"
+          @click="handleSubmit"
+        >
+          {{ btnLoading ? "获取中" : "确定" }}
+        </Button>
+      </div>
+    </Modal>
+  </div>
 </template>
 <script>
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { ajax } from '@/libs/util'
+import { REGION } from '@/libs/constant'
 export default {
   props: {
     type: String,
@@ -48,12 +81,8 @@ export default {
       selectedBuckets: [],
       bucket: {},
       ruleValidate: {
-        AccessKey: [
-          { required: true, message: '请填写Ak', trigger: 'blur' }
-        ],
-        SecretKey: [
-          { required: true, message: '请填写Sk', trigger: 'blur' }
-        ]
+        AccessKey: [{ required: true, message: '请填写Ak', trigger: 'blur' }],
+        SecretKey: [{ required: true, message: '请填写Sk', trigger: 'blur' }]
       },
       columns: [
         {
@@ -69,42 +98,95 @@ export default {
           title: '域名',
           key: 'domains',
           render: (h, params) => {
-            return h('Select', {
-              props: {
-                value: params.row.domain
-              },
-              on: {
-                'on-change': (e) => {
-                  this.allBuckets[params.index].domain = e
+            return h(
+              'Select',
+              {
+                props: {
+                  value: params.row.domain
+                },
+                on: {
+                  'on-change': e => {
+                    this.allBuckets[params.index].domain = e
+                  }
                 }
-              }
-            }, params.row.domains.map((item, index) => h('Option', { props: {value: item} }, item)))
+              },
+              params.row.domains.map((item, index) =>
+                h('Option', { props: { value: item } }, item)
+              )
+            )
           }
-        }, {
+        },
+        {
+          title: '空间区域',
+          key: 'region',
+          render: (h, params) => {
+            const region = Object.keys(REGION).map(key =>
+              h(
+                'Option',
+                {
+                  props: {
+                    value: key
+                  }
+                },
+                REGION[key]
+              )
+            )
+
+            console.log('region', region)
+
+            return h(
+              'Select',
+              {
+                props: {
+                  value: params.row.region
+                },
+                on: {
+                  'on-change': e => {
+                    this.allBuckets[params.index].region = e
+                  }
+                }
+              },
+              region
+            )
+          }
+        },
+        {
           title: '是否是私有空间',
           key: 'isPrivate',
           render: (h, params) => {
-            return h('Select', {
-              props: {
-                value: params.row.isPrivate
+            return h(
+              'Select',
+              {
+                props: {
+                  value: params.row.isPrivate
+                },
+                on: {
+                  'on-change': e => {
+                    this.allBuckets[params.index].isPrivate = e
+                  }
+                }
               },
-              on: {
-                'on-change': (e) => {
-                  this.allBuckets[params.index].isPrivate = e
-                }
-              }
-            }, [
-              h('Option', {
-                props: {
-                  value: 0
-                }
-              }, '否'),
-              h('Option', {
-                props: {
-                  value: 1
-                }
-              }, '是')
-            ])
+              [
+                h(
+                  'Option',
+                  {
+                    props: {
+                      value: 0
+                    }
+                  },
+                  '否'
+                ),
+                h(
+                  'Option',
+                  {
+                    props: {
+                      value: 1
+                    }
+                  },
+                  '是'
+                )
+              ]
+            )
           }
         }
       ],
@@ -112,9 +194,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'buckets'
-    ]),
+    ...mapState(['buckets']),
     showModal () {
       return this.isShow
     }
@@ -125,9 +205,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'postSecrte'
-    ]),
+    ...mapActions(['postSecrte']),
     selectionChange (selection) {
       this.selectedBuckets = selection
     },
@@ -137,11 +215,13 @@ export default {
         return
       }
       if (this.allBuckets.length) {
-        if (!this.selectedBuckets.length) return this.$Message.info('至少选中一个')
+        if (!this.selectedBuckets.length) {
+          return this.$Message.info('至少选中一个')
+        }
         this.ok()
         return
       }
-      this.$refs.bucket.validate(async (valid) => {
+      this.$refs.bucket.validate(async valid => {
         if (valid) {
           this.btnLoading = true
           await this.postSecrte({
@@ -154,7 +234,13 @@ export default {
             this.allBuckets = res.data.map(item => {
               item['_checked'] = true
               item.domains = item.domains.map(i => `//${i}/`)
-              item['domain'] = item.domains.filter(item => !/(clouddn.com)|(qiniucdn.com)|(qiniudn.com)|(qnssl.com)|(qbox.me)$/.test(item))[0] || item.domains[0]
+              item['domain'] =
+                item.domains.filter(
+                  item =>
+                    !/(clouddn.com)|(qiniucdn.com)|(qiniudn.com)|(qnssl.com)|(qbox.me)$/.test(
+                      item
+                    )
+                )[0] || item.domains[0]
               return item
             })
             this.selectedBuckets = this.allBuckets
@@ -167,7 +253,11 @@ export default {
         if (!this.selectedBuckets.length) return
         var check = this.buckets.filter(item => {
           return this.selectedBuckets.some(i => {
-            return item.AccessKey === i.AccessKey && item.SecretKey === i.SecretKey && item.bucket === i.bucket
+            return (
+              item.AccessKey === i.AccessKey &&
+              item.SecretKey === i.SecretKey &&
+              item.bucket === i.bucket
+            )
           })
         })
 
@@ -183,9 +273,7 @@ export default {
           return item
         })
 
-        this.$emit('ok', [
-          ...this.selectedBuckets
-        ])
+        this.$emit('ok', [...this.selectedBuckets])
         this.bucket = {}
         this.selectedBuckets = []
         this.allBuckets = []
@@ -201,5 +289,4 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

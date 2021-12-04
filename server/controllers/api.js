@@ -58,7 +58,9 @@ exports.getBuckets = async (req, res) => {
             SecretKey: req.session.secretKey,
             bucket: item,
             domains: domain.data,
-            isPrivate: 0
+            isPrivate: 0,
+            // 空间区域，默认华东
+            region: 'z0'
           })
         })
       })

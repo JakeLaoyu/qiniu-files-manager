@@ -6,41 +6,41 @@
     :on-error="handleError"
     :on-format-error="handleFormatError"
     :before-upload="beforeUpload"
-    :data='form'
-    action="//upload.qiniup.com/">
+    :data="form"
+    :action="uploadDomain"
+  >
     <div style="padding: 20px 0">
       <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-      <p>上传文件到 <span style="color: #f90;">{{ placeholder }}</span> (支持拖拽上传)</p>
+      <p>
+        上传文件到
+        <span style="color: #f90;">{{ placeholder }}</span> (支持拖拽上传)
+      </p>
     </div>
   </Upload>
 </template>
 <script>
-import {
-  ajax
-} from '@util'
-
-import {
-  mapState
-} from 'vuex'
-
+import { ajax } from '@util'
+import { regionUphostMap } from '@/libs/constant'
+import { mapState } from 'vuex'
 import mime from 'mime-types'
 
 export default {
   props: ['newPrefix'],
   data () {
     return {
+      uploadDomain: '//upload.qiniup.com/',
       form: {
         token: ''
       }
     }
   },
   computed: {
-    ...mapState([
-      'currentBucket',
-      'openPrefixs'
-    ]),
+    ...mapState(['currentBucket', 'openPrefixs']),
     formatNewPrefix () {
-      var newPrefix = this.newPrefix.charAt(this.newPrefix.length - 1) === '/' ? this.newPrefix : this.newPrefix + '/'
+      var newPrefix =
+        this.newPrefix.charAt(this.newPrefix.length - 1) === '/'
+          ? this.newPrefix
+          : this.newPrefix + '/'
       newPrefix = newPrefix.replace(/\s/g, '-')
       if (!this.newPrefix) newPrefix = ''
       return newPrefix
@@ -58,8 +58,12 @@ export default {
     }
   },
   watch: {
-    currentBucket () {
-      this.getUploadToken()
+    currentBucket: {
+      handler (currentBucket) {
+        this.uploadDomain = regionUphostMap[currentBucket.region].cdnUphost[0]
+        this.getUploadToken()
+      },
+      immediate: true
     }
   },
   methods: {
@@ -70,7 +74,9 @@ export default {
       })
     },
     beforeUpload (file) {
-      var prefix = this.openPrefixs.length ? `${this.openPrefixs.join('/')}/${this.formatNewPrefix}` : this.formatNewPrefix
+      var prefix = this.openPrefixs.length
+        ? `${this.openPrefixs.join('/')}/${this.formatNewPrefix}`
+        : this.formatNewPrefix
       this.form.key = `${prefix}${file.name}`
     },
     handleSuccess (response, file, fileList) {
@@ -93,10 +99,9 @@ export default {
     },
     async getUploadToken () {
       // 获取token
-      const {
-        code,
-        uploadToken
-      } = await ajax.get(`/api/uploadToken?bucket=${this.currentBucket.bucket}`)
+      const { code, uploadToken } = await ajax.get(
+        `/api/uploadToken?bucket=${this.currentBucket.bucket}`
+      )
       if (code === 1) {
         this.form.token = uploadToken
       }
@@ -106,12 +111,8 @@ export default {
         this.getUploadToken()
       }, 1000 * 60 * 50)
     }
-  },
-  mounted () {
-    // do something after mounting vue instance
-    this.getUploadToken()
   }
+
 }
 </script>
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>
