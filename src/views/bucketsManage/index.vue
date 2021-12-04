@@ -14,14 +14,17 @@
     <div class="form">
       <Form ref="bucket" :model="bucket">
         <FormItem :label="key" :prop="key" v-for="(key,index) in Object.keys(bucket)" :key="index" >
-          <Input v-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
           <Select v-if="key==='domains'" v-model="bucket['domain']" @on-open-change="submit">
             <Option v-for="d in bucket[key]" :value="d" :key="d">{{ d }}</Option>
           </Select>
-          <Select v-if="key==='isPrivate'" v-model="bucket['isPrivate']" @on-open-change="submit">
+          <Select v-else-if="key==='region'" v-model="bucket['region']" @on-open-change="submit">
+            <Option v-for="item in Object.keys(region)" :key="item" :value="item" >{{ region[item] }}</Option>
+          </Select>
+          <Select v-else-if="key==='isPrivate'" v-model="bucket['isPrivate']" @on-open-change="submit">
             <Option :value="0" >否</Option>
             <Option :value="1" >是</Option>
           </Select>
+          <Input v-else-if="typeof bucket[key] === 'string'" v-model="bucket[key]" disabled :placeholder="key" style="width: 100%"></Input>
         </FormItem>
 
         <FormItem class="btns" v-if="this.bucket.bucket">
@@ -53,11 +56,13 @@ import {
   mapMutations,
   mapActions
 } from 'vuex'
+import { REGION } from '@/libs/constant'
 
 export default {
   data () {
     return {
       bucket: {},
+      region: REGION,
       showModal: false,
       modalLoading: false,
       delModal: false
