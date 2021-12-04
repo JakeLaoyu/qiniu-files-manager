@@ -7,7 +7,7 @@
     :on-format-error="handleFormatError"
     :before-upload="beforeUpload"
     :data='form'
-    action="http://upload.qiniu.com/">
+    action="//upload.qiniup.com/">
     <div style="padding: 20px 0">
       <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
       <p>上传文件到 <span style="color: #f90;">{{ placeholder }}</span> (支持拖拽上传)</p>
