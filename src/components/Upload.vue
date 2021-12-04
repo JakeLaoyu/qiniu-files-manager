@@ -60,7 +60,10 @@ export default {
   watch: {
     currentBucket: {
       handler (currentBucket) {
-        this.uploadDomain = regionUphostMap[currentBucket.region].cdnUphost[0]
+        const region = regionUphostMap[currentBucket.region]
+        if (region) {
+          this.uploadDomain = region.cdnUphost[0]
+        }
         this.getUploadToken()
       },
       immediate: true
