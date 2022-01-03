@@ -16,3 +16,5 @@ yarn.lock
 *.ntvs*
 *.njsproj
 *.sln
+
+.htaccess
