@@ -1,0 +1,27 @@
+version: "0.0.1"
+services:
+  qim:
+    container_name: qim
+    build: .
+    ports:
+      - "2017:2017"
+    environment:
+      MONGO_HOST: "mongo"
+      MONGO_PORT: "27017"
+    volumes:
+      - .:/home/qim
+    depends_on:
+      - mongo
+      - nginx
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+       - 2018:80
+    volumes:
+      - .:/home/qim
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
