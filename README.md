@@ -59,22 +59,35 @@ yarn
 npm run dev
 ```
 
-## 使用
+## 部署
 
-### 前端
+### docker部署
+
+```sh
+git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
+cd qiniu-files-manager
+yarn bootstrap && yarn build
+docker-compose up
+```
+
+部署完成后，可以在浏览器中访问 `http://127.0.0.1:2018/`
+
+### 普通部署
+
+#### 前端
 
 ```sh
 npm run build
 ```
 
-### 服务端
+#### 服务端
 
 ```sh
 cd server/
 pm2 start pm2.config.json
 ```
 
-## nginx
+#### nginx
 
 nginx 配置示例:
 
