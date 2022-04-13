@@ -16,7 +16,7 @@
     "dplayer": "1.22.2",
     "iview": "2.14.3",
     "mime-types": "2.1.18",
-    "node-sass": "^7.0.0",
+    "node-sass": "^4.13.1",
     "nprogress": "^0.2.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.2",
