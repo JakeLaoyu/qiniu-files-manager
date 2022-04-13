@@ -13,7 +13,6 @@ var router = require('./routes/router')
 var { MONGO_HOST = 'localhost', MONGO_PORT = 27017 } = process.env
 
 var port = process.env.PORT || '2017'
-// var dbUrl = 'mongodb://localhost/qiniumanager'
 var dbUrl = `mongodb://${MONGO_HOST}:${MONGO_PORT}/qiniumanager`
 
 var app = express()
