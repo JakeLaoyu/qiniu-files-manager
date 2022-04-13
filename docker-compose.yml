@@ -12,7 +12,6 @@ services:
       - .:/home/qim
     depends_on:
       - mongo
-      - nginx
   mongo:
     image: mongo
     ports:
@@ -25,3 +24,5 @@ services:
     volumes:
       - .:/home/qim
       - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - qim
