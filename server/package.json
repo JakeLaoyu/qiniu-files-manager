@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@pm2/io": "^2.4.5",
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "axios": "^0.21.1",
     "body-parser": "^1.19.1",
     "connect-mongo": "^2.0.0",
