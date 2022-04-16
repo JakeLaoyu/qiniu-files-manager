@@ -1,4 +1,5 @@
 FROM node:14.15.0
+ENV TZ=Asia/Shanghai
 # COPY . /home/qim
 # WORKDIR /home/qim
 # RUN npm install -g yarn --registry=https://registry.npm.taobao.org &&
