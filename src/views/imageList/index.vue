@@ -1,105 +1,106 @@
 <template>
-<div class="layout">
-  <Top
-    :filterFileList="filterFileList"
-    @getList="reGetImagesList"
-    @switchChange="switchChange"
-    @deleteImage="clickFileKey=''"
-    @inputNewPrefix="inputNewPrefix"
-    @handleSearch="(val)=>{this.searchVal = val}"
+  <div class="layout">
+    <Top
+      :filterFileList="filterFileList"
+      @getList="reGetImagesList"
+      @switchChange="switchChange"
+      @deleteImage="clickFileKey = ''"
+      @inputNewPrefix="inputNewPrefix"
+      @handleSearch="
+        (val) => {
+          this.searchVal = val;
+        }
+      "
     >
-  </Top>
+    </Top>
 
-  <div class="layout-content">
-    <div class="layout-content-main" :style="layoutContentMainStyle">
-      <Row :gutter="20">
-        <Col
-          span="16"
-          push="8"
-          class-name="contentmain"
-          ref="contentmain"
-          :class="{ 'beautyScroll': isWin }"
-          :style="contentmainStyle"
-        >
-          <div
-            v-infinite-scroll="getImagesList"
-            :infinite-scroll-disabled="loadingPagination"
+    <div class="layout-content">
+      <div class="layout-content-main" :style="layoutContentMainStyle">
+        <Row :gutter="20">
+          <Col
+            span="16"
+            push="8"
+            class-name="contentmain"
+            ref="contentmain"
+            :class="{ beautyScroll: isWin }"
+            :style="contentmainStyle"
           >
-            <span>
-              <QimImageItem
-                v-if="!openPrefixs.length && !fileList.length"
-                type="empty"
-                />
-
-              <QimImageItem
-                v-if="openPrefixs.length"
-                type="return"
-                @returnDirectory="returnDirectory"
-                />
-
-              <QimImageItem
-                v-for="(folder,index) in filterPrefixs"
-                :key="folder + index"
-                type="folder"
-                :item="folder"
-                @clickPrefix="clickPrefix"
-                />
-            </span>
-
-            <span>
-              <template
-                v-for="(item, index) in filterFileList"
-                >
-                <QimImageItem
-                  :item="item"
-                  :key="index + filterPrefixs.length"
-                  v-if="item.mimeType.indexOf('image')!=-1"
-                  type="image"
-                  :choosed="multipleSwitchFile.includes(item.key)"
-                  :domain="currentBucket.domain"
-                  :isPrivate="currentBucket.isPrivate"
-                  @clickFile="clickFile"
-                  />
-                <QimImageItem
-                  :item="item"
-                  :key="index + filterPrefixs.length"
-                  v-else
-                  :type="item.mimeType"
-                  :choosed="multipleSwitchFile.includes(item.key)"
-                  :domain="currentBucket.domain"
-                  @clickFile="clickFile"
-                  />
-              </template>
-            </span>
-
-            <div class="layout-content-main__spin">
-              <a-spin v-show="loadingPagination && !loadingPaginationFinished" tip="Loading..."></a-spin>
-            </div>
-          </div>
-        </Col>
-
-        <Col span="8" pull="16" class-name="left-part">
-          <QimUpload
-            @uploadfinish="uploadfinish"
-            :newPrefix="newPrefix"
+            <div
+              v-infinite-scroll="getImagesList"
+              :infinite-scroll-disabled="loadingPagination"
             >
-          </QimUpload>
+              <span>
+                <QimImageItem
+                  v-if="!openPrefixs.length && !fileList.length"
+                  type="empty"
+                />
 
-          <transition name="fade">
-            <QimDetail
-              :detail="fileDetail || clickFileDetail"
-              :detailStyle="detailStyle"
-              v-if="clickFileKey"
-              @deleteImage="clickFileKey=''"
-              @imageload="handleDetailScroll"
+                <QimImageItem
+                  v-if="openPrefixs.length"
+                  type="return"
+                  @returnDirectory="returnDirectory"
+                />
+
+                <QimImageItem
+                  v-for="(folder, index) in filterPrefixs"
+                  :key="folder + index"
+                  type="folder"
+                  :item="folder"
+                  @clickPrefix="clickPrefix"
+                />
+              </span>
+
+              <span>
+                <template v-for="(item, index) in filterFileList">
+                  <QimImageItem
+                    v-if="item.mimeType.indexOf('image') != -1"
+                    :item="item"
+                    :key="index + filterPrefixs.length"
+                    type="image"
+                    :choosed="multipleSwitchFile.includes(item.key)"
+                    :domain="currentBucket.domain"
+                    :isPrivate="currentBucket.isPrivate"
+                    @clickFile="clickFile"
+                  />
+                  <QimImageItem
+                    v-else
+                    :item="item"
+                    :key="'image' + index + filterPrefixs.length"
+                    :type="item.mimeType"
+                    :choosed="multipleSwitchFile.includes(item.key)"
+                    :domain="currentBucket.domain"
+                    @clickFile="clickFile"
+                  />
+                </template>
+              </span>
+
+              <div class="layout-content-main__spin">
+                <a-spin
+                  v-show="loadingPagination && !loadingPaginationFinished"
+                  tip="Loading..."
+                ></a-spin>
+              </div>
+            </div>
+          </Col>
+
+          <Col span="8" pull="16" class-name="left-part">
+            <QimUpload @uploadfinish="uploadfinish" :newPrefix="newPrefix">
+            </QimUpload>
+
+            <transition name="fade">
+              <QimDetail
+                :detail="fileDetail || clickFileDetail"
+                :detailStyle="detailStyle"
+                v-if="clickFileKey"
+                @deleteImage="clickFileKey = ''"
+                @imageload="handleDetailScroll"
               />
-          </transition>
-        </Col>
-      </Row>
+            </transition>
+          </Col>
+        </Row>
+      </div>
     </div>
   </div>
-
-</div>
 </template>
 <script>
 import Top from './uiComponents/top.vue'
