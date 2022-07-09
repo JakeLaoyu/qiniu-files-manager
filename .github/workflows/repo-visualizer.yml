@@ -1,8 +1,6 @@
 name: Repo Visualizer
 
-on:
-  push:
-    branches: [feat/actions]
+on: [push]
 
 jobs:
   repo-visualizer:
