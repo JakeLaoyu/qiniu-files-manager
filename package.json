@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --public --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue --max-warnings 0 src/ server/"
+    "lint": "eslint --ext .js,.vue src/ server/"
   },
   "dependencies": {
     "ant-design-vue": "^1.3.2",
