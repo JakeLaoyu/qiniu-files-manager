@@ -40,7 +40,7 @@
 ## 开发
 
 ```sh
-git clone https://github.com/FeddyTeam/qiniu-images-manager.git
+git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
 cd qiniu-images-manager
 ```
 
