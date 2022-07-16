@@ -2,7 +2,7 @@ name: Sync to Gitee
 
 on:
   push:
-    branches: [master, dev, chore/sync-to-gitee]
+    branches: [master, dev]
 
 jobs:
   build:
