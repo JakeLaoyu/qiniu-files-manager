@@ -2,7 +2,7 @@
 
 前端: vue、vuex、axios、iview、vue-router、iconfont
 
-服务端: expressjs、七牛SDK、mongodb做session持久化
+服务端: expressjs、七牛SDK、redis 做 session 持久化
 
 [DEMO](http://qim.jakeyu.top)
 
