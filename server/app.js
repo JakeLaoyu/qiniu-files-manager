@@ -45,7 +45,7 @@ app.use(session({
   saveUninitialized: true,
   secret: '0A6194FD0E695254A939A25C3D868D2C',
   // session持久化，存在到mongodb中
-  store: new RedisStore({ client: redisClient })
+  store: new RedisStore({ client: redisClient, prefix: 'qim:sess:' })
 }))
 
 app.use('/api', router)
