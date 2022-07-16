@@ -6,6 +6,8 @@
 
 [DEMO](http://qim.jakeyu.top)
 
+[Gitee 镜像](https://gitee.com/jakelaoyu/qiniu-files-manager)
+
 ![Alt](https://repobeats.axiom.co/api/embed/beeeb59c9f480d4ed9c99c31eabf6f555574d3db.svg "Repobeats analytics image")
 
 ## TODO
