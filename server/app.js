@@ -5,15 +5,19 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const lessMiddleware = require('less-middleware')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
 const io = require('@pm2/io')
+const RedisStore = require('connect-redis')(session)
+const { createClient } = require('redis')
 
 var router = require('./routes/router')
 
-var { MONGO_HOST = 'localhost', MONGO_PORT = 27017 } = process.env
+var { REDIS_HOST = '127.0.0.1', REDIS_PORT = 6379 } = process.env
 
 var port = process.env.PORT || '2017'
-var dbUrl = `mongodb://${MONGO_HOST}:${MONGO_PORT}/qiniumanager`
+var dbUrl = `redis://${REDIS_HOST}:${REDIS_PORT}`
+
+let redisClient = createClient({ legacyMode: true, url: dbUrl })
+redisClient.connect().catch(console.error)
 
 var app = express()
 
@@ -41,10 +45,7 @@ app.use(session({
   saveUninitialized: true,
   secret: '0A6194FD0E695254A939A25C3D868D2C',
   // session持久化，存在到mongodb中
-  store: new MongoStore({
-    url: dbUrl,
-    collection: 'sessions'
-  })
+  store: new RedisStore({ client: redisClient })
 }))
 
 app.use('/api', router)
