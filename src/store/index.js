@@ -167,6 +167,8 @@ const store = new Vuex.Store({
      * @return {undefined}           [description]
      */
     postSecrte ({ commit }, { accessKey, secretKey }) {
+      if (!accessKey || !secretKey) return
+
       return ajax.post('/api/postSecret', {
         accessKey: accessKey,
         secretKey: secretKey
@@ -185,6 +187,9 @@ const store = new Vuex.Store({
       var domain = state.currentBucket.domain
       var isPrivate = state.currentBucket.isPrivate || 0
       var prefix = ''
+
+      if (!bucket || !domain) return
+
       if (!search) {
         prefix = state.openPrefixs.length ? state.openPrefixs.join('/') + '/' : ''
         // commit('emptyFileList')

@@ -35,6 +35,7 @@ exports.getBuckets = async (req, res) => {
       }
     })
   } catch (error) {
+    console.error(error)
     return res.json({
       code: error.response.status,
       message: '请填写合法AccessKey、SecretKey'

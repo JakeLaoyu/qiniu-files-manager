@@ -225,6 +225,8 @@ export default {
           await this.postSecrte({
             accessKey: this.bucket.AccessKey,
             secretKey: this.bucket.SecretKey
+          }).catch(() => {
+            this.btnLoading = false
           })
           const res = await ajax.get('/api/getBuckets')
           this.btnLoading = false

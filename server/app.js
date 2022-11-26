@@ -8,6 +8,7 @@ const session = require('express-session')
 const io = require('@pm2/io')
 const RedisStore = require('connect-redis')(session)
 const { createClient } = require('redis')
+const cors = require('cors')
 
 var router = require('./routes/router')
 
@@ -34,6 +35,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(lessMiddleware(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(cors())
 
 // 使用session
 app.use(cookieParser())

@@ -101,6 +101,8 @@ export default {
       })
     },
     async getUploadToken () {
+      if (!this.currentBucket.bucket) return
+
       // 获取token
       const { code, uploadToken } = await ajax.get(
         `/api/uploadToken?bucket=${this.currentBucket.bucket}`

@@ -2,7 +2,7 @@ import axios from 'axios'
 import iView from 'iview'
 import Vue from 'vue'
 
-export const baseURL = process.env.NODE_ENV === 'development' ? '//qim.dev.jakeyu.top:8080' : location.origin
+export const baseURL = process.env.NODE_ENV === 'development' ? '//qim.dev.jakeyu.top:2017' : location.origin
 
 export const ajax = axios.create({
   baseURL: baseURL,
