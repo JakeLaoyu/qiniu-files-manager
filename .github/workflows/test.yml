@@ -6,31 +6,31 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        cache: 'yarn'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+          cache: "yarn"
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm i
 
-    - name: Lint
-      run: npm run lint
+      - name: Lint
+        run: pnpm lint
 
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        cache: 'yarn'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+          cache: "yarn"
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm i
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: pnpm build

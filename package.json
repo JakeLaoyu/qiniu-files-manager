@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev:client": "pnpm -r --parallel --filter client run dev",
-    "dev:server": "pnpm -r --parallel --filter server run start:dev"
+    "dev:server": "pnpm -r --parallel --filter server run start:dev",
+    "build": "pnpm -r --parallel --filter='./packages/*' run build",
+    "lint": "pnpm -r --parallel --filter='./packages/*' run lint"
   },
   "keywords": [],
   "author": "",
