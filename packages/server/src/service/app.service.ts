@@ -5,6 +5,8 @@ import { Request } from 'express';
 @Injectable()
 export class AppService {
   getMac(req: Request) {
+    console.log('req.session.accessKey', req.session.accessKey);
+    console.log('req.session.secretKey', req.session.secretKey);
     return new qiniu.auth.digest.Mac(
       req.session.accessKey,
       req.session.secretKey,

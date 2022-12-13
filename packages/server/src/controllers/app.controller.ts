@@ -58,7 +58,6 @@ export class AppController {
         },
       });
     } catch (error) {
-      console.error(error);
       return {
         code: error.response.status,
         message: '请填写合法AccessKey、SecretKey',
@@ -111,6 +110,8 @@ export class AppController {
   // save ak sk
   @Post('postSecret')
   postSecret(@Req() req: Request) {
+    console.log('req.body.accessKey', req.body.accessKey);
+    console.log('req.body.secretKey', req.body.secretKey);
     req.session.accessKey = req.body.accessKey;
     req.session.secretKey = req.body.secretKey;
 
