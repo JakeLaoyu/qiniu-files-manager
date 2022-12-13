@@ -1,11 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useBucketStore } from "@/stores/bucket";
+import { storeToRefs } from "pinia";
+
+const bucketStore = useBucketStore();
+
+const { buckets, curBucketId } = storeToRefs(bucketStore);
+</script>
 
 <template>
   <div class="tool-bar">
-    <a-select placeholder="Please select ...">
-      <a-option>Beijing</a-option>
-      <a-option>Shanghai</a-option>
-      <a-option>Guangzhou</a-option>
+    <a-select v-model="curBucketId" placeholder="Please select ...">
+      <a-option v-for="value in buckets" :key="value.id" :value="value.id">
+        {{ value.bucket }}
+      </a-option>
     </a-select>
   </div>
 </template>

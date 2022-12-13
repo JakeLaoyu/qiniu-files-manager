@@ -66,6 +66,7 @@ export const useBucketStore = defineStore("bucket", () => {
 
   return {
     buckets,
+    curBucketId,
     currentBucketInfo,
     setBuckets,
     setCurBucketId,
