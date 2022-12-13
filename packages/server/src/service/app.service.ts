@@ -65,7 +65,7 @@ export class AppService {
       this.getBucketManager(req).listPrefix(
         bucket,
         options,
-        function (err, respBody, respInfo) {
+        (err, respBody, respInfo) => {
           if (err) {
             throw err;
           }

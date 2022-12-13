@@ -161,13 +161,15 @@ export class AppController {
 
     return {
       code: result.statusCode === 200 ? 0 : result.statusCode,
+      data: {
+        images: result.images || [],
+        prefixs: result.prefixs || [],
+        nextMarker: result.nextMarker,
+      },
       message:
         result.statusCode === 200
           ? ''
           : lodash.get(result, 'resultpBody.error', '发生错误'),
-      images: result.images || [],
-      prefixs: result.prefixs || [],
-      nextMarker: result.nextMarker,
     };
   }
 

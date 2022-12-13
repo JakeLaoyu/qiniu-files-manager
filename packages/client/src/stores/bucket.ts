@@ -60,10 +60,6 @@ export const useBucketStore = defineStore("bucket", () => {
     });
   };
 
-  // function increment() {
-  //   count.value && count.value++;
-  // }
-
   return {
     buckets,
     curBucketId,

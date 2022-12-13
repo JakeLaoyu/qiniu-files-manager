@@ -15,6 +15,7 @@
     "@vueuse/core": "^9.6.0",
     "axios": "^1.2.1",
     "pinia": "^2.0.28",
+    "qs": "^6.11.0",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/node": "^18.11.12",
+    "@types/qs": "^6.9.7",
     "@types/uuid": "^9.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
