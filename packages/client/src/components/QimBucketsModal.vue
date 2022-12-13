@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, reactive } from "vue";
+import { useBucketStore } from "@/stores/bucket";
 import type { Bucket } from "@/stores/bucket";
 import { REGION } from "@/utils/constant";
+import { Message } from "@arco-design/web-vue";
+import type { TableRowSelection } from "@arco-design/web-vue";
 
 const props = defineProps<{
   buckets: Bucket[];
 }>();
 
+const bucketStore = useBucketStore();
 const visible = ref(false);
 const bucketsCopy = ref(props.buckets);
+const selectedKeys = ref<string[]>([]);
+const rowSelection = reactive<TableRowSelection>({
+  type: "checkbox",
+  showCheckedAll: true,
+  onlyCurrent: false,
+});
 
 watch(
   () => props.buckets,
   (val) => {
     bucketsCopy.value = val;
-    console.log("bucketsCopy", bucketsCopy);
+
     if (bucketsCopy.value.length) {
+      selectedKeys.value = bucketsCopy.value.map((item) => item.id);
       visible.value = true;
     }
   },
@@ -26,6 +37,7 @@ const columns = [
   {
     title: "空间名称",
     dataIndex: "bucket",
+    width: 100,
   },
   {
     title: "域名",
@@ -44,11 +56,21 @@ const columns = [
   },
 ];
 
-const handleBeforeOk = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return true;
-  // prevent close
-  // return false;
+const handleBeforeOk = async (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (selectedKeys.value.length === 0) {
+      Message.error("请添加至少一个 Bucket");
+      resolve(false);
+    }
+
+    const selectedBuckets = bucketsCopy.value.filter((item) =>
+      selectedKeys.value.includes(item.id)
+    );
+
+    bucketStore.setBuckets(selectedBuckets);
+    bucketStore.setCurBucketId(selectedBuckets[0].id);
+    resolve(true);
+  });
 };
 const handleCancel = () => {
   visible.value = false;
@@ -61,10 +83,19 @@ const handleCancel = () => {
     :align-center="false"
     :on-before-ok="handleBeforeOk"
     unmountOnClose
+    width="auto"
     @cancel="handleCancel"
   >
     <template #title> 添加 Buckets </template>
-    <a-table :columns="columns" :data="bucketsCopy" style="margin-top: 20px">
+    <a-table
+      :columns="columns"
+      :data="bucketsCopy"
+      :pagination="false"
+      row-key="id"
+      v-model:selectedKeys="selectedKeys"
+      :row-selection="rowSelection"
+      style="margin-top: 20px"
+    >
       <template #domains="{ record }">
         <a-select v-model="record.domain" :options="record.domains" />
       </template>

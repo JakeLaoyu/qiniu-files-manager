@@ -6,7 +6,7 @@ import type { AjaxData } from "@/types/ajax";
 import { v4 as uuidv4 } from "uuid";
 
 export type Bucket = {
-  id: number;
+  id: string;
   SecretKey: string;
   AccessKey: string;
   bucket: string;
@@ -16,13 +16,21 @@ export type Bucket = {
   region: string;
 };
 
-export const useBucketStore = defineStore("counter", () => {
+export const useBucketStore = defineStore("bucket", () => {
   const buckets = useStorage<Bucket[]>("buckets", []);
-  const curBucketId = useStorage("curBucketId", 0);
+  const curBucketId = useStorage("curBucketId", "");
 
   const currentBucketInfo = computed(() =>
     buckets.value.find((bucket) => bucket.id === curBucketId.value)
   );
+
+  const setBuckets = (newBuckets: Bucket[]) => {
+    buckets.value = newBuckets;
+  };
+
+  const setCurBucketId = (id: string) => {
+    curBucketId.value = id;
+  };
 
   const postSecret = async ({
     accessKey,
@@ -56,5 +64,12 @@ export const useBucketStore = defineStore("counter", () => {
   //   count.value && count.value++;
   // }
 
-  return { buckets, currentBucketInfo, postSecret, getBuckets };
+  return {
+    buckets,
+    currentBucketInfo,
+    setBuckets,
+    setCurBucketId,
+    postSecret,
+    getBuckets,
+  };
 });

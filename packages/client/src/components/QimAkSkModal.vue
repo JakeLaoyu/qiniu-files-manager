@@ -22,10 +22,6 @@ onMounted(() => {
   }
 });
 
-const handleOk = () => {
-  // visible.value = false;
-  // formRef.value && formRef.value.validate();
-};
 const handleCancel = () => {
   visible.value = false;
 };
@@ -50,7 +46,7 @@ const handleBeforeOk = async (): Promise<boolean> => {
 
           bucketsList.value = result?.data || [];
           console.log(bucketsList.value);
-          resolve(false);
+          resolve(true);
         } else {
           resolve(false);
         }
@@ -64,7 +60,6 @@ const handleBeforeOk = async (): Promise<boolean> => {
     v-model:visible="visible"
     :align-center="false"
     :on-before-ok="handleBeforeOk"
-    @ok="handleOk"
     @cancel="handleCancel"
   >
     <template #title> 添加Bucket </template>
