@@ -30,7 +30,10 @@ import { RouterLink, RouterView } from "vue-router";
           <a-menu-item key="3">搜索</a-menu-item>
         </a-menu>
 
-        <a-button href="https://github.com/JakeLaoyu/qiniu-files-manager">
+        <a-button
+          href="https://github.com/JakeLaoyu/qiniu-files-manager"
+          target="_blank"
+        >
           <template #icon>
             <icon-github />
           </template>
