@@ -35,15 +35,8 @@ const { domain } = currentBucketInfo.value || {};
         fit="contain"
         :preview="false"
         :src="`//${domain}/${props.item.key}?imageView2/1/w/120/h/120`"
-      >
-        <template #loader>
-          <img
-            width="120"
-            :src="`//${domain}/${props.item.key}?imageView2/1/w/120/h/120`"
-            style="filter: blur(5px)"
-          />
-        </template>
-      </a-image>
+        show-loader
+      />
     </template>
 
     <template v-else-if="props.item.mimeType.startsWith('folder')">
