@@ -9,6 +9,16 @@ const bucketStore = useBucketStore();
 const imagesStore = useImagesStore();
 
 const { currentBucketInfo } = storeToRefs(bucketStore);
+const { prefixsArr } = storeToRefs(imagesStore);
+
+const breadcrumbGo = (index: number) => {
+  console.log("breadcrumbGo", index);
+  if (index === -1) {
+    imagesStore.setPrefixs([]);
+  } else {
+    imagesStore.setPrefixs(prefixsArr.value.slice(0, index + 1));
+  }
+};
 
 onBeforeMount(async () => {
   if (currentBucketInfo.value) {
@@ -24,6 +34,17 @@ onBeforeMount(async () => {
 
 <template>
   <div class="home">
+    <a-breadcrumb class="home__breadcrumb">
+      <a-breadcrumb-item @click="breadcrumbGo(-1)">首页</a-breadcrumb-item>
+      <a-breadcrumb-item
+        v-for="(prefix, index) in prefixsArr"
+        :key="index"
+        @click="breadcrumbGo(index)"
+      >
+        {{ prefix }}
+      </a-breadcrumb-item>
+    </a-breadcrumb>
+
     <ToolBar></ToolBar>
 
     <div class="home__container">
@@ -40,6 +61,10 @@ onBeforeMount(async () => {
 
 <style scoped lang="scss">
 .home {
+  &__breadcrumb {
+    margin-bottom: 10px;
+  }
+
   &__container {
     display: flex;
     align-items: flex-start;

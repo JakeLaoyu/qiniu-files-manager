@@ -8,3 +8,8 @@ export type Image = {
   status: number;
   private: string;
 };
+
+export type Folder = {
+  key: string;
+  mimeType: "folder";
+};

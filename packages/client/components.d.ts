@@ -7,12 +7,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
+    ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
     AButton: typeof import('@arco-design/web-vue')['Button']
     ACol: typeof import('@arco-design/web-vue')['Col']
     AForm: typeof import('@arco-design/web-vue')['Form']
     AFormItem: typeof import('@arco-design/web-vue')['FormItem']
     AImage: typeof import('@arco-design/web-vue')['Image']
     AInput: typeof import('@arco-design/web-vue')['Input']
+    ALink: typeof import('@arco-design/web-vue')['Link']
     AList: typeof import('@arco-design/web-vue')['List']
     AListItem: typeof import('@arco-design/web-vue')['ListItem']
     AMenu: typeof import('@arco-design/web-vue')['Menu']
@@ -21,6 +24,7 @@ declare module '@vue/runtime-core' {
     AOption: typeof import('@arco-design/web-vue')['Option']
     ARow: typeof import('@arco-design/web-vue')['Row']
     ASelect: typeof import('@arco-design/web-vue')['Select']
+    ASpin: typeof import('@arco-design/web-vue')['Spin']
     ATable: typeof import('@arco-design/web-vue')['Table']
     AUpload: typeof import('@arco-design/web-vue')['Upload']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']

@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, nextTick, watch } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
 import { useElementBounding, useWindowSize } from "@vueuse/core";
 
-const imageStore = useImagesStore();
+const imagesStore = useImagesStore();
 const listHeight = ref(0);
 
 const listRef = ref<HTMLElement>();
 
-const { imagesList, prefixs } = storeToRefs(imageStore);
+const { imagesList, prefixs, listLoading, prefixsArr } =
+  storeToRefs(imagesStore);
+
+watch(
+  () => prefixsArr.value,
+  () => {
+    imagesStore.getList();
+  }
+);
 
 const prefixsFormat = computed(() =>
   prefixs.value.map((item) => {
@@ -21,23 +29,30 @@ const prefixsFormat = computed(() =>
 );
 
 const listData = computed(() => {
-  return [...prefixsFormat.value, ...imagesList.value];
+  const back = prefixsArr.value.length
+    ? [{ key: "返回上一级", mimeType: "back" }]
+    : [];
+
+  return [...back, ...prefixsFormat.value, ...imagesList.value];
 });
 
 const computedListMaxHeight = () => {
   const { height } = useWindowSize();
   const { top: listTop } = useElementBounding(listRef);
+  console.log("listTop", listTop.value);
 
   listHeight.value = height.value - listTop.value;
 };
 
 onMounted(() => {
-  computedListMaxHeight();
+  nextTick(() => {
+    computedListMaxHeight();
+  });
 });
 </script>
 
 <template>
-  <div>
+  <a-spin class="spin" dot :loading="listLoading">
     <a-list
       ref="listRef"
       :max-height="listHeight"
@@ -54,7 +69,12 @@ onMounted(() => {
         </a-list-item>
       </template>
     </a-list>
-  </div>
+  </a-spin>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.spin {
+  width: 100%;
+  min-height: 300px;
+}
+</style>
