@@ -3,7 +3,9 @@ import { ref, onMounted, computed, nextTick, watch } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
 import { useElementBounding, useWindowSize } from "@vueuse/core";
+import { useBucketStore } from "@/stores/bucket";
 
+const bucketStore = useBucketStore();
 const imagesStore = useImagesStore();
 const listHeight = ref(0);
 
@@ -12,9 +14,19 @@ const listRef = ref<HTMLElement>();
 const { imagesList, prefixs, listLoading, prefixsOpened } =
   storeToRefs(imagesStore);
 
+const { currentBucketInfo } = storeToRefs(bucketStore);
+
 watch(
   () => prefixsOpened.value,
   () => {
+    imagesStore.getList();
+  }
+);
+
+watch(
+  () => currentBucketInfo.value,
+  () => {
+    imagesStore.setPrefixs([]);
     imagesStore.getList();
   }
 );
