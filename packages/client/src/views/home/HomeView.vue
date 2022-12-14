@@ -35,13 +35,20 @@ onBeforeMount(async () => {
 <template>
   <div class="home">
     <a-breadcrumb class="home__breadcrumb">
-      <a-breadcrumb-item @click="breadcrumbGo(-1)">首页</a-breadcrumb-item>
       <a-breadcrumb-item
+        class="home__breadcrumb-item"
+        @click="breadcrumbGo(-1)"
+      >
+        首页
+      </a-breadcrumb-item>
+
+      <a-breadcrumb-item
+        class="home__breadcrumb-item"
         v-for="(prefix, index) in prefixsArr"
         :key="index"
         @click="breadcrumbGo(index)"
       >
-        {{ prefix }}
+        {{ prefix || "&nbsp;" }}
       </a-breadcrumb-item>
     </a-breadcrumb>
 
@@ -63,6 +70,10 @@ onBeforeMount(async () => {
 .home {
   &__breadcrumb {
     margin-bottom: 10px;
+  }
+
+  :deep(.arco-breadcrumb-item) {
+    cursor: pointer;
   }
 
   &__container {
