@@ -9,11 +9,11 @@ const listHeight = ref(0);
 
 const listRef = ref<HTMLElement>();
 
-const { imagesList, prefixs, listLoading, prefixsArr } =
+const { imagesList, prefixs, listLoading, prefixsOpened } =
   storeToRefs(imagesStore);
 
 watch(
-  () => prefixsArr.value,
+  () => prefixsOpened.value,
   () => {
     imagesStore.getList();
   }
@@ -29,7 +29,7 @@ const prefixsFormat = computed(() =>
 );
 
 const listData = computed(() => {
-  const back = prefixsArr.value.length
+  const back = prefixsOpened.value.length
     ? [{ key: "返回上一级", mimeType: "back" }]
     : [];
 
@@ -57,7 +57,7 @@ onMounted(() => {
       ref="listRef"
       :max-height="listHeight"
       :virtualListProps="{
-        height: listHeight,
+        height: listHeight + 50,
       }"
       :data="listData"
       :grid-props="{ span: 3 }"

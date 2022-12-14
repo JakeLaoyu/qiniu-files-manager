@@ -37,6 +37,8 @@ declare module '@vue/runtime-core' {
     QimBucketsModal: typeof import('./src/components/QimBucketsModal.vue')['default']
     QimImageItem: typeof import('./src/components/QimImageItem.vue')['default']
     QimImagesList: typeof import('./src/components/QimImagesList.vue')['default']
+    QimTheme: typeof import('./src/components/QimTheme.vue')['default']
+    QimUpload: typeof import('./src/components/QimUpload.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']

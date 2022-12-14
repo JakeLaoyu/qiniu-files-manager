@@ -9,14 +9,14 @@ const bucketStore = useBucketStore();
 const imagesStore = useImagesStore();
 
 const { currentBucketInfo } = storeToRefs(bucketStore);
-const { prefixsArr } = storeToRefs(imagesStore);
+const { prefixsOpened } = storeToRefs(imagesStore);
 
 const breadcrumbGo = (index: number) => {
   console.log("breadcrumbGo", index);
   if (index === -1) {
     imagesStore.setPrefixs([]);
   } else {
-    imagesStore.setPrefixs(prefixsArr.value.slice(0, index + 1));
+    imagesStore.setPrefixs(prefixsOpened.value.slice(0, index + 1));
   }
 };
 
@@ -44,7 +44,7 @@ onBeforeMount(async () => {
 
       <a-breadcrumb-item
         class="home__breadcrumb-item"
-        v-for="(prefix, index) in prefixsArr"
+        v-for="(prefix, index) in prefixsOpened"
         :key="index"
         @click="breadcrumbGo(index)"
       >
@@ -56,7 +56,7 @@ onBeforeMount(async () => {
 
     <div class="home__container">
       <div class="home__left">
-        <a-upload draggable action="/" />
+        <QimUpload></QimUpload>
       </div>
 
       <div class="home__right">

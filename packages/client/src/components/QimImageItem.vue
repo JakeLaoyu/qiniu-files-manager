@@ -9,14 +9,14 @@ const props = defineProps<{
 }>();
 
 const imagesStore = useImagesStore();
-const { prefixsArr } = storeToRefs(imagesStore);
+const { prefixsOpened } = storeToRefs(imagesStore);
 
 const onClick = () => {
   console.log("QimImageItem onClick", props.item);
   if (props.item.mimeType.startsWith("folder")) {
-    imagesStore.setPrefixs([...prefixsArr.value, props.item.key]);
+    imagesStore.setPrefixs([...prefixsOpened.value, props.item.key]);
   } else if (props.item.mimeType.startsWith("back")) {
-    imagesStore.setPrefixs(prefixsArr.value.slice(0, -1));
+    imagesStore.setPrefixs(prefixsOpened.value.slice(0, -1));
   }
 };
 

@@ -3,8 +3,8 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-    <a-row class="header">
+  <header class="header">
+    <a-row class="header__row">
       <a-col class="header__left" :span="12">
         <RouterLink class="header__link" to="/">
           <img
@@ -29,6 +29,8 @@ import { RouterLink, RouterView } from "vue-router";
           <a-menu-item key="2">空间管理</a-menu-item>
           <a-menu-item key="3">搜索</a-menu-item>
         </a-menu>
+
+        <QimTheme class="header__theme"></QimTheme>
 
         <a-button
           href="https://github.com/JakeLaoyu/qiniu-files-manager"
@@ -55,11 +57,15 @@ import { RouterLink, RouterView } from "vue-router";
 
 <style scoped lang="scss">
 .header {
-  padding: 0 30px;
-  border-bottom: 1px solid var(--color-border-3);
-  height: 60px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
+  background-color: var(--color-menu-light-bg);
+
+  &__row {
+    padding: 0 30px;
+    border-bottom: 1px solid var(--color-border-3);
+    height: 60px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
 
   &__left {
     display: flex;
@@ -85,6 +91,10 @@ import { RouterLink, RouterView } from "vue-router";
 
   &__menu {
     text-align: right;
+  }
+
+  &__theme {
+    margin-right: 20px;
   }
 }
 

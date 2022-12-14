@@ -182,7 +182,9 @@ export class AppController {
 
     return {
       code: 0,
-      uploadToken: token,
+      data: {
+        uploadToken: token,
+      },
     };
   }
 

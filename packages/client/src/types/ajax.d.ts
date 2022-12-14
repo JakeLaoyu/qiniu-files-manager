@@ -11,3 +11,7 @@ export type ImagesData = {
   prefixs: string[];
   nextMarker: string;
 };
+
+export type UploadToken = {
+  uploadToken: string;
+};

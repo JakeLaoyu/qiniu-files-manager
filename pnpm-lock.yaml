@@ -12,6 +12,7 @@ importers:
     specifiers:
       '@arco-design/web-vue': ^2.40.0
       '@rushstack/eslint-patch': ^1.1.4
+      '@types/mime-types': ^2.1.1
       '@types/node': ^18.11.12
       '@types/qs': ^6.9.7
       '@types/uuid': ^9.0.0
@@ -23,6 +24,7 @@ importers:
       axios: ^1.2.1
       eslint: ^8.29.0
       eslint-plugin-vue: ^9.3.0
+      mime-types: ^2.1.35
       npm-run-all: ^4.1.5
       pinia: ^2.0.28
       prettier: ^2.7.1
@@ -40,6 +42,7 @@ importers:
       '@arco-design/web-vue': 2.40.0_vue@3.2.45
       '@vueuse/core': 9.6.0_vue@3.2.45
       axios: 1.2.1
+      mime-types: 2.1.35
       pinia: 2.0.28_e7lp6ggkpgyi5vqd44m2kxvk6i
       qs: 6.11.0
       uuid: 9.0.0
@@ -47,6 +50,7 @@ importers:
       vue-router: 4.1.6_vue@3.2.45
     devDependencies:
       '@rushstack/eslint-patch': 1.2.0
+      '@types/mime-types': 2.1.1
       '@types/node': 18.11.13
       '@types/qs': 6.9.7
       '@types/uuid': 9.0.0
@@ -1538,6 +1542,10 @@ packages:
 
   /@types/lodash/4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
+    dev: true
+
+  /@types/mime-types/2.1.1:
+    resolution: {integrity: sha512-vXOTGVSLR2jMw440moWTC7H19iUyLtP3Z1YTj7cSsubOICinjMxFeb/V57v9QdyyPGbbWolUFSSmSiRSn94tFw==}
     dev: true
 
   /@types/mime/3.0.1:

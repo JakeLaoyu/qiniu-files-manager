@@ -4,19 +4,19 @@ import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
 import { stringify } from "qs";
 import { ajax } from "@/utils/ajax";
-import type { AjaxData, ImagesData } from "@/types/ajax";
+import type { AjaxData, ImagesData, UploadToken } from "@/types/ajax";
 import type { Image } from "@/types/image";
 
 export const useImagesStore = defineStore("images", () => {
   const imagesList = ref<Image[]>([]);
-  const prefixsArr = useStorage<string[]>("prefixsArr", []);
+  const prefixsOpened = useStorage<string[]>("prefixsOpened", []);
   const prefixs = ref<string[]>([]);
 
   const listLoading = ref(false);
 
   const setPrefixs = (prefixs: string[]) => {
     console.log("prefixs", prefixs);
-    prefixsArr.value = prefixs;
+    prefixsOpened.value = prefixs;
   };
 
   /**
@@ -28,8 +28,8 @@ export const useImagesStore = defineStore("images", () => {
     const bucketStore = useBucketStore();
     const { bucket, isPrivate } = bucketStore.currentBucketInfo || {};
     let { domain } = bucketStore.currentBucketInfo || {};
-    const prefixsStr = prefixsArr.value.join("/");
-    const prefix = prefixsArr.value.length ? `${prefixsStr}/` : "";
+    const prefixsStr = prefixsOpened.value.join("/");
+    const prefix = prefixsOpened.value.length ? `${prefixsStr}/` : "";
 
     if (!bucket || !domain) return;
 
@@ -77,12 +77,29 @@ export const useImagesStore = defineStore("images", () => {
     };
   };
 
+  const getUploadToken = async () => {
+    const bucketStore = useBucketStore();
+    const { bucket } = bucketStore.currentBucketInfo || {};
+
+    if (!bucket) return;
+
+    // 获取token
+    const { data } = await ajax.get<any, AjaxData<UploadToken>>(
+      `/api/uploadToken?bucket=${bucket}`
+    );
+
+    const { uploadToken } = data || {};
+
+    return uploadToken;
+  };
+
   return {
     listLoading,
     imagesList,
-    prefixsArr,
+    prefixsOpened,
     prefixs,
     getList,
     setPrefixs,
+    getUploadToken,
   };
 });

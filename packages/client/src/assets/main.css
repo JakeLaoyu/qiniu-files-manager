@@ -2,6 +2,7 @@
 
 body {
   color: var(--color-text-1);
+  background-color: var(--color-menu-light-bg);
 }
 
 a {
