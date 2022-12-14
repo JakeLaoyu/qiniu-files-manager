@@ -89,7 +89,7 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 .container {
-  width: 1200px;
+  width: 1500px;
   margin: 0 auto;
 }
 </style>

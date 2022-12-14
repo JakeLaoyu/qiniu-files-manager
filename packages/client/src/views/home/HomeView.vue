@@ -25,5 +25,35 @@ onBeforeMount(async () => {
 <template>
   <div class="home">
     <ToolBar></ToolBar>
+
+    <div class="home__container">
+      <div class="home__left">
+        <a-upload draggable action="/" />
+      </div>
+
+      <div class="home__right">
+        <QimImagesList></QimImagesList>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.home {
+  &__container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 20px;
+  }
+
+  &__left {
+    width: 300px;
+    margin-right: 20px;
+  }
+
+  &__right {
+    flex: 1;
+  }
+}
+</style>
