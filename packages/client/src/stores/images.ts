@@ -18,6 +18,7 @@ export const useImagesStore = defineStore("images", () => {
   const prefixsOpened = useStorage<string[]>("prefixsOpened", []);
   const prefixs = ref<string[]>([]);
   const newPrefix = ref("");
+  const filterKeyword = ref("");
 
   const listLoading = ref(false);
 
@@ -175,6 +176,7 @@ export const useImagesStore = defineStore("images", () => {
     newPrefix,
     newPrefixFormat,
     imageDetail,
+    filterKeyword,
     getList,
     getUploadToken,
     getImageDetail,

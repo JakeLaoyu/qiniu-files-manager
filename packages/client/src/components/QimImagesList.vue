@@ -2,7 +2,11 @@
 import { ref, onMounted, computed, nextTick, watch } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
-import { useElementBounding, useWindowSize } from "@vueuse/core";
+import {
+  useElementBounding,
+  useThrottledRefHistory,
+  useWindowSize,
+} from "@vueuse/core";
 import { useBucketStore } from "@/stores/bucket";
 
 const bucketStore = useBucketStore();
@@ -11,10 +15,14 @@ const listHeight = ref(0);
 
 const listRef = ref<HTMLElement>();
 
-const { imagesList, prefixs, listLoading, prefixsOpened } =
+const { imagesList, prefixs, listLoading, prefixsOpened, filterKeyword } =
   storeToRefs(imagesStore);
 
 const { currentBucketInfo } = storeToRefs(bucketStore);
+const { history } = useThrottledRefHistory(filterKeyword, {
+  deep: true,
+  throttle: 500,
+});
 
 watch(
   () => prefixsOpened.value,
@@ -47,7 +55,13 @@ const listData = computed(() => {
     ? [{ key: "返回上一级", mimeType: "back" }]
     : [];
 
-  return [...back, ...prefixsFormat.value, ...imagesList.value];
+  const filterReg = new RegExp(history.value[0].snapshot, "i");
+
+  return [
+    ...back,
+    ...prefixsFormat.value.filter((item) => filterReg.test(item.key)),
+    ...imagesList.value.filter((item) => filterReg.test(item.key)),
+  ];
 });
 
 const computedListMaxHeight = () => {

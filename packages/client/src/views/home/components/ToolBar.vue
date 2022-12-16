@@ -7,7 +7,7 @@ const bucketStore = useBucketStore();
 const imagesStore = useImagesStore();
 
 const { buckets, curBucketId } = storeToRefs(bucketStore);
-const { newPrefix } = storeToRefs(imagesStore);
+const { newPrefix, filterKeyword } = storeToRefs(imagesStore);
 </script>
 
 <template>
@@ -19,6 +19,8 @@ const { newPrefix } = storeToRefs(imagesStore);
     </a-select>
 
     <a-input v-model="newPrefix" placeholder="添加前缀" allow-clear />
+
+    <a-input v-model="filterKeyword" placeholder="过滤" allow-clear />
   </div>
 </template>
 
