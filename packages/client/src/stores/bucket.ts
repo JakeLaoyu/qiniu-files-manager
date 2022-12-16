@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { ajax } from "@/utils/ajax";
@@ -20,17 +20,11 @@ export const useBucketStore = defineStore("bucket", () => {
   const buckets = useStorage<Bucket[]>("buckets", []);
   const curBucketId = useStorage("curBucketId", "");
 
+  const showAddBucketModal = ref(false);
+
   const currentBucketInfo = computed(() =>
     buckets.value.find((bucket) => bucket.id === curBucketId.value)
   );
-
-  const setBuckets = (newBuckets: Bucket[]) => {
-    buckets.value = newBuckets;
-  };
-
-  const setCurBucketId = (id: string) => {
-    curBucketId.value = id;
-  };
 
   const postSecret = async ({
     accessKey,
@@ -64,8 +58,7 @@ export const useBucketStore = defineStore("bucket", () => {
     buckets,
     curBucketId,
     currentBucketInfo,
-    setBuckets,
-    setCurBucketId,
+    showAddBucketModal,
     postSecret,
     getBuckets,
   };

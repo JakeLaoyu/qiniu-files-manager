@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, reactive, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useBucketStore, type Bucket } from "@/stores/bucket";
 import { storeToRefs } from "pinia";
 import { REGION } from "@/utils/constant";
 import { Message, Modal } from "@arco-design/web-vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const bucketStore = useBucketStore();
-const { buckets } = storeToRefs(bucketStore);
+const { buckets, showAddBucketModal, curBucketId } = storeToRefs(bucketStore);
 
 const selectBucketId = ref(buckets.value?.[0]?.id || "");
 
@@ -83,21 +85,52 @@ const onDelete = () => {
     },
   });
 };
+
+const onEmpty = () => {
+  Modal.confirm({
+    title: "警告",
+    content: `是否清空所有空间`,
+    alignCenter: false,
+    okButtonProps: {
+      status: "danger",
+    },
+    onBeforeOk: async () => {
+      buckets.value = [];
+      selectBucketId.value = "";
+      curBucketId.value = "";
+      router.push({
+        name: "home",
+      });
+      return true;
+    },
+  });
+};
 </script>
 
 <template>
   <div class="bucket-manage">
-    <a-menu
-      mode="horizontal"
-      :default-selected-keys="[selectBucketId]"
-      @menu-item-click="onMenuItemClick"
-    >
-      <a-menu-item v-for="bucket in buckets" :key="bucket.id">
-        {{ bucket.bucket }}
-      </a-menu-item>
-    </a-menu>
+    <div class="bucket-manage__tool">
+      <a-menu
+        mode="horizontal"
+        :default-selected-keys="[selectBucketId]"
+        @menu-item-click="onMenuItemClick"
+      >
+        <a-menu-item v-for="bucket in buckets" :key="bucket.id">
+          {{ bucket.bucket }}
+        </a-menu-item>
+      </a-menu>
 
-    <a-form :model="form" :style="{ width: '600px' }">
+      <a-button
+        class="bucket-manage__add"
+        type="primary"
+        @click="showAddBucketModal = true"
+      >
+        添加
+      </a-button>
+      <a-button type="primary" status="danger" @click="onEmpty">清空</a-button>
+    </div>
+
+    <a-form v-if="selectBucketId" :model="form" :style="{ width: '600px' }">
       <a-form-item field="AccessKey" label="AccessKey">
         <a-input v-model="form.AccessKey" disabled />
       </a-form-item>
@@ -138,12 +171,22 @@ const onDelete = () => {
 
 <style scoped lang="scss">
 .bucket-manage {
+  &__tool {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   :deep(.arco-menu) {
     text-align: center;
   }
 
   :deep(.arco-form) {
     margin: 20px auto;
+  }
+
+  &__add {
+    margin-right: 10px;
   }
 }
 </style>

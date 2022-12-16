@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { useBucketStore } from "@/stores/bucket";
 import type { Bucket } from "@/stores/bucket";
 import { storeToRefs } from "pinia";
@@ -14,16 +14,24 @@ const form = reactive({
 const bucketsList = ref<Bucket[]>([]);
 const bucketStore = useBucketStore();
 
-const { buckets } = storeToRefs(bucketStore);
+const { buckets, showAddBucketModal } = storeToRefs(bucketStore);
+
+watch(
+  () => showAddBucketModal.value,
+  (val) => {
+    visible.value = val;
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   if (buckets.value.length === 0) {
-    visible.value = true;
+    showAddBucketModal.value = true;
   }
 });
 
 const handleCancel = () => {
-  visible.value = false;
+  showAddBucketModal.value = false;
 };
 
 const handleBeforeOk = async (): Promise<boolean> => {

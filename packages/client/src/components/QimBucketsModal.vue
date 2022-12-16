@@ -5,12 +5,15 @@ import type { Bucket } from "@/stores/bucket";
 import { REGION } from "@/utils/constant";
 import { Message } from "@arco-design/web-vue";
 import type { TableRowSelection } from "@arco-design/web-vue";
+import { storeToRefs } from "pinia";
 
 const props = defineProps<{
   buckets: Bucket[];
 }>();
 
 const bucketStore = useBucketStore();
+const { buckets, curBucketId } = storeToRefs(bucketStore);
+
 const visible = ref(false);
 const bucketsCopy = ref(props.buckets);
 const selectedKeys = ref<string[]>([]);
@@ -56,21 +59,20 @@ const columns = [
   },
 ];
 
-const handleBeforeOk = async (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    if (selectedKeys.value.length === 0) {
-      Message.error("请添加至少一个 Bucket");
-      resolve(false);
-    }
+const handleBeforeOk = async () => {
+  if (selectedKeys.value.length === 0) {
+    Message.error("请添加至少一个 Bucket");
+    return false;
+  }
 
-    const selectedBuckets = bucketsCopy.value.filter((item) =>
-      selectedKeys.value.includes(item.id)
-    );
+  const selectedBuckets = bucketsCopy.value.filter((item) =>
+    selectedKeys.value.includes(item.id)
+  );
 
-    bucketStore.setBuckets(selectedBuckets);
-    bucketStore.setCurBucketId(selectedBuckets[0].id);
-    resolve(true);
-  });
+  buckets.value = [...buckets.value, ...selectedBuckets];
+  curBucketId.value = selectedBuckets[0].id;
+
+  return true;
 };
 const handleCancel = () => {
   visible.value = false;
