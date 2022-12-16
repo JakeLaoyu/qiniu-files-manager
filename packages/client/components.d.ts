@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     ABreadcrumbItem: typeof import('@arco-design/web-vue')['BreadcrumbItem']
     AButton: typeof import('@arco-design/web-vue')['Button']
     AButtonGroup: typeof import('@arco-design/web-vue')['ButtonGroup']
+    ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
     ACol: typeof import('@arco-design/web-vue')['Col']
     ADescriptions: typeof import('@arco-design/web-vue')['Descriptions']
     AForm: typeof import('@arco-design/web-vue')['Form']

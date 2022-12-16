@@ -1,5 +1,29 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+import { watch, ref } from "vue";
+import { RouterLink, RouterView, useRouter } from "vue-router";
+
+const router = useRouter();
+const menuDefaultSelectedKeys = ref<string[]>([]);
+
+watch(
+  () => router.currentRoute.value.name,
+  (name) => {
+    if (name === "bucket") {
+      menuDefaultSelectedKeys.value[0] = "bucket";
+    } else {
+      menuDefaultSelectedKeys.value[0] = "home";
+    }
+  },
+  {
+    immediate: true,
+  }
+);
+
+const onMenuItemClick = (key: string) => {
+  router.push({
+    name: key,
+  });
+};
 </script>
 
 <template>
@@ -23,10 +47,11 @@ import { RouterLink, RouterView } from "vue-router";
         <a-menu
           class="header__menu"
           mode="horizontal"
-          :default-selected-keys="['1']"
+          :default-selected-keys="menuDefaultSelectedKeys"
+          @menu-item-click="onMenuItemClick"
         >
-          <a-menu-item key="1">文件管理</a-menu-item>
-          <a-menu-item key="2">空间管理</a-menu-item>
+          <a-menu-item key="home">文件管理</a-menu-item>
+          <a-menu-item key="bucket">空间管理</a-menu-item>
           <a-menu-item key="3">搜索</a-menu-item>
         </a-menu>
 
