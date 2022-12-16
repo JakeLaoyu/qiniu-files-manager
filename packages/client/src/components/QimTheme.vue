@@ -12,14 +12,13 @@ const toggleDark = useToggle(isDark);
 
 <template>
   <span class="theme">
-    <icon-sun-fill v-if="isDark" size="24" @click="toggleDark()" />
-
-    <icon-moon-fill v-else size="24" @click="toggleDark()" />
+    <QimSunAndMoon @click="toggleDark()"></QimSunAndMoon>
   </span>
 </template>
 
 <style scoped lang="scss">
 .theme {
   cursor: pointer;
+  font-size: 0;
 }
 </style>
