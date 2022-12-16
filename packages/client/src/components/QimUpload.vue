@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, nextTick, ref, onMounted } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { Notification } from "@arco-design/web-vue";
 import type { FileItem } from "@arco-design/web-vue";
-import mime from "mime-types";
+import mime from "mime";
+import { useBucketStore } from "@/stores/bucket";
 
 const imagesStore = useImagesStore();
+const bucketStore = useBucketStore();
 
-const { prefixsOpened } = storeToRefs(imagesStore);
+const { prefixsOpened, imagesList } = storeToRefs(imagesStore);
+const { currentBucketInfo } = storeToRefs(bucketStore);
 
-const form = reactive({
-  token: "",
-  key: "",
-});
+const uploadToken = ref("");
+
+const getUploadToken = async () => {
+  uploadToken.value = (await imagesStore.getUploadToken()) || "";
+
+  setTimeout(() => {
+    getUploadToken();
+  }, 1000 * 60 * 50);
+};
 
 const placeholder = computed(() => {
   if (prefixsOpened.value.length === 0) {
@@ -24,15 +32,45 @@ const placeholder = computed(() => {
   }
 });
 
-const beforeUpload = async (file: File) => {
+const customRequest = (option: any) => {
+  const { onProgress, onError, onSuccess, fileItem, name } = option;
+  const xhr = new XMLHttpRequest();
+  if (xhr.upload) {
+    xhr.upload.onprogress = function (event) {
+      let percent;
+      if (event.total > 0) {
+        // 0 ~ 1
+        percent = event.loaded / event.total;
+      }
+      onProgress(percent, event);
+    };
+  }
+  xhr.onerror = function error(e) {
+    onError(e);
+  };
+  xhr.onload = function onload() {
+    if (xhr.status < 200 || xhr.status >= 300) {
+      return onError(xhr.responseText);
+    }
+
+    onSuccess(xhr.response);
+  };
+
+  const formData = new FormData();
   var prefix = prefixsOpened.value.length
     ? `${prefixsOpened.value.join("/")}/`
     : "";
-  form.key = `${prefix}${file.name}`;
+  formData.append("key", `${prefix}${fileItem.name}`);
+  formData.append("token", uploadToken.value);
+  formData.append(name || "file", fileItem.file);
+  xhr.open("post", "//upload.qiniup.com/", true);
+  xhr.send(formData);
 
-  form.token = (await imagesStore.getUploadToken()) || "";
-
-  return Promise.resolve(true);
+  return {
+    abort() {
+      xhr.abort();
+    },
+  };
 };
 
 const handleError = (file: FileItem) => {
@@ -43,21 +81,45 @@ const handleError = (file: FileItem) => {
   });
 };
 
-const handleSuccess = (file: FileItem) => {
+const handleSuccess = async (file: FileItem) => {
   console.log("file", file);
+  try {
+    file.response = JSON.parse(file.response);
+  } catch (error) {
+    //
+  }
   const { response } = file;
-  response.mimeType = mime.lookup(file.name || "");
+  response.mimeType = mime.getType(file.name || "");
   response.key = response.key.split("/").pop();
+
+  console.log("response", response);
+
+  let key = `${
+    prefixsOpened.value.length ? prefixsOpened.value.join("/") + "/" : ""
+  }${response.key}`;
+
+  if (currentBucketInfo?.value?.isPrivate) {
+    const token = await imagesStore.getPrivateToken(key);
+    response.private = token;
+  }
+
+  imagesList.value.unshift({
+    ...response,
+    key,
+  });
 };
+
+onMounted(() => {
+  getUploadToken();
+});
 </script>
 
 <template>
   <a-upload
     class="upload"
-    :data="form"
     draggable
-    action="//upload.qiniup.com/"
-    :on-before-upload="beforeUpload"
+    multiple
+    :custom-request="customRequest"
     @error="handleError"
     @success="handleSuccess"
   >

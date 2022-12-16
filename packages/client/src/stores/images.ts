@@ -4,11 +4,17 @@ import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
 import { stringify } from "qs";
 import { ajax } from "@/utils/ajax";
-import type { AjaxData, ImagesData, UploadToken } from "@/types/ajax";
+import type {
+  AjaxData,
+  ImagesData,
+  UploadToken,
+  PrivateToken,
+} from "@/types/ajax";
 import type { Image } from "@/types/image";
 
 export const useImagesStore = defineStore("images", () => {
   const imagesList = ref<Image[]>([]);
+  const imageDetail = ref<Image>();
   const prefixsOpened = useStorage<string[]>("prefixsOpened", []);
   const prefixs = ref<string[]>([]);
 
@@ -77,6 +83,33 @@ export const useImagesStore = defineStore("images", () => {
     };
   };
 
+  const getImageDetail = async (image: Image) => {
+    const bucketStore = useBucketStore();
+    const { bucket } = bucketStore.currentBucketInfo || {};
+
+    const res = await ajax.get<any, AjaxData<Image>>("/api/detail", {
+      params: {
+        key: image.key,
+        bucket: bucket,
+      },
+    });
+
+    imageDetail.value = {
+      ...image,
+      ...res.data,
+    };
+  };
+
+  const deleteImage = async (image: Image) => {
+    const bucketStore = useBucketStore();
+    const { bucket } = bucketStore.currentBucketInfo || {};
+
+    return ajax.post<any, AjaxData<any>>("/api/delImage", {
+      key: image.key,
+      bucket: bucket,
+    });
+  };
+
   const getUploadToken = async () => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
@@ -93,13 +126,51 @@ export const useImagesStore = defineStore("images", () => {
     return uploadToken;
   };
 
+  const getPrivateToken = async (key: string) => {
+    const bucketStore = useBucketStore();
+    const { domain } = bucketStore.currentBucketInfo || {};
+
+    // 获取token
+    const { data } = await ajax.get<any, AjaxData<PrivateToken>>(
+      `/api/getPrivateToken`,
+      {
+        params: {
+          key,
+          domain: window.location.protocol + domain,
+        },
+      }
+    );
+
+    const { token } = data || {};
+
+    return token;
+  };
+
+  const getImageUrl = (image?: Image) => {
+    if (!image) return "";
+
+    const bucketStore = useBucketStore();
+    const { domain, isPrivate } = bucketStore.currentBucketInfo || {};
+
+    if (isPrivate) {
+      return `${domain}${image.key}?${image.private}`;
+    }
+
+    return `//${domain}/${image.key}`;
+  };
+
   return {
     listLoading,
     imagesList,
     prefixsOpened,
     prefixs,
+    imageDetail,
     getList,
     setPrefixs,
     getUploadToken,
+    getImageDetail,
+    deleteImage,
+    getImageUrl,
+    getPrivateToken,
   };
 });

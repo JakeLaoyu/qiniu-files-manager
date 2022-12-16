@@ -34,7 +34,9 @@ export class AppController {
 
     return {
       code: 0,
-      token: token.split('?')[1],
+      data: {
+        token: token.split('?')[1],
+      },
     };
   }
 
@@ -212,7 +214,7 @@ export class AppController {
           if (respInfo.statusCode === 200) {
             res.json({
               code: 0,
-              info: respBody,
+              data: respBody,
             });
           } else {
             console.log(respInfo.statusCode);

@@ -15,3 +15,7 @@ export type ImagesData = {
 export type UploadToken = {
   uploadToken: string;
 };
+
+export type PrivateToken = {
+  token: string;
+};

@@ -57,6 +57,8 @@ onBeforeMount(async () => {
     <div class="home__container">
       <div class="home__left">
         <QimUpload></QimUpload>
+
+        <QimImageDetail></QimImageDetail>
       </div>
 
       <div class="home__right">
@@ -84,7 +86,7 @@ onBeforeMount(async () => {
   }
 
   &__left {
-    width: 300px;
+    width: 350px;
     margin-right: 20px;
   }
 

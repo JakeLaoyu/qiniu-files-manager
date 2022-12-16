@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBucketStore } from "@/stores/bucket";
 import { useImagesStore } from "@/stores/images";
 import type { Image, Folder } from "@/types/image";
 import { storeToRefs } from "pinia";
@@ -12,29 +11,31 @@ const imagesStore = useImagesStore();
 const { prefixsOpened } = storeToRefs(imagesStore);
 
 const onClick = () => {
-  console.log("QimImageItem onClick", props.item);
   if (props.item.mimeType.startsWith("folder")) {
     imagesStore.setPrefixs([...prefixsOpened.value, props.item.key]);
   } else if (props.item.mimeType.startsWith("back")) {
     imagesStore.setPrefixs(prefixsOpened.value.slice(0, -1));
+  } else {
+    imagesStore.getImageDetail(props.item as Image);
   }
 };
-
-const bucketStore = useBucketStore();
-
-const { currentBucketInfo } = storeToRefs(bucketStore);
-const { domain } = currentBucketInfo.value || {};
 </script>
 
 <template>
-  <div class="item" @click="onClick">
+  <div
+    class="item"
+    :class="{
+      'item--image': props.item.mimeType.startsWith('image'),
+    }"
+    @click="onClick"
+  >
     <template v-if="props.item.mimeType.startsWith('image')">
       <a-image
         width="120"
         height="120"
         fit="contain"
         :preview="false"
-        :src="`//${domain}/${props.item.key}?imageView2/1/w/120/h/120`"
+        :src="`${imagesStore.getImageUrl(props.item as Image)}?imageView2/1/w/120/h/120`"
         show-loader
       />
     </template>
@@ -54,6 +55,10 @@ const { domain } = currentBucketInfo.value || {};
 <style scoped lang="scss">
 .item {
   cursor: pointer;
+
+  &--image {
+    background: var(--color-bg-white);
+  }
 
   &__return {
     width: 100px;

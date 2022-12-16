@@ -20,7 +20,7 @@ const { buckets, curBucketId } = storeToRefs(bucketStore);
 <style scoped lang="scss">
 .tool-bar {
   :deep(.arco-select) {
-    width: 300px;
+    width: 350px;
   }
 }
 </style>
