@@ -1,8 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+  isDark: boolean;
+}>();
+</script>
 
 <template>
   <svg
     class="sun-and-moon"
+    :class="{
+      'sun-and-moon--dark': props.isDark,
+    }"
     aria-hidden="true"
     width="24"
     height="24"
@@ -66,20 +73,20 @@
   stroke: var(--icon-fill-hover);
 }
 
-[arco-theme="dark"] .sun-and-moon > .sun {
+.sun-and-moon--dark > .sun {
   transform: scale(1.75);
 }
 
-[arco-theme="dark"] .sun-and-moon > .sun-beams {
+.sun-and-moon--dark > .sun-beams {
   opacity: 0;
 }
 
-[arco-theme="dark"] .sun-and-moon > .moon > circle {
+.sun-and-moon--dark > .moon > circle {
   transform: translateX(-7px);
 }
 
 @supports (cx: 1) {
-  [arco-theme="dark"] .sun-and-moon > .moon > circle {
+  .sun-and-moon--dark > .moon > circle {
     transform: translateX(0);
     cx: 17;
   }
@@ -105,18 +112,18 @@
   }
 }
 
-[arco-theme="dark"] .sun-and-moon > .sun {
+.sun-and-moon--dark > .sun {
   transform: scale(1.75);
   transition-timing-function: var(--ease-3);
   transition-duration: 0.25s;
 }
 
-[arco-theme="dark"] .sun-and-moon > .sun-beams {
+.sun-and-moon--dark > .sun-beams {
   transform: rotateZ(-25deg);
   transition-duration: 0.15s;
 }
 
-[arco-theme="dark"] .sun-and-moon > .moon > circle {
+.sun-and-moon--dark > .moon > circle {
   transition-delay: 0.25s;
   transition-duration: 0.5s;
 }

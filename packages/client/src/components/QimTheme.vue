@@ -12,7 +12,7 @@ const toggleDark = useToggle(isDark);
 
 <template>
   <span class="theme">
-    <QimSunAndMoon @click="toggleDark()"></QimSunAndMoon>
+    <QimSunAndMoon :is-dark="isDark" @click="toggleDark()" />
   </span>
 </template>
 
