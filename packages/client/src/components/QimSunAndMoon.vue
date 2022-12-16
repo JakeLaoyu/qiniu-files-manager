@@ -40,7 +40,7 @@
   --ease-out-5: cubic-bezier(0, 0, 0, 1);
   --ease-3: cubic-bezier(0.25, 0, 0.3, 1);
   --icon-fill: var(--color-text-1);
-  --icon-fill-hover: var(--color-text-4);
+  --icon-fill-hover: var(--color-text-2);
 
   stroke-linecap: round;
 }
@@ -53,7 +53,7 @@
   fill: var(--icon-fill);
 }
 
-.theme-toggle:is(:hover, :focus-visible) > .sun-and-moon > :is(.moon, .sun) {
+.sun-and-moon:is(:hover, :focus-visible) > :is(.moon, .sun) {
   fill: var(--icon-fill-hover);
 }
 
@@ -62,7 +62,7 @@
   stroke-width: 2px;
 }
 
-.theme-toggle:is(:hover, :focus-visible) .sun-and-moon > .sun-beams {
+.sun-and-moon:is(:hover, :focus-visible) > .sun-beams {
   stroke: var(--icon-fill-hover);
 }
 
