@@ -12,9 +12,9 @@ const { prefixsOpened } = storeToRefs(imagesStore);
 
 const onClick = () => {
   if (props.item.mimeType.startsWith("folder")) {
-    imagesStore.setPrefixs([...prefixsOpened.value, props.item.key]);
+    imagesStore.prefixsOpened = [...prefixsOpened.value, props.item.key];
   } else if (props.item.mimeType.startsWith("back")) {
-    imagesStore.setPrefixs(prefixsOpened.value.slice(0, -1));
+    imagesStore.prefixsOpened = prefixsOpened.value.slice(0, -1);
   } else {
     imagesStore.getImageDetail(props.item as Image);
   }

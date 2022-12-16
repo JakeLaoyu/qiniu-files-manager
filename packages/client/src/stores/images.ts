@@ -1,4 +1,4 @@
-import { ref, nextTick } from "vue";
+import { ref, nextTick, computed } from "vue";
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
@@ -17,13 +17,21 @@ export const useImagesStore = defineStore("images", () => {
   const imageDetail = ref<Image>();
   const prefixsOpened = useStorage<string[]>("prefixsOpened", []);
   const prefixs = ref<string[]>([]);
+  const newPrefix = ref("");
 
   const listLoading = ref(false);
 
-  const setPrefixs = (prefixs: string[]) => {
-    console.log("prefixs", prefixs);
-    prefixsOpened.value = prefixs;
-  };
+  const newPrefixFormat = computed(() => {
+    if (!newPrefix.value) return "";
+
+    let newPrefixFormat = newPrefix.value.endsWith("/")
+      ? newPrefix.value
+      : newPrefix.value + "/";
+
+    newPrefixFormat = newPrefixFormat.replace(/\s/g, "-");
+
+    return newPrefixFormat;
+  });
 
   /**
    * It gets a list of images from the server and stores them in the imagesList and prefixs reactive
@@ -164,9 +172,10 @@ export const useImagesStore = defineStore("images", () => {
     imagesList,
     prefixsOpened,
     prefixs,
+    newPrefix,
+    newPrefixFormat,
     imageDetail,
     getList,
-    setPrefixs,
     getUploadToken,
     getImageDetail,
     deleteImage,

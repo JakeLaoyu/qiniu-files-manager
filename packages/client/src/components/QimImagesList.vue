@@ -26,7 +26,9 @@ watch(
 watch(
   () => currentBucketInfo.value,
   () => {
-    imagesStore.setPrefixs([]);
+    prefixsOpened.value = [];
+    imagesList.value = [];
+    prefixs.value = [];
     imagesStore.getList();
   }
 );

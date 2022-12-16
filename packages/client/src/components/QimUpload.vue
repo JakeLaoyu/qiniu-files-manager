@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, nextTick, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
@@ -11,7 +11,8 @@ import { useBucketStore } from "@/stores/bucket";
 const imagesStore = useImagesStore();
 const bucketStore = useBucketStore();
 
-const { prefixsOpened, imagesList } = storeToRefs(imagesStore);
+const { prefixsOpened, imagesList, newPrefixFormat, prefixs } =
+  storeToRefs(imagesStore);
 const { currentBucketInfo } = storeToRefs(bucketStore);
 
 const uploadToken = ref("");
@@ -26,9 +27,13 @@ const getUploadToken = async () => {
 
 const placeholder = computed(() => {
   if (prefixsOpened.value.length === 0) {
-    return "当前文件夹";
+    if (newPrefixFormat.value) {
+      return newPrefixFormat.value;
+    } else {
+      return "当前文件夹";
+    }
   } else {
-    return prefixsOpened.value.join("/") + "/";
+    return prefixsOpened.value.join("/") + "/" + newPrefixFormat.value;
   }
 });
 
@@ -58,8 +63,8 @@ const customRequest = (option: any) => {
 
   const formData = new FormData();
   var prefix = prefixsOpened.value.length
-    ? `${prefixsOpened.value.join("/")}/`
-    : "";
+    ? `${prefixsOpened.value.join("/")}/${newPrefixFormat.value}`
+    : newPrefixFormat.value;
   formData.append("key", `${prefix}${fileItem.name}`);
   formData.append("token", uploadToken.value);
   formData.append(name || "file", fileItem.file);
@@ -93,6 +98,12 @@ const handleSuccess = async (file: FileItem) => {
   response.key = response.key.split("/").pop();
 
   console.log("response", response);
+
+  if (newPrefixFormat.value.includes("/")) {
+    prefixs.value.unshift(newPrefixFormat.value.split("/")[0]);
+
+    return;
+  }
 
   let key = `${
     prefixsOpened.value.length ? prefixsOpened.value.join("/") + "/" : ""

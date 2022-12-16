@@ -12,11 +12,10 @@ const { currentBucketInfo } = storeToRefs(bucketStore);
 const { prefixsOpened } = storeToRefs(imagesStore);
 
 const breadcrumbGo = (index: number) => {
-  console.log("breadcrumbGo", index);
   if (index === -1) {
-    imagesStore.setPrefixs([]);
+    imagesStore.prefixsOpened = [];
   } else {
-    imagesStore.setPrefixs(prefixsOpened.value.slice(0, index + 1));
+    imagesStore.prefixsOpened = prefixsOpened.value.slice(0, index + 1);
   }
 };
 
