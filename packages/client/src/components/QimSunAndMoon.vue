@@ -41,6 +41,8 @@
   --ease-3: cubic-bezier(0.25, 0, 0.3, 1);
   --icon-fill: var(--color-text-1);
   --icon-fill-hover: var(--color-text-4);
+
+  stroke-linecap: round;
 }
 
 .sun-and-moon > :is(.moon, .sun, .sun-beams) {
