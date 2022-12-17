@@ -34,6 +34,15 @@ export const useImagesStore = defineStore("images", () => {
     return newPrefixFormat;
   });
 
+  const resetImageStore = () => {
+    imagesList.value = [];
+    imageDetail.value = undefined;
+    prefixsOpened.value = [];
+    prefixs.value = [];
+    newPrefix.value = "";
+    filterKeyword.value = "";
+  };
+
   /**
    * It gets a list of images from the server and stores them in the imagesList and prefixs reactive
    * variables
@@ -189,6 +198,7 @@ export const useImagesStore = defineStore("images", () => {
     newPrefixFormat,
     imageDetail,
     filterKeyword,
+    resetImageStore,
     getList,
     getUploadToken,
     getImageDetail,
