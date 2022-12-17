@@ -1,5 +1,7 @@
 FROM node:14.18.0
 ENV TZ=Asia/Shanghai
+
+RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 # COPY . /home/qim
 # WORKDIR /home/qim
 # RUN npm install -g yarn --registry=https://registry.npm.taobao.org &&
