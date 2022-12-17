@@ -1,8 +1,10 @@
 ## 七牛文件管理
 
-前端: vue、vuex、axios、iview、vue-router、iconfont
+环境: node 14.18.0、pnpm workspace
 
-服务端: expressjs、七牛SDK、redis 做 session 持久化
+前端: vue3、pinia、axios、arco-design、vue-router
+
+服务端: nestjs、七牛SDK、redis(session 持久化)
 
 [DEMO](http://qim.jakeyu.top)
 
@@ -46,19 +48,12 @@ git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
 cd qiniu-images-manager
 ```
 
-### 前端
-
 ```sh
-yarn
-npm run dev
-```
-
-### 服务端
-
-```sh
-cd server/
-yarn
-npm run dev
+pnpm i
+# 前端
+pnpm dev:client
+# 服务端
+pnpm dev:server
 ```
 
 ## 部署
@@ -68,7 +63,7 @@ npm run dev
 ```sh
 git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
 cd qiniu-files-manager
-yarn bootstrap && yarn build
+pnpm i && pnpm build
 docker-compose up
 ```
 
@@ -93,14 +88,13 @@ server
 #### 前端
 
 ```sh
-npm run build
+pnpm build
 ```
 
 #### 服务端
 
 ```sh
-cd server/
-pm2 start pm2.config.json
+pnpm start:prod
 ```
 
 #### nginx
@@ -114,7 +108,7 @@ server
   server_name qim.jakeyu.top;
 
   location / {
-    root /home/qiniu-files-manager/dist/;
+    root /home/qiniu-files-manager/packages/client/dist/;
     index index.html;
     try_files $uri $uri/ /index.html;
   }
