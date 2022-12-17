@@ -156,6 +156,17 @@ export const useImagesStore = defineStore("images", () => {
     return token;
   };
 
+  const moveImage = async (image: Image, newKey: string) => {
+    const bucketStore = useBucketStore();
+    const { bucket } = bucketStore.currentBucketInfo || {};
+
+    return ajax.post<any, AjaxData<any>>("/api/moveImage", {
+      bucket: bucket,
+      key: image.key,
+      newKey: newKey,
+    });
+  };
+
   const getImageUrl = (image?: Image) => {
     if (!image) return "";
 
@@ -184,5 +195,6 @@ export const useImagesStore = defineStore("images", () => {
     deleteImage,
     getImageUrl,
     getPrivateToken,
+    moveImage,
   };
 });
