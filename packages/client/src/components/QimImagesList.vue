@@ -33,7 +33,9 @@ const { history } = useThrottledRefHistory(filterKeyword, {
 watch(
   () => prefixsOpened.value,
   () => {
+    nextMarker.value = "";
     imagesList.value = [];
+    prefixs.value = [];
     imagesStore.getList();
   }
 );

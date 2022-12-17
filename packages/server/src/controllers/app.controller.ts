@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as qiniu from 'qiniu';
-import lodash from 'lodash';
+import * as lodash from 'lodash';
 import axios from 'axios';
 import { AppService } from '../service/app.service';
 
@@ -160,6 +160,8 @@ export class AppController {
       str = str.slice(0, str.length - 1);
       return str;
     });
+
+    console.log(result);
 
     return {
       code: result.statusCode === 200 ? 0 : result.statusCode,
