@@ -38,7 +38,6 @@ const handleBeforeOk = async (): Promise<boolean> => {
   return new Promise((resolve) => {
     formRef.value &&
       formRef.value.validate(async (error) => {
-        console.log("validate", error);
         if (!error) {
           await bucketStore
             .postSecret({
@@ -53,7 +52,7 @@ const handleBeforeOk = async (): Promise<boolean> => {
           });
 
           bucketsList.value = result?.data || [];
-          console.log(bucketsList.value);
+
           resolve(true);
         } else {
           resolve(false);

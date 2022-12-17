@@ -87,7 +87,6 @@ const handleError = (file: FileItem) => {
 };
 
 const handleSuccess = async (file: FileItem) => {
-  console.log("file", file);
   try {
     file.response = JSON.parse(file.response);
   } catch (error) {
@@ -96,8 +95,6 @@ const handleSuccess = async (file: FileItem) => {
   const { response } = file;
   response.mimeType = mime.getType(file.name || "");
   response.key = response.key.split("/").pop();
-
-  console.log("response", response);
 
   if (newPrefixFormat.value.includes("/")) {
     prefixs.value.unshift(newPrefixFormat.value.split("/")[0]);

@@ -19,7 +19,6 @@ const onSearch = async () => {
 
   loading.value = false;
 
-  console.log("res", res);
   images.value = res?.images || [];
 };
 

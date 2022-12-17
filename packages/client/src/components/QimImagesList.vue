@@ -67,7 +67,6 @@ const listData = computed(() => {
 const computedListMaxHeight = () => {
   const { height } = useWindowSize();
   const { top: listTop } = useElementBounding(listRef);
-  console.log("listTop", listTop.value);
 
   listHeight.value = height.value - listTop.value;
 };

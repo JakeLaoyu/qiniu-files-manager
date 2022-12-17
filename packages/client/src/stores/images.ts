@@ -75,9 +75,7 @@ export const useImagesStore = defineStore("images", () => {
     });
 
     const { images, prefixs: prefixsData, nextMarker = "" } = data || {};
-    console.log("images", images);
-    console.log("prefixsData", prefixsData);
-    console.log("nextMarker", nextMarker);
+
     if (!images) return {};
 
     if (!search) {
