@@ -49,6 +49,11 @@ const onClick = () => {
       <img class="item__return" src="@/assets/return.png" alt="返回上一级" />
       <div class="item__key">{{ props.item.key }}</div>
     </template>
+
+    <template v-else>
+      <icon-file size="100" />
+      <div class="item__key">{{ props.item.key }}</div>
+    </template>
   </div>
 </template>
 
