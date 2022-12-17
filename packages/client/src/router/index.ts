@@ -12,7 +12,12 @@ const router = createRouter({
     {
       path: "/bucket",
       name: "bucket",
-      component: () => import("../views/BucketManage.vue"),
+      component: () => import("../views/BucketView.vue"),
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: () => import("../views/SearchView.vue"),
     },
   ],
 });

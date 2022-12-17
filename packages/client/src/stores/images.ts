@@ -39,7 +39,7 @@ export const useImagesStore = defineStore("images", () => {
    * variables
    * @param  - query: The query parameters passed in by the user.
    */
-  const getList = async ({ query = {} } = {}) => {
+  const getList = async ({ query = {}, search = "" } = {}) => {
     const bucketStore = useBucketStore();
     const { bucket, isPrivate } = bucketStore.currentBucketInfo || {};
     let { domain } = bucketStore.currentBucketInfo || {};
@@ -54,11 +54,11 @@ export const useImagesStore = defineStore("images", () => {
 
     const queryString = stringify({
       bucket,
-      prefix,
+      prefix: search.length ? "" : prefix,
       domain,
       private: isPrivate,
       pagesize: 1000,
-      search: "",
+      search,
       nextMarker: "",
       ...query,
     });
@@ -80,15 +80,18 @@ export const useImagesStore = defineStore("images", () => {
     console.log("nextMarker", nextMarker);
     if (!images) return {};
 
-    images.forEach((item) => {
-      item.key = prefix + item.key;
-    });
+    if (!search) {
+      images.forEach((item) => {
+        item.key = prefix + item.key;
+      });
 
-    imagesList.value = images;
-    prefixs.value = prefixsData || [];
+      imagesList.value = images;
+      prefixs.value = prefixsData || [];
+    }
 
     return {
       nextMarker,
+      images,
     };
   };
 

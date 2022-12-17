@@ -8,11 +8,7 @@ const menuDefaultSelectedKeys = ref<string[]>([]);
 watch(
   () => router.currentRoute.value.name,
   (name) => {
-    if (name === "bucket") {
-      menuDefaultSelectedKeys.value[0] = "bucket";
-    } else {
-      menuDefaultSelectedKeys.value[0] = "home";
-    }
+    menuDefaultSelectedKeys.value[0] = (name as string) || "home";
   },
   {
     immediate: true,
@@ -52,7 +48,7 @@ const onMenuItemClick = (key: string) => {
         >
           <a-menu-item key="home">文件管理</a-menu-item>
           <a-menu-item key="bucket">空间管理</a-menu-item>
-          <a-menu-item key="3">搜索</a-menu-item>
+          <a-menu-item key="search">搜索</a-menu-item>
         </a-menu>
 
         <QimTheme class="header__theme"></QimTheme>
