@@ -107,6 +107,7 @@ const handleMove = async () => {
 <template>
   <div v-if="imageDetail?.key" class="detail">
     <a-image
+      v-if="imageDetail.mimeType.startsWith('image')"
       class="detail__image"
       :src="imageUrl"
       width="100%"
@@ -114,6 +115,10 @@ const handleMove = async () => {
       :preview="false"
       show-loader
     />
+
+    <div class="detail__file" v-else>
+      <icon-file size="100" />
+    </div>
 
     <a-descriptions
       v-if="infoData.length"
@@ -165,7 +170,12 @@ const handleMove = async () => {
   margin-top: 20px;
 
   &__image {
+    min-height: 100px;
     background: var(--color-bg-white);
+  }
+
+  &__file {
+    text-align: center;
   }
 
   &__btns {
