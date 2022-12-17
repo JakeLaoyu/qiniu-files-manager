@@ -20,21 +20,17 @@
 ## 预览
 
 ### 图片列表
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174720.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/packages/client/src/assets/readme/SCR-20221217-khn.png)
 
 ### 添加Bucket
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175705.png)
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174830.png)
-
-### 批量管理
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174931.png)
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-174946.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/packages/client/src/assets/readme/SCR-20221217-kif.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/packages/client/src/assets/readme/SCR-20221217-kj1.png)
 
 ### Bucket管理
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175040.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/packages/client/src/assets/readme/SCR-20221217-kk5.png)
 
 ### 搜索
-![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/src/assets/preview/Jietu20181011-175142.png)
+![image](https://raw.githubusercontent.com/JakeLaoyu/qiniu-images-manager/master/packages/client/src/assets/readme/SCR-20221217-kl6.png)
 
 
 ## 私有空间
