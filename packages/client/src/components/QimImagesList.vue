@@ -15,8 +15,14 @@ const listHeight = ref(0);
 
 const listRef = ref<HTMLElement>();
 
-const { imagesList, prefixs, listLoading, prefixsOpened, filterKeyword } =
-  storeToRefs(imagesStore);
+const {
+  imagesList,
+  prefixs,
+  listLoading,
+  prefixsOpened,
+  filterKeyword,
+  nextMarker,
+} = storeToRefs(imagesStore);
 
 const { currentBucketInfo } = storeToRefs(bucketStore);
 const { history } = useThrottledRefHistory(filterKeyword, {
@@ -62,6 +68,12 @@ const listData = computed(() => {
   ];
 });
 
+const onReachBottom = async () => {
+  if (!imagesList.value.length || !nextMarker.value) return;
+
+  imagesStore.getList();
+};
+
 const computedListMaxHeight = () => {
   const { height } = useWindowSize();
   const { top: listTop } = useElementBounding(listRef);
@@ -77,24 +89,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <a-spin class="spin" dot :loading="listLoading">
-    <a-list
-      ref="listRef"
-      :max-height="listHeight"
-      :virtualListProps="{
-        height: listHeight + 50,
-      }"
-      :data="listData"
-      :grid-props="{ span: 3 }"
-      :bordered="false"
-    >
-      <template #item="{ item, index }">
-        <a-list-item :key="index">
-          <QimImageItem :item="item"></QimImageItem>
-        </a-list-item>
-      </template>
-    </a-list>
-  </a-spin>
+  <a-list
+    ref="listRef"
+    :max-height="listHeight"
+    :virtualListProps="{
+      height: listHeight + 50,
+      fixedSize: true,
+      buffer: 20,
+    }"
+    :loading="listLoading"
+    :data="listData"
+    :grid-props="{ span: 4 }"
+    :bordered="false"
+    @reach-bottom="onReachBottom"
+  >
+    <template #item="{ item }">
+      <a-list-item :key="item.key">
+        <QimImageItem :item="item"></QimImageItem>
+      </a-list-item>
+    </template>
+  </a-list>
 </template>
 
 <style scoped lang="scss">

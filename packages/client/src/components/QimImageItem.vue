@@ -55,6 +55,7 @@ const onClick = () => {
 <style scoped lang="scss">
 .item {
   cursor: pointer;
+  text-align: center;
 
   &--image {
     background: var(--color-bg-white);

@@ -19,6 +19,7 @@ export const useImagesStore = defineStore("images", () => {
   const prefixs = ref<string[]>([]);
   const newPrefix = ref("");
   const filterKeyword = ref("");
+  const nextMarker = ref("");
 
   const listLoading = ref(false);
 
@@ -41,6 +42,7 @@ export const useImagesStore = defineStore("images", () => {
     prefixs.value = [];
     newPrefix.value = "";
     filterKeyword.value = "";
+    nextMarker.value = "";
   };
 
   /**
@@ -66,9 +68,9 @@ export const useImagesStore = defineStore("images", () => {
       prefix: search.length ? "" : prefix,
       domain,
       private: isPrivate,
-      pagesize: 1000,
+      pagesize: 200,
       search,
-      nextMarker: "",
+      nextMarker: nextMarker.value,
       ...query,
     });
 
@@ -83,7 +85,11 @@ export const useImagesStore = defineStore("images", () => {
       listLoading.value = false;
     });
 
-    const { images, prefixs: prefixsData, nextMarker = "" } = data || {};
+    const {
+      images,
+      prefixs: prefixsData,
+      nextMarker: nextMarkerFlag = "",
+    } = data || {};
 
     if (!images) return {};
 
@@ -92,12 +98,13 @@ export const useImagesStore = defineStore("images", () => {
         item.key = prefix + item.key;
       });
 
-      imagesList.value = images;
-      prefixs.value = prefixsData || [];
+      imagesList.value = [...imagesList.value, ...images];
+      prefixs.value = [...prefixs.value, ...(prefixsData || [])];
+      nextMarker.value = nextMarkerFlag;
     }
 
     return {
-      nextMarker,
+      nextMarker: nextMarkerFlag,
       images,
     };
   };
@@ -198,6 +205,7 @@ export const useImagesStore = defineStore("images", () => {
     newPrefixFormat,
     imageDetail,
     filterKeyword,
+    nextMarker,
     resetImageStore,
     getList,
     getUploadToken,
