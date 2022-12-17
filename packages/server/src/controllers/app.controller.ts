@@ -161,8 +161,6 @@ export class AppController {
       return str;
     });
 
-    console.log(result);
-
     return {
       code: result.statusCode === 200 ? 0 : result.statusCode,
       data: {

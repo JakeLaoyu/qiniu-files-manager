@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import {
   useElementBounding,
   useThrottledRefHistory,
+  useThrottleFn,
   useWindowSize,
 } from "@vueuse/core";
 import { useBucketStore } from "@/stores/bucket";
@@ -24,6 +25,10 @@ const {
   nextMarker,
 } = storeToRefs(imagesStore);
 
+const getList = useThrottleFn(() => {
+  imagesStore.getList();
+}, 500);
+
 const { currentBucketInfo } = storeToRefs(bucketStore);
 const { history } = useThrottledRefHistory(filterKeyword, {
   deep: true,
@@ -36,7 +41,7 @@ watch(
     nextMarker.value = "";
     imagesList.value = [];
     prefixs.value = [];
-    imagesStore.getList();
+    getList();
   }
 );
 
@@ -44,7 +49,7 @@ watch(
   () => currentBucketInfo.value,
   () => {
     imagesStore.resetImageStore();
-    imagesStore.getList();
+    getList();
   }
 );
 
