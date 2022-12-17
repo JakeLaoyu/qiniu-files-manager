@@ -33,4 +33,14 @@ export default defineConfig({
     // fix mime process env
     "process.env": {},
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["vue", "vue-router", "axios", "pinia"],
+          ui: ["@arco-design/web-vue"],
+        },
+      },
+    },
+  },
 });

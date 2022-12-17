@@ -1,11 +1,12 @@
 {
   "name": "qiniu-files-manager",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev:client": "pnpm -r --parallel --filter client run dev",
     "dev:server": "pnpm -r --parallel --filter server run start:dev",
+    "start:prod": "pnpm -r --parallel --filter server run start:prod",
     "build": "pnpm -r --parallel --filter='./packages/*' run build",
     "lint": "pnpm -r --parallel --filter='./packages/*' run lint"
   },
