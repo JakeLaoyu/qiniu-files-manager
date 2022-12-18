@@ -24,13 +24,14 @@ const imageUrl = computed(() => {
   return imageStore.getImageUrl(imageDetail.value);
 });
 
-const onCopy = () => {
+const onCopy = async () => {
   const { copy } = useClipboard({
     source: imageUrl,
     legacy: true,
   });
 
-  copy();
+  await copy();
+  Message.success(`复制成功: ${imageUrl.value}`);
 };
 
 const infoData = computed(() => {
