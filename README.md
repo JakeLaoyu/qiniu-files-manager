@@ -64,7 +64,7 @@ docker-compose up
 
 部署完成后，可以在浏览器中访问 `http://127.0.0.1:2018/`
 
-### nginx 配置
+#### nginx 配置
 
 ```nginx
 server
