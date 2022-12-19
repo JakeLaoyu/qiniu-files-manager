@@ -94,6 +94,12 @@ const handleBeforeOk = async (): Promise<boolean> => {
             placeholder="please enter your secretKey..."
           />
         </a-form-item>
+
+        <div class="tip">
+          <a-link href="https://portal.qiniu.com/user/key" target="__blank">
+            去七牛查看
+          </a-link>
+        </div>
       </a-form>
     </div>
   </a-modal>
@@ -101,4 +107,9 @@ const handleBeforeOk = async (): Promise<boolean> => {
   <QimBucketsModal :buckets="bucketsList" />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.tip {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
