@@ -157,14 +157,12 @@ export class AppController {
         });
     }
 
-    if (!costomPrefixSearch) {
-      result.prefixs = result.prefixs.map((item) => {
-        let str = item;
-        if (prefix) str = item.replace(prefix, '');
-        str = str.slice(0, str.length - 1);
-        return str;
-      });
-    }
+    result.prefixs = result.prefixs.map((item) => {
+      let str = item;
+      if (prefix && !costomPrefixSearch) str = item.replace(prefix, '');
+      str = str.slice(0, str.length - 1);
+      return str;
+    });
 
     return {
       code: result.statusCode === 200 ? 0 : result.statusCode,

@@ -71,7 +71,7 @@ export const useImagesStore = defineStore("images", () => {
     const queryString = stringify({
       bucket,
       prefix: search.length ? "" : prefix,
-      costomPrefixSearch: search.length ? "" : listHomePrefixFilter.value,
+      costomPrefixSearch: search || prefix ? "" : listHomePrefixFilter.value,
       domain,
       private: isPrivate,
       pagesize: 200,
