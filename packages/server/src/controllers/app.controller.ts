@@ -342,7 +342,7 @@ export class AppController {
       });
     } else {
       return res.json({
-        code: 0,
+        code: 1,
         message: '单次最多1000个文件',
       });
     }
@@ -367,20 +367,17 @@ export class AppController {
 
             if (errList.length === 0) {
               res.json({
-                code: 1,
+                code: 0,
               });
             } else {
               res.json({
-                code: 0,
+                code: 1,
                 message: errList,
               });
             }
           } else {
-            console.log(respInfo.deleteusCode);
-            console.log(respBody);
-
             res.json({
-              code: 1,
+              code: 0,
               info: respBody,
             });
           }

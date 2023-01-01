@@ -20,6 +20,8 @@ export const useImagesStore = defineStore("images", () => {
   const newPrefix = ref("");
   const filterKeyword = ref("");
   const nextMarker = ref("");
+  const multipleMode = ref(false);
+  const selectedList = ref<string[]>([]);
 
   const listLoading = ref(false);
 
@@ -43,6 +45,7 @@ export const useImagesStore = defineStore("images", () => {
     newPrefix.value = "";
     filterKeyword.value = "";
     nextMarker.value = "";
+    multipleMode.value = false;
   };
 
   /**
@@ -126,12 +129,12 @@ export const useImagesStore = defineStore("images", () => {
     };
   };
 
-  const deleteImage = async (image: Image) => {
+  const deleteImage = async (image: Image | string[]) => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
 
     return ajax.post<any, AjaxData<any>>("/api/delImage", {
-      key: image.key,
+      key: Array.isArray(image) ? image : image.key,
       bucket: bucket,
     });
   };
@@ -196,6 +199,17 @@ export const useImagesStore = defineStore("images", () => {
     return `//${domain}/${image.key}`;
   };
 
+  const multipleMoveImage = (newKey: string) => {
+    const bucketStore = useBucketStore();
+    const { bucket } = bucketStore.currentBucketInfo || {};
+
+    return ajax.post<any, AjaxData<any>>("/api/multipleMoveImage", {
+      bucket: bucket,
+      keys: selectedList.value,
+      newKey: newKey,
+    });
+  };
+
   return {
     listLoading,
     imagesList,
@@ -206,6 +220,8 @@ export const useImagesStore = defineStore("images", () => {
     imageDetail,
     filterKeyword,
     nextMarker,
+    multipleMode,
+    selectedList,
     resetImageStore,
     getList,
     getUploadToken,
@@ -214,5 +230,6 @@ export const useImagesStore = defineStore("images", () => {
     getImageUrl,
     getPrivateToken,
     moveImage,
+    multipleMoveImage,
   };
 });
