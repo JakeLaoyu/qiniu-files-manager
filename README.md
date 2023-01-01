@@ -12,10 +12,6 @@
 
 ![Alt](https://repobeats.axiom.co/api/embed/beeeb59c9f480d4ed9c99c31eabf6f555574d3db.svg "Repobeats analytics image")
 
-## TODO
-
-- [ ] 批量删除和移动
-
 ## 预览
 
 ### 图片列表
