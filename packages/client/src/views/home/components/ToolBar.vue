@@ -9,8 +9,15 @@ const bucketStore = useBucketStore();
 const imagesStore = useImagesStore();
 
 const { buckets, curBucketId } = storeToRefs(bucketStore);
-const { newPrefix, filterKeyword, multipleMode, selectedList, imagesList } =
-  storeToRefs(imagesStore);
+const {
+  newPrefix,
+  filterKeyword,
+  multipleMode,
+  selectedList,
+  imagesList,
+  listHomePrefixFilter,
+  prefixsOpened,
+} = storeToRefs(imagesStore);
 
 const moveModal = ref(false);
 const moveTo = ref("");
@@ -36,6 +43,10 @@ const onSelectChange = (val: boolean | (string | number | boolean)[]) => {
   } else {
     selectedList.value = [];
   }
+};
+
+const onSearch = () => {
+  imagesStore.resetImageStore();
 };
 
 const handleMove = async () => {
@@ -94,6 +105,16 @@ const handleDel = () => {
       <a-input v-model="newPrefix" placeholder="添加前缀" allow-clear />
 
       <a-input v-model="filterKeyword" placeholder="过滤" allow-clear />
+
+      <a-input-search
+        v-if="!prefixsOpened.length"
+        v-model="listHomePrefixFilter"
+        placeholder="输入文件前缀，按回车搜索"
+        allow-clear
+        :style="{ width: '300px' }"
+        @search="onSearch"
+        @press-enter="onSearch"
+      />
     </div>
 
     <div class="tool-bar__right">

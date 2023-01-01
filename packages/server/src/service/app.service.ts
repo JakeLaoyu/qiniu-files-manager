@@ -5,8 +5,6 @@ import { Request } from 'express';
 @Injectable()
 export class AppService {
   getMac(req: Request) {
-    console.log('req.session.accessKey', req.session.accessKey);
-    console.log('req.session.secretKey', req.session.secretKey);
     return new qiniu.auth.digest.Mac(
       req.session.accessKey,
       req.session.secretKey,
@@ -46,6 +44,7 @@ export class AppService {
     req,
     bucket,
     prefix,
+    costomPrefixSearch = '',
     search,
     nextMarker = '',
     pagesize,
@@ -57,8 +56,9 @@ export class AppService {
     //                delimiter 指定目录分隔符
     const options: Record<string, any> = {
       limit: pagesize,
-      prefix: prefix,
+      prefix: costomPrefixSearch || prefix,
     };
+
     if (!search) options.delimiter = '/';
     if (nextMarker) options.marker = nextMarker;
     return new Promise((resolve, reject) => {
