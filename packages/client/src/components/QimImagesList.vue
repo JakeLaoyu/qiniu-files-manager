@@ -117,6 +117,11 @@ onMounted(() => {
       </a-list-item>
     </template>
   </a-list>
+
+  <a-back-top
+    target-container=".arco-scrollbar-container"
+    :style="{ position: 'absolute' }"
+  />
 </template>
 
 <style scoped lang="scss">
