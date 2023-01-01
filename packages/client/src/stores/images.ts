@@ -11,6 +11,7 @@ import type {
   PrivateToken,
 } from "@/types/ajax";
 import type { Image } from "@/types/image";
+import { Message } from "@arco-design/web-vue";
 
 export const useImagesStore = defineStore("images", () => {
   const imagesList = ref<Image[]>([]);
@@ -22,6 +23,7 @@ export const useImagesStore = defineStore("images", () => {
   const nextMarker = ref("");
   const multipleMode = ref(false);
   const selectedList = ref<string[]>([]);
+  const listHomePrefixFilter = ref("");
 
   const listLoading = ref(false);
 
@@ -69,6 +71,7 @@ export const useImagesStore = defineStore("images", () => {
     const queryString = stringify({
       bucket,
       prefix: search.length ? "" : prefix,
+      costomPrefixSearch: search.length ? "" : listHomePrefixFilter.value,
       domain,
       private: isPrivate,
       pagesize: 200,
@@ -90,11 +93,15 @@ export const useImagesStore = defineStore("images", () => {
 
     const {
       images,
-      prefixs: prefixsData,
+      prefixs: prefixsData = [],
       nextMarker: nextMarkerFlag = "",
     } = data || {};
 
     if (!images) return {};
+
+    if (nextMarker.value && prefixsData.length) {
+      Message.info("有新的文件夹");
+    }
 
     if (!search) {
       images.forEach((item) => {
@@ -102,7 +109,7 @@ export const useImagesStore = defineStore("images", () => {
       });
 
       imagesList.value = [...imagesList.value, ...images];
-      prefixs.value = [...prefixs.value, ...(prefixsData || [])];
+      prefixs.value = [...prefixs.value, ...prefixsData];
       nextMarker.value = nextMarkerFlag;
     }
 
@@ -222,6 +229,7 @@ export const useImagesStore = defineStore("images", () => {
     nextMarker,
     multipleMode,
     selectedList,
+    listHomePrefixFilter,
     resetImageStore,
     getList,
     getUploadToken,

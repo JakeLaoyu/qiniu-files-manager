@@ -129,6 +129,7 @@ export class AppController {
     const isPrivate = req.query.private;
     const search = req.query.search || '';
     const prefix = req.query.prefix || '';
+    const costomPrefixSearch = (req.query.costomPrefixSearch as string) || '';
     const nextMarker = req.query.nextMarker as string;
     const pagesize = req.query.pagesize || 50;
 
@@ -136,6 +137,7 @@ export class AppController {
       req,
       bucket,
       prefix,
+      costomPrefixSearch,
       search,
       nextMarker,
       pagesize,
@@ -154,12 +156,15 @@ export class AppController {
             .split('?')[1];
         });
     }
-    result.prefixs = result.prefixs.map((item) => {
-      let str = item;
-      if (prefix) str = item.replace(prefix, '');
-      str = str.slice(0, str.length - 1);
-      return str;
-    });
+
+    if (!costomPrefixSearch) {
+      result.prefixs = result.prefixs.map((item) => {
+        let str = item;
+        if (prefix) str = item.replace(prefix, '');
+        str = str.slice(0, str.length - 1);
+        return str;
+      });
+    }
 
     return {
       code: result.statusCode === 200 ? 0 : result.statusCode,
