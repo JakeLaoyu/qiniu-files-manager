@@ -1,15 +1,17 @@
-FROM node:14.18.0
+FROM node:14.18.0 AS frontend
 ENV TZ=Asia/Shanghai
 
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-# COPY . /home/qim
-# WORKDIR /home/qim
-# RUN npm install -g yarn --registry=https://registry.npm.taobao.org &&
-# RUN yarn --no-lockfile --registry=https://registry.npm.taobao.org && cd server && yarn --no-lockfile --registry=https://registry.npm.taobao.org
-# RUN yarn build
-
-
+COPY . /home/qim
 WORKDIR /home/qim
-CMD ["pnpm", "start:prod"]
 
-# EXPOSE 2017
+RUN pnpm install --frozen-lockfile
+RUN pnpm build
+
+RUN apt-get update && apt-get install -y nginx
+
+COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN nginx
+
+CMD ["pnpm", "start:prod"]
