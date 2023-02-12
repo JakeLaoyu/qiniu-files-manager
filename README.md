@@ -52,10 +52,7 @@ pnpm dev:server
 ### docker部署
 
 ```sh
-git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
-cd qiniu-files-manager
-pnpm i && pnpm build
-docker-compose up
+docker run -d --name qim -p 2018:80 jakeee/qim:latest
 ```
 
 部署完成后，可以在浏览器中访问 `http://127.0.0.1:2018/`
