@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useImagesStore } from "@/stores/images";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
@@ -24,6 +24,13 @@ const getUploadToken = async () => {
     getUploadToken();
   }, 1000 * 60 * 50);
 };
+
+watch(
+  () => currentBucketInfo.value,
+  () => {
+    getUploadToken();
+  }
+);
 
 const placeholder = computed(() => {
   if (prefixsOpened.value.length === 0) {
