@@ -4,7 +4,7 @@
 
 前端: vue3、pinia、axios、arco-design、vue-router
 
-服务端: nestjs、七牛SDK、redis(session 持久化)
+服务端: nestjs、七牛SDK
 
 [DEMO](http://qim.jakeyu.top)
 
