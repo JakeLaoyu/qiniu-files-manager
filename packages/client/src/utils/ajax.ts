@@ -45,7 +45,12 @@ ajax.interceptors.response.use(
     return data;
   },
   (error: Error) => {
-    Message.error(error.message || "发生错误");
+    if (axios.isCancel(error)) {
+      console.log("Request canceled", error.message);
+    } else {
+      Message.error((error as Error).message || "发生错误");
+    }
+
     return Promise.reject(error);
   }
 );
