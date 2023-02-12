@@ -152,6 +152,8 @@ export const useImagesStore = defineStore("images", () => {
 
     if (!bucket) return;
 
+    await bucketStore.postSecret();
+
     // 获取token
     const { data } = await ajax.get<any, AjaxData<UploadToken>>(
       `/api/uploadToken?bucket=${bucket}`

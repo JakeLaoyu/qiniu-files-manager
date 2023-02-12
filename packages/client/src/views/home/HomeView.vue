@@ -21,10 +21,7 @@ const breadcrumbGo = (index: number) => {
 
 onBeforeMount(async () => {
   if (currentBucketInfo.value) {
-    await bucketStore.postSecret({
-      accessKey: currentBucketInfo.value.AccessKey,
-      secretKey: currentBucketInfo.value.SecretKey,
-    });
+    await bucketStore.postSecret();
 
     await imagesStore.getList();
   }
