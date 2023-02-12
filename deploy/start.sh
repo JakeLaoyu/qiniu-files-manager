@@ -1,4 +1,5 @@
 #!/bin/bash
 
-pnpm start:prod
 nginx
+
+pnpm start:prod
