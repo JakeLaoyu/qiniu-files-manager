@@ -14,4 +14,4 @@ COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN chmod +x ./deploy/start.sh
 
-CMD ["sh", "./deploy/start.sh"]
+ENTRYPOINT ["sh", "./deploy/start.sh"]
