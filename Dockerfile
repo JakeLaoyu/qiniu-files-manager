@@ -12,6 +12,4 @@ RUN apt-get update && apt-get install -y nginx
 
 COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN nginx
-
-CMD ["pnpm", "start:prod"]
+CMD ["pnpm", "start:prod" , "&&", "nginx"]
