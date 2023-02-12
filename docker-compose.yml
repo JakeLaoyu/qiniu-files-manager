@@ -4,22 +4,11 @@ services:
     container_name: qim
     build: .
     environment:
-      REDIS_HOST: "redis"
-      REDIS_PORT: "6379"
       TZ: Asia/Shanghai
     ports:
       - "2017"
     volumes:
       - .:/home/qim
-    depends_on:
-      - redis
-
-  redis:
-    image: redis
-    environment:
-      TZ: Asia/Shanghai
-    ports:
-      - "6379"
 
   nginx:
     container_name: nginx
