@@ -26,16 +26,12 @@ export const useBucketStore = defineStore("bucket", () => {
     buckets.value.find((bucket) => bucket.id === curBucketId.value)
   );
 
-  const postSecret = async ({
-    accessKey,
-    secretKey,
-  }: {
-    accessKey: string;
-    secretKey: string;
-  }) => {
+  const postSecret = async ({ accessKey = "", secretKey = "" } = {}) => {
+    const { AccessKey, SecretKey } = currentBucketInfo.value || {};
+
     return ajax.post("/api/postSecret", {
-      accessKey: accessKey,
-      secretKey: secretKey,
+      accessKey: AccessKey || accessKey,
+      secretKey: SecretKey || secretKey,
     });
   };
 

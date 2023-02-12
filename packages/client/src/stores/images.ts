@@ -4,6 +4,7 @@ import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
 import { stringify } from "qs";
 import { ajax } from "@/utils/ajax";
+import axios, { type CancelTokenSource } from "axios";
 import type {
   AjaxData,
   ImagesData,
@@ -26,6 +27,8 @@ export const useImagesStore = defineStore("images", () => {
   const listHomePrefixFilter = ref("");
 
   const listLoading = ref(false);
+
+  let cancelTokenSource: CancelTokenSource | null = null;
 
   const newPrefixFormat = computed(() => {
     if (!newPrefix.value) return "";
@@ -64,6 +67,14 @@ export const useImagesStore = defineStore("images", () => {
 
     if (!bucket || !domain) return;
 
+    if (cancelTokenSource) {
+      cancelTokenSource.cancel("Operation canceled by the user.");
+      cancelTokenSource = null;
+    }
+
+    const CancelToken = axios.CancelToken;
+    cancelTokenSource = CancelToken.source();
+
     if (isPrivate) {
       domain = window.location.protocol + domain;
     }
@@ -84,7 +95,10 @@ export const useImagesStore = defineStore("images", () => {
 
     const { data } =
       (await ajax.get<any, AjaxData<ImagesData>>(
-        `/api/getImages?${queryString}`
+        `/api/getImages?${queryString}`,
+        {
+          cancelToken: cancelTokenSource.token,
+        }
       )) || {};
 
     nextTick(() => {
@@ -151,6 +165,8 @@ export const useImagesStore = defineStore("images", () => {
     const { bucket } = bucketStore.currentBucketInfo || {};
 
     if (!bucket) return;
+
+    await bucketStore.postSecret();
 
     // 获取token
     const { data } = await ajax.get<any, AjaxData<UploadToken>>(
