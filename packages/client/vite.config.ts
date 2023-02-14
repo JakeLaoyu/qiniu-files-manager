@@ -5,6 +5,7 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ArcoResolver } from "unplugin-vue-components/resolvers";
+import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,13 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
+    VitePWA({
+      registerType: "autoUpdate",
+      manifest: {
+        name: "七牛文件管理",
+        short_name: "qim",
+      },
+    }),
     vue(),
     AutoImport({
       resolvers: [ArcoResolver()],
