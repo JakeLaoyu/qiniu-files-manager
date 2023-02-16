@@ -58,11 +58,11 @@ jobs:
           git-tag-version: "false"
 
       - run: |
-          git config --global user.name 'Jake Yu'
-          git config --global user.email 'jake.laoyu@gmail.com'
+          git config user.name 'Jake Yu'
+          git config user.email 'jake.laoyu@gmail.com'
           git add .
           git commit -m "chore: ${{ env.VERSION }}"
-          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.head_ref }}"
+          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.ref }}"
 
       - name: Bump version and push tag
         id: tag_version
