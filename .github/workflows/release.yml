@@ -50,6 +50,20 @@ jobs:
         # Example: branch name `release/1.0.0` sets up env.VERSION=1.0.0
         run: |
           echo "VERSION=${GITHUB_REF_NAME#release/}" >> $GITHUB_ENV
+
+      - name: "change version"
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: "${{ env.VERSION }}"
+          git-tag-version: "false"
+
+      - run: |
+          git config user.name 'Jake Yu'
+          git config user.email 'jake.laoyu@gmail.com'
+          git add .
+          git commit -m "chore: ${{ env.VERSION }}"
+          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.ref }}"
+
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
@@ -58,6 +72,7 @@ jobs:
           release_branches: release/*
           pre_release_branches: pre-release/*
           custom_tag: ${{ env.VERSION }}
+
       - uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
