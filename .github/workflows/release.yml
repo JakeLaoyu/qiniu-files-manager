@@ -1,4 +1,4 @@
-name: docker
+name: release
 
 on:
   push:
@@ -37,3 +37,19 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Extract build args
+        # Extract version from branch name
+        # Example: branch name `release/1.0.0` sets up env.VERSION=1.0.0
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#release/}" >> $GITHUB_ENV
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "release.tar.gz"
+          tag: v${{ env.VERSION }}
