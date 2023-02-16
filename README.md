@@ -28,21 +28,6 @@
 
 > 再添加空间时需要手动选择是否是私有空间，后面也可以在 空间管理 中进行修改。默认情况下，获取私有空间图片会401错误，因为需要获取凭证
 
-## 开发
-
-```sh
-git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
-cd qiniu-images-manager
-```
-
-```sh
-pnpm i
-# 前端
-pnpm dev:client
-# 服务端
-pnpm dev:server
-```
-
 ## 部署
 
 ### docker部署
@@ -100,6 +85,22 @@ server
     proxy_pass http://localhost:2017;
   }
 }
+```
+
+
+## 开发
+
+```sh
+git clone https://github.com/JakeLaoyu/qiniu-files-manager.git
+cd qiniu-images-manager
+```
+
+```sh
+pnpm i
+# 前端
+pnpm dev:client
+# 服务端
+pnpm dev:server
 ```
 
 ## License
