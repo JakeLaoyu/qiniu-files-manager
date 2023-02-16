@@ -45,6 +45,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v2
+      - name: Extract build args
+        # Extract version from branch name
+        # Example: branch name `release/1.0.0` sets up env.VERSION=1.0.0
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#release/}" >> $GITHUB_ENV
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
@@ -52,6 +57,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: release/*
           pre_release_branches: pre-release/*
+          custom_tag: ${{ env.VERSION }}
       - uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
