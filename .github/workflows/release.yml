@@ -1,9 +1,10 @@
-name: docker
+name: release
 
 on:
   push:
     branches:
       - "release/*.*.*"
+      - "pre-release/*.*.*"
 
 jobs:
   docker:
@@ -37,3 +38,28 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Extract build args
+        # Extract version from branch name
+        # Example: branch name `release/1.0.0` sets up env.VERSION=1.0.0
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#release/}" >> $GITHUB_ENV
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: release/*
+          pre_release_branches: pre-release/*
+          custom_tag: ${{ env.VERSION }}
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
