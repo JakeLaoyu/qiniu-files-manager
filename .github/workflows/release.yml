@@ -55,7 +55,6 @@ jobs:
         uses: reedyuk/npm-version@1.1.1
         with:
           version: "${{ env.VERSION }}"
-          package: "subproject-directory/"
           git-tag-version: "false"
 
       - name: Bump version and push tag
