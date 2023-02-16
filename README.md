@@ -1,5 +1,3 @@
-<a href="https://www.buymeacoffee.com/jakeyu"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jakeyu&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
-
 ## 七牛文件管理
 
 [DEMO](http://qim.jakeyu.top)
@@ -105,3 +103,5 @@ pnpm dev:server
 
 ## License
 MIT © [JakeLaoyu](https://github.com/JakeLaoyu)
+
+<a href="https://www.buymeacoffee.com/jakeyu"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jakeyu&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
