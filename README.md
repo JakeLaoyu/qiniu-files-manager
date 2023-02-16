@@ -2,12 +2,6 @@
 
 ## 七牛文件管理
 
-环境: node 14.18.0、pnpm workspace
-
-前端: vue3、pinia、axios、arco-design、vue-router
-
-服务端: nestjs、七牛SDK
-
 [DEMO](http://qim.jakeyu.top)
 
 [Gitee 镜像](https://gitee.com/jakelaoyu/qiniu-files-manager)
