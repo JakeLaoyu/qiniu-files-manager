@@ -2,11 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
+import { v4 as uuidv4 } from 'uuid';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // app.enableCors();
+  if (process.env.NODE_ENV === 'development') {
+    app.enableCors();
+  }
 
   const port = process.env.PORT || '2017';
 
@@ -18,7 +21,7 @@ async function bootstrap() {
       },
       resave: true,
       saveUninitialized: true,
-      secret: '0A6194FD0E695254A939A25C3D868D2C',
+      secret: uuidv4(),
     }),
   );
 

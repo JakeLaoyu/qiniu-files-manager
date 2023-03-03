@@ -8,10 +8,4 @@ WORKDIR /home/qim
 RUN pnpm install --frozen-lockfile
 RUN pnpm build
 
-RUN apt-get update && apt-get install -y nginx
-
-COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
-
-RUN chmod +x ./deploy/start.sh
-
-ENTRYPOINT ["sh", "./deploy/start.sh"]
+ENTRYPOINT ["pnpm", "start:prod"]
