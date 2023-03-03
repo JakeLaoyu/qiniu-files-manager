@@ -78,3 +78,5 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
+
+      - run: curl ${{ secrets.RENDER_DEPLOY_WEBHOOK }}

@@ -36,6 +36,10 @@ docker run -d --name qim -p 2018:2017 jakeee/qim:latest
 
 部署完成后，可以在浏览器中访问 `http://127.0.0.1:2018/`
 
+### Render 部署
+
+- [参考 memo render 部署](https://github.com/usememos/memos/blob/main/docs/deploy-with-render.md)
+
 ### 普通部署
 
 ```sh
