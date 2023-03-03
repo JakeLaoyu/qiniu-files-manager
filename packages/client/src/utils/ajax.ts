@@ -9,6 +9,7 @@ export const ajax = axios.create({
   baseURL: baseURL,
   timeout: 30000,
   responseType: "json",
+  withCredentials: import.meta.env.DEV ? true : false,
 });
 
 axios.interceptors.request.use(
