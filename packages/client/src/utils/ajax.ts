@@ -1,11 +1,9 @@
 import axios from "axios";
 import { Message, Notification } from "@arco-design/web-vue";
 
-export const baseURL = location.origin;
-
-// import.meta.env.DEV
-//   ? "//127.0.0.1:2017"
-//   : location.origin;
+export const baseURL = import.meta.env.DEV
+  ? "//127.0.0.1:2017"
+  : location.origin;
 
 export const ajax = axios.create({
   baseURL: baseURL,
