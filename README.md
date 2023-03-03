@@ -36,50 +36,13 @@ docker run -d --name qim -p 2018:2017 jakeee/qim:latest
 
 部署完成后，可以在浏览器中访问 `http://127.0.0.1:2018/`
 
-#### nginx 配置
-
-```nginx
-server
-{
-  listen 80;
-  server_name qim.jakeyu.top;
-
-  location / {
-    proxy_pass http://localhost:2018;
-  }
-}
-````
-
 ### 普通部署
 
-#### 前端
-
 ```sh
+pnpm i
 pnpm build
-```
-
-#### 服务端
-
-```sh
 pnpm start:prod
 ```
-
-#### nginx
-
-nginx 配置示例:
-
-```nginx
-server
-{
-  listen 80;
-  server_name qim.jakeyu.top;
-
-  location / {
-    proxy_pass http://localhost:2017;
-  }
-}
-```
-
 
 ## 开发
 
