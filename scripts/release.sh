@@ -37,7 +37,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   # push
   # git push origin refs/tags/v$VERSION
   git add .
-  # git commit -m "release: $VERSION"
+  git commit -m "release: $VERSION"
   git push
 
   git checkout -b release/$VERSION
