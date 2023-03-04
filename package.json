@@ -9,7 +9,8 @@
     "start:prod": "pnpm -r --parallel --filter server run start:prod",
     "start:pm2": "pnpm -r --parallel --filter server run start:pm2",
     "build": "pnpm -r --parallel --filter='./packages/*' run build",
-    "lint": "pnpm -r --parallel --filter='./packages/*' run lint"
+    "lint": "pnpm -r --parallel --filter='./packages/*' run lint",
+    "release": "sh ./scripts/release.sh"
   },
   "keywords": [],
   "author": "",

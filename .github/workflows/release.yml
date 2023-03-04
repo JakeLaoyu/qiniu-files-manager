@@ -7,48 +7,8 @@ on:
       - "pre-release/*.*.*"
 
 jobs:
-  version:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-      - name: Extract build args
-        # Extract version from branch name
-        # Example: branch name `release/1.0.0` sets up env.VERSION=1.0.0
-        run: |
-          echo "VERSION=${GITHUB_REF_NAME#release/}" >> $GITHUB_ENV
-
-      - name: "change version"
-        uses: reedyuk/npm-version@1.1.1
-        with:
-          version: "${{ env.VERSION }}"
-          git-tag-version: "false"
-
-      - name: "change version"
-        uses: reedyuk/npm-version@1.1.1
-        with:
-          version: "${{ env.VERSION }}"
-          package: "packages/client/"
-          git-tag-version: "false"
-
-      - name: "change version"
-        uses: reedyuk/npm-version@1.1.1
-        with:
-          version: "${{ env.VERSION }}"
-          package: "packages/server/"
-          git-tag-version: "false"
-
-      - run: |
-          git config user.name 'Jake Yu'
-          git config user.email 'jake.laoyu@gmail.com'
-          git add .
-          git commit -m "chore: ${{ env.VERSION }}"
-          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.ref }}"
-
   docker:
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - uses: actions/checkout@v3
       - name: Set up QEMU
@@ -81,7 +41,7 @@ jobs:
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
 
   release:
-    needs: [docker, version]
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
