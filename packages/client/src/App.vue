@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { watch, ref } from "vue";
+import { watch, ref, onMounted } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useSystemStore } from "@/stores/system";
 
 const router = useRouter();
 const menuDefaultSelectedKeys = ref<string[]>([]);
+
+const systemStore = useSystemStore();
+const { status, hasNewVersion, latestVersion } = storeToRefs(systemStore);
+
+onMounted(() => {
+  systemStore.checkUpdate();
+});
 
 watch(
   () => router.currentRoute.value.name,
@@ -23,6 +32,15 @@ const onMenuItemClick = (key: string) => {
 </script>
 
 <template>
+  <a-alert v-if="hasNewVersion" banner closable type="warning">
+    <a-link
+      href="https://github.com/JakeLaoyu/qiniu-files-manager"
+      target="_blank"
+    >
+      新版本 {{ latestVersion }}
+    </a-link>
+  </a-alert>
+
   <header class="header">
     <a-row class="header__row">
       <a-col class="header__left" :span="12">
@@ -35,7 +53,11 @@ const onMenuItemClick = (key: string) => {
             height="60"
           />
 
-          <span>QIM</span>
+          <span class="header__title">QIM</span>
+
+          <a-tag v-if="status?.version" color="arcoblue" size="small">
+            {{ status?.version }}
+          </a-tag>
         </RouterLink>
       </a-col>
 
@@ -104,6 +126,10 @@ const onMenuItemClick = (key: string) => {
   &__link {
     display: flex;
     align-items: center;
+  }
+
+  &__title {
+    margin-right: 10px;
   }
 
   &__logo {

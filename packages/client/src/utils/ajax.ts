@@ -26,6 +26,10 @@ axios.interceptors.request.use(
 
 ajax.interceptors.response.use(
   ({ data = {}, request }) => {
+    if (request.responseURL.includes("github")) {
+      return data;
+    }
+
     // iView.LoadingBar.finish();
     if (data && data.code !== 0) {
       if (data.code === 401) {

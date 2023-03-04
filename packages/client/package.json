@@ -17,6 +17,7 @@
     "mime": "^3.0.0",
     "pinia": "^2.0.28",
     "qs": "^6.11.0",
+    "semver": "^7.3.8",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
@@ -27,6 +28,7 @@
     "@types/mime-types": "^2.1.1",
     "@types/node": "^18.11.12",
     "@types/qs": "^6.9.7",
+    "@types/semver": "^7.3.13",
     "@types/uuid": "^9.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",

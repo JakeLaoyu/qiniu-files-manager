@@ -16,6 +16,7 @@ importers:
       '@types/mime-types': ^2.1.1
       '@types/node': ^18.11.12
       '@types/qs': ^6.9.7
+      '@types/semver': ^7.3.13
       '@types/uuid': ^9.0.0
       '@vitejs/plugin-vue': ^4.0.0
       '@vue/eslint-config-prettier': ^7.0.0
@@ -31,6 +32,7 @@ importers:
       prettier: ^2.7.1
       qs: ^6.11.0
       sass: ^1.56.2
+      semver: ^7.3.8
       typescript: ^4.7.4
       unplugin-auto-import: ^0.12.1
       unplugin-vue-components: ^0.22.11
@@ -46,6 +48,7 @@ importers:
       mime: 3.0.0
       pinia: 2.0.28_e7lp6ggkpgyi5vqd44m2kxvk6i
       qs: 6.11.0
+      semver: 7.3.8
       uuid: 9.0.0
       vue: 3.2.45
       vue-router: 4.1.6_vue@3.2.45
@@ -55,6 +58,7 @@ importers:
       '@types/mime-types': 2.1.1
       '@types/node': 18.11.13
       '@types/qs': 6.9.7
+      '@types/semver': 7.3.13
       '@types/uuid': 9.0.0
       '@vitejs/plugin-vue': 4.0.0_vite@4.0.0+vue@3.2.45
       '@vue/eslint-config-prettier': 7.0.0_wdw3qg4p7crmsoaizcyntelyni
@@ -4747,7 +4751,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-    dev: true
 
   /macos-release/2.5.0:
     resolution: {integrity: sha512-EIgv+QZ9r+814gjJj0Bt5vSLJLzswGmSUbUpbi9AIr/fsN2IWFBl2NucV9PAiek+U1STK468tEkxmVYUtuAN3g==}
@@ -5747,7 +5750,6 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
-    dev: true
 
   /send/0.18.0:
     resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
@@ -6879,7 +6881,6 @@ packages:
 
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
-    dev: true
 
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}

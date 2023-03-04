@@ -387,4 +387,14 @@ export class AppController {
         }
       });
   }
+
+  @Get('status')
+  getStatus(@Req() req: Request, @Res() res: Response) {
+    res.json({
+      code: 0,
+      data: {
+        version: process.env.npm_package_version,
+      },
+    });
+  }
 }
