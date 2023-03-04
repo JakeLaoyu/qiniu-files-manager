@@ -94,12 +94,9 @@ export const useImagesStore = defineStore("images", () => {
     listLoading.value = true;
 
     const { data } =
-      (await ajax.get<any, AjaxData<ImagesData>>(
-        `/api/getImages?${queryString}`,
-        {
-          cancelToken: cancelTokenSource.token,
-        }
-      )) || {};
+      (await ajax.get<any, AjaxData<ImagesData>>(`/api/images?${queryString}`, {
+        cancelToken: cancelTokenSource.token,
+      })) || {};
 
     nextTick(() => {
       listLoading.value = false;
@@ -154,7 +151,7 @@ export const useImagesStore = defineStore("images", () => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
 
-    return ajax.post<any, AjaxData<any>>("/api/delImage", {
+    return ajax.post<any, AjaxData<any>>("/api/image", {
       key: Array.isArray(image) ? image : image.key,
       bucket: bucket,
     });
@@ -170,7 +167,7 @@ export const useImagesStore = defineStore("images", () => {
 
     // 获取token
     const { data } = await ajax.get<any, AjaxData<UploadToken>>(
-      `/api/uploadToken?bucket=${bucket}`
+      `/api/upload-token?bucket=${bucket}`
     );
 
     const { uploadToken } = data || {};
@@ -184,7 +181,7 @@ export const useImagesStore = defineStore("images", () => {
 
     // 获取token
     const { data } = await ajax.get<any, AjaxData<PrivateToken>>(
-      `/api/getPrivateToken`,
+      `/api/private-token`,
       {
         params: {
           key,
@@ -202,7 +199,7 @@ export const useImagesStore = defineStore("images", () => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
 
-    return ajax.post<any, AjaxData<any>>("/api/moveImage", {
+    return ajax.post<any, AjaxData<any>>("/api/move-image", {
       bucket: bucket,
       key: image.key,
       newKey: newKey,
@@ -226,7 +223,7 @@ export const useImagesStore = defineStore("images", () => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
 
-    return ajax.post<any, AjaxData<any>>("/api/multipleMoveImage", {
+    return ajax.post<any, AjaxData<any>>("/api/multiple-move-image", {
       bucket: bucket,
       keys: selectedList.value,
       newKey: newKey,

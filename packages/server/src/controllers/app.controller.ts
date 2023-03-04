@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Delete } from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as qiniu from 'qiniu';
 import * as lodash from 'lodash';
@@ -14,7 +14,7 @@ const QiniuApi = {
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('getPrivateToken')
+  @Get('private-token')
   getPrivateToken(@Req() req: Request) {
     if (!req.query.domain) {
       return {
@@ -41,7 +41,7 @@ export class AppController {
   }
 
   // get buckets by ak & sk
-  @Get('getBuckets')
+  @Get('buckets')
   async getBuckets(@Req() req: Request) {
     let result: {
       data?: any[];
@@ -110,7 +110,7 @@ export class AppController {
   }
 
   // save ak sk
-  @Post('postSecret')
+  @Post('secret')
   postSecret(@Req() req: Request) {
     console.log('req.body.accessKey', req.body.accessKey);
     console.log('req.body.secretKey', req.body.secretKey);
@@ -122,7 +122,7 @@ export class AppController {
     };
   }
 
-  @Get('getImages')
+  @Get('images')
   async getImages(@Req() req: Request) {
     const bucket = req.query.bucket;
     const domain = req.query.domain as string;
@@ -179,7 +179,7 @@ export class AppController {
   }
 
   // 获取token
-  @Get('uploadToken')
+  @Get('upload-token')
   uploadToken(@Req() req: Request) {
     const Bucket = req.query.bucket;
 
@@ -193,7 +193,7 @@ export class AppController {
     };
   }
 
-  @Get('delSession')
+  @Delete('session')
   delSession(@Req() req: Request) {
     req.session.accessKey = '';
     req.session.secretKey = '';
@@ -231,7 +231,7 @@ export class AppController {
       });
   }
 
-  @Post('delImage')
+  @Post('image')
   delImage(@Req() req: Request, @Res() res: Response) {
     const key = req.body.key;
     const bucket = req.body.bucket;
@@ -282,7 +282,7 @@ export class AppController {
     }
   }
 
-  @Post('moveImage')
+  @Post('move-image')
   moveImage(@Req() req: Request, @Res() res: Response) {
     const key = req.body.key;
     const newKey = req.body.newKey;
@@ -322,7 +322,7 @@ export class AppController {
       );
   }
 
-  @Post('multipleMoveImage')
+  @Post('multiple-move-image')
   multipleMoveImage(@Req() req: Request, @Res() res: Response) {
     const keys = req.body.keys;
     const bucket = req.body.bucket;
