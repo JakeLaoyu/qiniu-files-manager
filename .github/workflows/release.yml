@@ -41,7 +41,7 @@ jobs:
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
 
   release:
-    needs: [docker, version]
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
