@@ -26,15 +26,15 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CheckAkSkMiddleware).forRoutes(
       {
-        path: 'api/uploadToken',
+        path: 'api/upload-token',
         method: RequestMethod.GET,
       },
       {
-        path: 'api/getPrivateToken',
+        path: 'api/private-token',
         method: RequestMethod.GET,
       },
       {
-        path: 'api/getImages',
+        path: 'api/images',
         method: RequestMethod.GET,
       },
     );

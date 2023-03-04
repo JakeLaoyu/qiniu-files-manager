@@ -29,14 +29,14 @@ export const useBucketStore = defineStore("bucket", () => {
   const postSecret = async ({ accessKey = "", secretKey = "" } = {}) => {
     const { AccessKey, SecretKey } = currentBucketInfo.value || {};
 
-    return ajax.post("/api/postSecret", {
+    return ajax.post("/api/secret", {
       accessKey: AccessKey || accessKey,
       secretKey: SecretKey || secretKey,
     });
   };
 
   const getBuckets = async () => {
-    return ajax.get<any, AjaxData<Bucket[]>>("/api/getBuckets").then((data) => {
+    return ajax.get<any, AjaxData<Bucket[]>>("/api/buckets").then((data) => {
       if (data.data) {
         data.data = data.data.map((item: any) => {
           return {
