@@ -39,6 +39,9 @@ jobs:
           push: true
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
 
+      - run: curl ${{ secrets.BT_WEBHOOK_ACCESS_KEY }}&param=${{ env.VERSION }}
+      - run: curl ${{ secrets.RENDER_DEPLOY_WEBHOOK }}
+
   release:
     runs-on: ubuntu-latest
     permissions:
@@ -78,7 +81,3 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-
-      - run: curl ${{ secrets.RENDER_DEPLOY_WEBHOOK }}
-
-      - run: curl ${{ secrets.BT_WEBHOOK_ACCESS_KEY }}&param=${{ env.VERSION }}
