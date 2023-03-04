@@ -151,10 +151,23 @@ export const useImagesStore = defineStore("images", () => {
     const bucketStore = useBucketStore();
     const { bucket } = bucketStore.currentBucketInfo || {};
 
-    return ajax.post<any, AjaxData<any>>("/api/image", {
-      key: Array.isArray(image) ? image : image.key,
-      bucket: bucket,
-    });
+    return ajax
+      .post<any, AjaxData<any>>("/api/del-image", {
+        key: Array.isArray(image) ? image : image.key,
+        bucket: bucket,
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.code === 0) {
+          imagesList.value = imagesList.value.filter((item) => {
+            if (Array.isArray(image)) {
+              return !image.includes(item.key);
+            }
+            return item.key !== image.key;
+          });
+        }
+        return res;
+      });
   };
 
   const getUploadToken = async () => {
