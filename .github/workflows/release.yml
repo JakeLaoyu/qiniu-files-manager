@@ -60,6 +60,20 @@ jobs:
           version: "${{ env.VERSION }}"
           git-tag-version: "false"
 
+      - name: "change version"
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: "${{ env.VERSION }}"
+          package: "packages/client/"
+          git-tag-version: "false"
+
+      - name: "change version"
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: "${{ env.VERSION }}"
+          package: "packages/server/"
+          git-tag-version: "false"
+
       - run: |
           git config user.name 'Jake Yu'
           git config user.email 'jake.laoyu@gmail.com'
