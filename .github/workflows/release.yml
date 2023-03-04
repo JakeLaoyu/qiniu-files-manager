@@ -80,3 +80,5 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
 
       - run: curl ${{ secrets.RENDER_DEPLOY_WEBHOOK }}
+
+      - run: curl ${{ secrets.BT_WEBHOOK_ACCESS_KEY }}&param=${{ env.VERSION }}
