@@ -152,9 +152,11 @@ export const useImagesStore = defineStore("images", () => {
     const { bucket } = bucketStore.currentBucketInfo || {};
 
     return ajax
-      .post<any, AjaxData<any>>("/api/del-image", {
-        key: Array.isArray(image) ? image : image.key,
-        bucket: bucket,
+      .delete<any, AjaxData<any>>("/api/image", {
+        data: {
+          key: Array.isArray(image) ? image : image.key,
+          bucket: bucket,
+        },
       })
       .then((res) => {
         console.log(res);
