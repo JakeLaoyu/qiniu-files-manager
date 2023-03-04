@@ -40,6 +40,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   # git commit -m "release: $VERSION"
   git push
 
-  # git checkout -b release/$VERSION
-  # git push --set-upstream origin release/$VERSION
+  git checkout -b release/$VERSION
+  git push --set-upstream origin release/$VERSION
 fi
