@@ -231,7 +231,7 @@ export class AppController {
       });
   }
 
-  @Post('image')
+  @Delete('image')
   delImage(@Req() req: Request, @Res() res: Response) {
     const key = req.body.key;
     const bucket = req.body.bucket;
