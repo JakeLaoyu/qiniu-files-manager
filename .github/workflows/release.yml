@@ -39,7 +39,9 @@ jobs:
           push: true
           tags: jakeee/qim:latest, jakeee/qim:${{ env.VERSION }}
 
-      - run: curl ${{ secrets.BT_WEBHOOK_ACCESS_KEY }}&param=${{ env.VERSION }}
+      - run: |
+        echo "BT_WEBHOOK=${{ secrets.BT_WEBHOOK_ACCESS_KEY }}&param=${{ env.VERSION }}"
+        curl ${{ env.BT_WEBHOOK }}
       - run: curl ${{ secrets.RENDER_DEPLOY_WEBHOOK }}
 
   release:
