@@ -24,13 +24,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo
 
   # update package.json version to be used in the build
-  npm version $VERSION
+  npm version $VERSION --git-tag-version false
 
   cd ./packages/server
-  npm version $VERSION
+  npm version $VERSION --git-tag-version false
 
   cd ../client
-  npm version $VERSION
+  npm version $VERSION --git-tag-version false
 
   cd ../..
 
