@@ -26,6 +26,9 @@ export const useImagesStore = defineStore("images", () => {
   const selectedList = ref<string[]>([]);
   const listHomePrefixFilter = ref("");
 
+  const imageListCache = ref<Record<string, Image[]>>({});
+  const prefixsCache = ref<Record<string, string[]>>({});
+
   const listLoading = ref(false);
 
   let cancelTokenSource: CancelTokenSource | null = null;
@@ -65,6 +68,9 @@ export const useImagesStore = defineStore("images", () => {
     const prefixsStr = prefixsOpened.value.join("/");
     const prefix = prefixsOpened.value.length ? `${prefixsStr}/` : "";
 
+    let hasImageListCache = false;
+    let hasPrefixsCache = false;
+
     if (!bucket || !domain) return;
 
     if (cancelTokenSource) {
@@ -91,7 +97,22 @@ export const useImagesStore = defineStore("images", () => {
       ...query,
     });
 
-    listLoading.value = true;
+    if (imageListCache.value[queryString]) {
+      hasImageListCache = true;
+      imagesList.value = [
+        ...imagesList.value,
+        ...imageListCache.value[queryString],
+      ];
+    }
+
+    if (prefixsCache.value[queryString]) {
+      hasPrefixsCache = true;
+      prefixs.value = [...prefixs.value, ...prefixsCache.value[queryString]];
+    }
+
+    if (!hasImageListCache || !hasPrefixsCache) {
+      listLoading.value = true;
+    }
 
     const { data } =
       (await ajax.get<any, AjaxData<ImagesData>>(`/api/images?${queryString}`, {
@@ -119,8 +140,16 @@ export const useImagesStore = defineStore("images", () => {
         item.key = prefix + item.key;
       });
 
-      imagesList.value = [...imagesList.value, ...images];
-      prefixs.value = [...prefixs.value, ...prefixsData];
+      imageListCache.value[queryString] = images;
+      prefixsCache.value[queryString] = prefixsData;
+
+      if (!hasImageListCache) {
+        imagesList.value = [...imagesList.value, ...images];
+      }
+
+      if (!hasPrefixsCache) {
+        prefixs.value = [...prefixs.value, ...prefixsData];
+      }
       nextMarker.value = nextMarkerFlag;
     }
 
