@@ -1,4 +1,4 @@
-import { ref, nextTick, computed } from "vue";
+import { ref, nextTick, computed, unref } from "vue";
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
@@ -25,6 +25,9 @@ export const useImagesStore = defineStore("images", () => {
   const multipleMode = ref(false);
   const selectedList = ref<string[]>([]);
   const listHomePrefixFilter = ref("");
+
+  const imageListCache = ref<Record<string, Image[]>>({});
+  const prefixsCache = ref<Record<string, string[]>>({});
 
   const listLoading = ref(false);
 
@@ -65,6 +68,9 @@ export const useImagesStore = defineStore("images", () => {
     const prefixsStr = prefixsOpened.value.join("/");
     const prefix = prefixsOpened.value.length ? `${prefixsStr}/` : "";
 
+    let hasImageListCache = false;
+    let hasPrefixsCache = false;
+
     if (!bucket || !domain) return;
 
     if (cancelTokenSource) {
@@ -91,7 +97,25 @@ export const useImagesStore = defineStore("images", () => {
       ...query,
     });
 
-    listLoading.value = true;
+    const preImageList = [...unref(imagesList)];
+    const prePrefixs = [...unref(prefixs)];
+
+    if (imageListCache.value[queryString]) {
+      hasImageListCache = true;
+      imagesList.value = [
+        ...imagesList.value,
+        ...imageListCache.value[queryString],
+      ];
+    }
+
+    if (prefixsCache.value[queryString]) {
+      hasPrefixsCache = true;
+      prefixs.value = [...prefixs.value, ...prefixsCache.value[queryString]];
+    }
+
+    if (!hasImageListCache || !hasPrefixsCache) {
+      listLoading.value = true;
+    }
 
     const { data } =
       (await ajax.get<any, AjaxData<ImagesData>>(`/api/images?${queryString}`, {
@@ -119,8 +143,11 @@ export const useImagesStore = defineStore("images", () => {
         item.key = prefix + item.key;
       });
 
-      imagesList.value = [...imagesList.value, ...images];
-      prefixs.value = [...prefixs.value, ...prefixsData];
+      imageListCache.value[queryString] = [...images];
+      prefixsCache.value[queryString] = [...prefixsData];
+
+      imagesList.value = [...preImageList, ...images];
+      prefixs.value = [...prePrefixs, ...prefixsData];
       nextMarker.value = nextMarkerFlag;
     }
 
@@ -159,7 +186,6 @@ export const useImagesStore = defineStore("images", () => {
         },
       })
       .then((res) => {
-        console.log(res);
         if (res.code === 0) {
           imagesList.value = imagesList.value.filter((item) => {
             if (Array.isArray(image)) {
