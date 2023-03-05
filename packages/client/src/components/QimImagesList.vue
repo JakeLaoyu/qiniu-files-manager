@@ -26,7 +26,9 @@ const {
 } = storeToRefs(imagesStore);
 
 const getList = useThrottleFn(() => {
-  imagesStore.getList();
+  nextTick(() => {
+    imagesStore.getList();
+  });
 }, 500);
 
 const { currentBucketInfo } = storeToRefs(bucketStore);

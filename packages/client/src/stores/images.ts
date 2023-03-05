@@ -1,4 +1,4 @@
-import { ref, nextTick, computed } from "vue";
+import { ref, nextTick, computed, unref } from "vue";
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { useBucketStore } from "./bucket";
@@ -97,6 +97,9 @@ export const useImagesStore = defineStore("images", () => {
       ...query,
     });
 
+    const preImageList = [...unref(imagesList)];
+    const prePrefixs = [...unref(prefixs)];
+
     if (imageListCache.value[queryString]) {
       hasImageListCache = true;
       imagesList.value = [
@@ -140,16 +143,11 @@ export const useImagesStore = defineStore("images", () => {
         item.key = prefix + item.key;
       });
 
-      imageListCache.value[queryString] = images;
-      prefixsCache.value[queryString] = prefixsData;
+      imageListCache.value[queryString] = [...images];
+      prefixsCache.value[queryString] = [...prefixsData];
 
-      if (!hasImageListCache) {
-        imagesList.value = [...imagesList.value, ...images];
-      }
-
-      if (!hasPrefixsCache) {
-        prefixs.value = [...prefixs.value, ...prefixsData];
-      }
+      imagesList.value = [...preImageList, ...images];
+      prefixs.value = [...prePrefixs, ...prefixsData];
       nextMarker.value = nextMarkerFlag;
     }
 
@@ -188,7 +186,6 @@ export const useImagesStore = defineStore("images", () => {
         },
       })
       .then((res) => {
-        console.log(res);
         if (res.code === 0) {
           imagesList.value = imagesList.value.filter((item) => {
             if (Array.isArray(image)) {

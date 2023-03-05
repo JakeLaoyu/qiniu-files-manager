@@ -46,8 +46,6 @@ export const useSystemStore = defineStore("system", () => {
       await getStatus();
     }
 
-    console.log("githubTags.value", githubTags.value);
-
     if (!githubTags.value) {
       await getGithubTags();
     }
