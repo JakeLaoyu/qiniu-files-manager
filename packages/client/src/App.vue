@@ -3,12 +3,17 @@ import { watch, ref, onMounted } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSystemStore } from "@/stores/system";
+import { useImagesStore } from "./stores/images";
 
 const router = useRouter();
 const menuDefaultSelectedKeys = ref<string[]>([]);
 
 const systemStore = useSystemStore();
 const { status, hasNewVersion, latestVersion } = storeToRefs(systemStore);
+
+const imageStore = useImagesStore();
+const { listLoading, hasPrefixsCache, hasImageListCache } =
+  storeToRefs(imageStore);
 
 onMounted(() => {
   systemStore.checkUpdate();
@@ -58,6 +63,14 @@ const onMenuItemClick = (key: string) => {
           <a-tag v-if="status?.version" color="arcoblue" size="small">
             {{ status?.version }}
           </a-tag>
+
+          <div
+            class="header__loading"
+            v-if="listLoading && (hasImageListCache || hasPrefixsCache)"
+          >
+            <a-spin />
+            <span>刷新缓存中...</span>
+          </div>
         </RouterLink>
       </a-col>
 
@@ -121,6 +134,18 @@ const onMenuItemClick = (key: string) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  &__loading {
+    margin-left: 10px;
+    font-size: 12px;
+    color: var(--color-text-3);
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 5px;
+    }
   }
 
   &__link {
