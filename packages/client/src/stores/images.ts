@@ -26,6 +26,9 @@ export const useImagesStore = defineStore("images", () => {
   const selectedList = ref<string[]>([]);
   const listHomePrefixFilter = ref("");
 
+  const hasImageListCache = ref(false);
+  const hasPrefixsCache = ref(false);
+
   const imageListCache = ref<Record<string, Image[]>>({});
   const prefixsCache = ref<Record<string, string[]>>({});
 
@@ -68,8 +71,8 @@ export const useImagesStore = defineStore("images", () => {
     const prefixsStr = prefixsOpened.value.join("/");
     const prefix = prefixsOpened.value.length ? `${prefixsStr}/` : "";
 
-    let hasImageListCache = false;
-    let hasPrefixsCache = false;
+    hasPrefixsCache.value = false;
+    hasImageListCache.value = false;
 
     if (!bucket || !domain) return;
 
@@ -101,7 +104,7 @@ export const useImagesStore = defineStore("images", () => {
     const prePrefixs = [...unref(prefixs)];
 
     if (imageListCache.value[queryString]) {
-      hasImageListCache = true;
+      hasImageListCache.value = true;
       imagesList.value = [
         ...imagesList.value,
         ...imageListCache.value[queryString],
@@ -109,13 +112,11 @@ export const useImagesStore = defineStore("images", () => {
     }
 
     if (prefixsCache.value[queryString]) {
-      hasPrefixsCache = true;
+      hasPrefixsCache.value = true;
       prefixs.value = [...prefixs.value, ...prefixsCache.value[queryString]];
     }
 
-    if (!hasImageListCache || !hasPrefixsCache) {
-      listLoading.value = true;
-    }
+    listLoading.value = true;
 
     const { data } =
       (await ajax.get<any, AjaxData<ImagesData>>(`/api/images?${queryString}`, {
@@ -284,6 +285,8 @@ export const useImagesStore = defineStore("images", () => {
     multipleMode,
     selectedList,
     listHomePrefixFilter,
+    hasPrefixsCache,
+    hasImageListCache,
     resetImageStore,
     getList,
     getUploadToken,

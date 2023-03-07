@@ -23,6 +23,8 @@ const {
   prefixsOpened,
   filterKeyword,
   nextMarker,
+  hasPrefixsCache,
+  hasImageListCache,
 } = storeToRefs(imagesStore);
 
 const getList = useThrottleFn(() => {
@@ -107,7 +109,7 @@ onMounted(() => {
       fixedSize: true,
       buffer: 20,
     }"
-    :loading="listLoading"
+    :loading="listLoading && !hasPrefixsCache && !hasImageListCache"
     :data="listData"
     :grid-props="{ span: 4 }"
     :bordered="false"
