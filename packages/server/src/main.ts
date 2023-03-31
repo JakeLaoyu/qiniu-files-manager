@@ -9,7 +9,7 @@ async function bootstrap() {
 
   if (process.env.NODE_ENV === 'development') {
     app.enableCors({
-      origin: 'http://127.0.0.1:3000',
+      origin: 'http://localhost:3000',
       credentials: true,
     });
   }

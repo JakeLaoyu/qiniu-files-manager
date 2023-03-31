@@ -10,6 +10,15 @@ import { ArcoResolver } from "unplugin-vue-components/resolvers";
 export default defineConfig({
   server: {
     port: 3000,
+    host: "0.0.0.0",
+    open: false,
+    proxy: {
+      "/api": {
+        target: "http://localhost:2017",
+        changeOrigin: true, // 允许跨域
+        // rewrite: path => path.replace('/', '/'),
+      },
+    },
   },
   plugins: [
     vue(),

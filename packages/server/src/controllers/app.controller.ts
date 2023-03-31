@@ -60,6 +60,7 @@ export class AppController {
         },
       });
     } catch (error) {
+      console.error(error);
       return {
         code: error.response.status,
         message: '请填写合法AccessKey、SecretKey',

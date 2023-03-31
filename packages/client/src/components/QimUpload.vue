@@ -7,6 +7,7 @@ import { Notification } from "@arco-design/web-vue";
 import type { FileItem } from "@arco-design/web-vue";
 import mime from "mime";
 import { useBucketStore } from "@/stores/bucket";
+import { REGION_UPLOAD_DOMAIN } from "@/utils/constant";
 
 const imagesStore = useImagesStore();
 const bucketStore = useBucketStore();
@@ -75,7 +76,11 @@ const customRequest = (option: any) => {
   formData.append("key", `${prefix}${fileItem.name}`);
   formData.append("token", uploadToken.value);
   formData.append(name || "file", fileItem.file);
-  xhr.open("post", "//upload.qiniup.com/", true);
+  xhr.open(
+    "post",
+    `${REGION_UPLOAD_DOMAIN[currentBucketInfo?.value?.region || ""]}/`,
+    true
+  );
   xhr.send(formData);
 
   return {
