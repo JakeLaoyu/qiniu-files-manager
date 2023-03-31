@@ -1,7 +1,7 @@
 FROM --platform=$TARGETPLATFORM node:16.10.0 AS frontend
 ENV TZ=Asia/Shanghai
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+RUN npm install pnpm@7 -g
 COPY . /home/qim
 WORKDIR /home/qim
 
