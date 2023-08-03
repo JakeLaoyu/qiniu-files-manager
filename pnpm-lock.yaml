@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -64,7 +68,7 @@ importers:
         version: 9.0.0
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
-        version: 4.0.0(vite@4.0.0)(vue@3.2.45)
+        version: 4.0.0(vite@4.0.5)(vue@3.2.45)
       '@vue/eslint-config-prettier':
         specifier: ^7.0.0
         version: 7.0.0(eslint@8.29.0)(prettier@2.8.1)
@@ -99,8 +103,8 @@ importers:
         specifier: ^0.22.11
         version: 0.22.11(vue@3.2.45)
       vite:
-        specifier: ^4.0.0
-        version: 4.0.0(@types/node@18.11.13)(sass@1.56.2)
+        specifier: ^4.0.5
+        version: 4.0.5(@types/node@18.11.13)(sass@1.56.2)
       vue-tsc:
         specifier: ^1.0.12
         version: 1.0.13(typescript@4.7.4)
@@ -155,7 +159,7 @@ importers:
         version: 9.1.5
       '@nestjs/schematics':
         specifier: ^9.0.0
-        version: 9.0.3(chokidar@3.5.3)(typescript@4.8.4)
+        version: 9.0.3(typescript@4.7.4)
       '@nestjs/testing':
         specifier: ^9.0.0
         version: 9.2.1(@nestjs/common@9.2.1)(@nestjs/core@9.2.1)(@nestjs/platform-express@9.2.1)
@@ -1312,6 +1316,21 @@ packages:
       - chokidar
     dev: true
 
+  /@nestjs/schematics@9.0.3(typescript@4.7.4):
+    resolution: {integrity: sha512-kZrU/lrpVd2cnK8I3ibDb3Wi1ppl3wX3U3lVWoL+DzRRoezWKkh8upEL4q0koKmuXnsmLiu3UPxFeMOrJV7TSA==}
+    peerDependencies:
+      typescript: ^4.3.5
+    dependencies:
+      '@angular-devkit/core': 14.2.1(chokidar@3.5.3)
+      '@angular-devkit/schematics': 14.2.1(chokidar@3.5.3)
+      fs-extra: 10.1.0
+      jsonc-parser: 3.2.0
+      pluralize: 8.0.0
+      typescript: 4.7.4
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
   /@nestjs/serve-static@3.0.1(@nestjs/common@9.2.1)(@nestjs/core@9.2.1):
     resolution: {integrity: sha512-i766UJPYOqvQ2BbRKh0/+Mmq5NkJnmKcShjWV1i5qpXyeM0KDZTn0n7g7ykWq/3LbQgjpMzrhYtGv35GX7GVQw==}
     peerDependencies:
@@ -1767,14 +1786,14 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@vitejs/plugin-vue@4.0.0(vite@4.0.0)(vue@3.2.45):
+  /@vitejs/plugin-vue@4.0.0(vite@4.0.5)(vue@3.2.45):
     resolution: {integrity: sha512-e0X4jErIxAB5oLtDqbHvHpJe/uWNkdpYV83AOG2xo2tEVSzCzewgJMtREZM30wXnM5ls90hxiOtAuVU6H5JgbA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.0.0(@types/node@18.11.13)(sass@1.56.2)
+      vite: 4.0.5(@types/node@18.11.13)(sass@1.56.2)
       vue: 3.2.45
     dev: true
 
@@ -6620,8 +6639,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  /vite@4.0.0(@types/node@18.11.13)(sass@1.56.2):
-    resolution: {integrity: sha512-ynad+4kYs8Jcnn8J7SacS9vAbk7eMy0xWg6E7bAhS1s79TK+D7tVFGXVZ55S7RNLRROU1rxoKlvZ/qjaB41DGA==}
+  /vite@4.0.5(@types/node@18.11.13)(sass@1.56.2):
+    resolution: {integrity: sha512-7m87RC+caiAxG+8j3jObveRLqaWA/neAdCat6JAZwMkSWqFHOvg8MYe5fAQxVBRAuKAQ1S6XDh3CBQuLNbY33w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
